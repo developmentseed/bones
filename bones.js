@@ -55,13 +55,14 @@ var Bones = module.exports = {
 //   js library initialization (e.g. OpenLayers) should be done in the
 //   `attach()` method.
 // - `render()` must `return this` in order to be chainable and any calls to
-//   `render()` should chain `trigger('attach')`.
+//   `render()` should chain `attach()`.
 // - `template()` should be used to render an object using `template` to
 //   identify the template to use in the `Bones.templates` hash. Avoid using
-//   jquery or other doing other DOM element creation if templating could get
+//   jquery or other doing other DOM element creation if templating can get
 //   the job done.
 Backbone.View = Backbone.View.extend({
     delegateEvents: function() {},
+    attach: function() {},
     template: function(template, data) {
         var compiled = Handlebars.compile(Bones.templates[template]);
         return compiled(data);

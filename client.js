@@ -5,11 +5,6 @@
 // View's HTML contents.
 Backbone.View = Backbone.View.extend({
     attach: function() {},
-    _configure_original: Backbone.View.prototype._configure,
-    _configure: function(options) {
-        this._configure_original(options);
-        this.bind('attach', this.attach);
-    },
     template: function(template, data) {
         var compiled = Handlebars.compile(Bones.templates[template]);
         return compiled(data);
