@@ -32,6 +32,7 @@ var Bones = module.exports = {
                 if (req.method === 'GET') {
                     next();
                 } else if (req.body && req.body['bones.csrf'] === cookie) {
+                    delete req.body['bones.csrf'];
                     next();
                 } else {
                     res.send('Access denied', 403);
