@@ -58,6 +58,16 @@ Backbone.csrf = function() {
 // confirmation protection to all PUT/POST/DELETE requests if a cookie at
 // `bones.csrf` is found.
 Backbone.sync = function(method, model, success, error) {
+    var getUrl = function(object) {
+        if (!(object && object.url)) throw new Error("A 'url' property or function must be specified");
+        return _.isFunction(object.url) ? object.url() : object.url;
+    };
+    var methodMap = {
+        'create': 'POST',
+        'update': 'PUT',
+        'delete': 'DELETE',
+        'read'  : 'GET'
+    };
     var type = methodMap[method];
 
     var modelJSON = null;
