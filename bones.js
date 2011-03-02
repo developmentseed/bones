@@ -9,6 +9,7 @@ document = window.document;
 
 var fs = require('fs'),
     _ = require('underscore')._,
+    crypto = require('crypto'),
     Backbone = require('backbone'),
     Handlebars = require('handlebars'),
     clientJS = clientJS || fs.readFileSync(__dirname + '/client.js', 'utf8');
@@ -16,6 +17,28 @@ var fs = require('fs'),
 // Bones object.
 var Bones = module.exports = {
     Bones: function(server, options) {
+        // Add CSRF protection middleware if `options.secret` is set.
+        if (options.secret) {
+            server.use(function(req, res, next) {
+                var cookie;
+                if (req.cookies['bones.csrf']) {
+                    cookie = req.cookies['bones.csrf'];
+                } else {
+                    cookie = crypto.createHmac('sha256', options.secret)
+                        .update(req.sessionID)
+                        .digest('hex');
+                    res.cookie('bones.csrf', cookie);
+                }
+                if (req.method === 'GET') {
+                    next();
+                } else if (req.body && req.body['bones.csrf'] === cookie) {
+                    next();
+                } else {
+                    res.send('Access denied', 403);
+                }
+            });
+        }
+
         // Add Backbone routing.
         server.use(Backbone.history.middleware());
 
