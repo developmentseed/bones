@@ -116,24 +116,24 @@ Backbone.Controller = Backbone.Controller.extend({
     route: function(route, name, callback) {
         Backbone.history || (Backbone.history = new Backbone.History);
         if (!_.isRegExp(route)) route = this._routeToRegExp(route);
-        Backbone.history.route(route, _.bind(function(fragment, res) {
+        Backbone.history.route(route, _.bind(function(fragment, res, next) {
             var response = function(view) {
                 res.send(view.html());
             };
 
             var args = this._extractParameters(route, fragment);
-            var view = callback.apply(this, args.concat([response]));
+            var view = callback.apply(this, args.concat([response, next]));
             this.trigger.apply(this, ['route:' + name].concat(args));
         }, this));
     }
 });
 
-// Override `.loadUrl()` to allow `res` response object to be passed through
+// Override `.loadUrl()` to allow `res`, `next` objects to be passed through
 // to handler callback.
-Backbone.History.prototype.loadUrl = function(fragment, res) {
+Backbone.History.prototype.loadUrl = function(fragment, res, next) {
     var matched = _.any(this.handlers, function(handler) {
         if (handler.route.test(fragment)) {
-            handler.callback(fragment, res);
+            handler.callback(fragment, res, next);
             return true;
         }
     });
@@ -150,7 +150,7 @@ Backbone.History.prototype.middleware = function() {
         } else {
             fragment = req.url;
         }
-        !that.loadUrl(fragment, res) && next();
+        !that.loadUrl(fragment, res, next) && next();
     };
 };
 
