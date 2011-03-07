@@ -14,56 +14,6 @@ var fs = require('fs'),
     Handlebars = require('handlebars'),
     clientJS = clientJS || fs.readFileSync(__dirname + '/client.js', 'utf8');
 
-// Bones object.
-var Bones = module.exports = {
-    Bones: function(server, options) {
-        // Add CSRF protection middleware if `options.secret` is set.
-        if (options.secret) {
-            server.use(function(req, res, next) {
-                var cookie;
-                if (req.cookies['bones.csrf']) {
-                    cookie = req.cookies['bones.csrf'];
-                } else {
-                    cookie = crypto.createHmac('sha256', options.secret)
-                        .update(req.sessionID)
-                        .digest('hex');
-                    res.cookie('bones.csrf', cookie);
-                }
-                if (req.method === 'GET') {
-                    next();
-                } else if (req.body && req.body['bones.csrf'] === cookie) {
-                    delete req.body['bones.csrf'];
-                    next();
-                } else {
-                    res.send('Access denied', 403);
-                }
-            });
-        }
-
-        // Add Backbone routing.
-        server.use(Backbone.history.middleware());
-
-        // Add route rule for bones.js.
-        server.get('/bones.js', function(req, res, next) {
-            res.send(Bones.clientJS(),  { 'Content-Type': 'text/javascript' });
-        });
-
-        // Add server reference to Bones.
-        this.server = server;
-        return this;
-    },
-    server: null,
-    templates: {},
-    clientJS: function() {
-        return clientJS + [
-            '// Bones object (client-side)',
-            'var Bones = {',
-            '    templates: ' + JSON.stringify(this.templates),
-            '};'
-        ].join('\n');
-    }
-};
-
 // View (server-side)
 // ------------------
 // With a server-side DOM present Backbone Views tend to take care of
@@ -141,17 +91,14 @@ Backbone.History.prototype.loadUrl = function(fragment, res, next) {
 };
 
 // Provide a custom Backbone.History middleware for use with Connect.
-Backbone.History.prototype.middleware = function() {
-    var that = this;
-    return function(req, res, next) {
-        var fragment;
-        if (req.query && req.query['_escaped_fragment_']) {
-            fragment = req.query['_escaped_fragment_'];
-        } else {
-            fragment = req.url;
-        }
-        !that.loadUrl(fragment, res, next) && next();
-    };
+Backbone.History.prototype.middleware = function(req, res, next) {
+    var fragment;
+    if (req.query && req.query['_escaped_fragment_']) {
+        fragment = req.query['_escaped_fragment_'];
+    } else {
+        fragment = req.url;
+    }
+    !Backbone.history.loadUrl(fragment, res, next) && next();
 };
 
 // Clear out unused/unusable methods.
@@ -161,4 +108,59 @@ Backbone.History.prototype.saveLocation = function() {};
 
 // Instantiate Backbone.history.
 Backbone.history || (Backbone.history = new Backbone.History);
+
+// Bones object.
+var Bones = module.exports = {
+    Bones: function(server, options) {
+        // Add CSRF protection middleware if `options.secret` is set.
+        options.secret && server.use(this.middleware.csrf(options));
+
+        // Add route rule for bones.js.
+        server.get('/bones.js', this.middleware.bonesjs);
+
+        // Add Backbone routing.
+        server.use(this.middleware.history);
+
+        // Add server reference to Bones.
+        this.server = server;
+        return this;
+    },
+    middleware: {
+        history: Backbone.history.middleware,
+        bonesjs: function(req, res, next) {
+            res.send(Bones.clientJS(),  { 'Content-Type': 'text/javascript' });
+        },
+        csrf: function(options) {
+            return function(req, res, next) {
+                var cookie;
+                if (req.cookies['bones.csrf']) {
+                    cookie = req.cookies['bones.csrf'];
+                } else {
+                    cookie = crypto.createHmac('sha256', options.secret)
+                        .update(req.sessionID)
+                        .digest('hex');
+                    res.cookie('bones.csrf', cookie);
+                }
+                if (req.method === 'GET') {
+                    next();
+                } else if (req.body && req.body['bones.csrf'] === cookie) {
+                    delete req.body['bones.csrf'];
+                    next();
+                } else {
+                    res.send('Access denied', 403);
+                }
+            }
+        }
+    },
+    server: null,
+    templates: {},
+    clientJS: function() {
+        return clientJS + [
+            '// Bones object (client-side)',
+            'var Bones = {',
+            '    templates: ' + JSON.stringify(this.templates),
+            '};'
+        ].join('\n');
+    }
+};
 
