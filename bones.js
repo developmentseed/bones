@@ -66,24 +66,24 @@ Backbone.Controller = Backbone.Controller.extend({
     route: function(route, name, callback) {
         Backbone.history || (Backbone.history = new Backbone.History);
         if (!_.isRegExp(route)) route = this._routeToRegExp(route);
-        Backbone.history.route(route, _.bind(function(fragment, res, next) {
+        Backbone.history.route(route, _.bind(function(fragment, res) {
             var response = function(view) {
                 res.send(view.html());
             };
 
             var args = this._extractParameters(route, fragment);
-            var view = callback.apply(this, args.concat([response, next]));
+            var view = callback.apply(this, args.concat([response]));
             this.trigger.apply(this, ['route:' + name].concat(args));
         }, this));
     }
 });
 
-// Override `.loadUrl()` to allow `res`, `next` objects to be passed through
+// Override `.loadUrl()` to allow `res` response object to be passed through
 // to handler callback.
-Backbone.History.prototype.loadUrl = function(fragment, res, next) {
+Backbone.History.prototype.loadUrl = function(fragment, res) {
     var matched = _.any(this.handlers, function(handler) {
         if (handler.route.test(fragment)) {
-            handler.callback(fragment, res, next);
+            handler.callback(fragment, res);
             return true;
         }
     });
@@ -98,7 +98,7 @@ Backbone.History.prototype.middleware = function(req, res, next) {
     } else {
         fragment = req.url;
     }
-    !Backbone.history.loadUrl(fragment, res, next) && next();
+    !Backbone.history.loadUrl(fragment, res) && next();
 };
 
 // Clear out unused/unusable methods.
