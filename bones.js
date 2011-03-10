@@ -1,3 +1,9 @@
+var Bones = Bones || {};
+Bones.models = Bones.models || {};
+Bones.views = Bones.views || {};
+Bones.controllers = Bones.controllers || {};
+Bones.templates = Bones.templates || {};
+
 // Client-side `Backbone.View` overrides. Adds an `attach()` method that can be
 // triggered after `render()` to allow client-side specific JS event handlers,
 // UI libraries to be attached or inited. `template()` and `html()` are mirrors
