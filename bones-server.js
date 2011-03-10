@@ -133,7 +133,7 @@ var Bones = module.exports = {
         },
         templates: function(req, res, next) {
             var js = '// Bones templates (client-side)\n'
-                + 'var Bones = Bones || {}\n'
+                + 'var Bones = Bones || {};\n'
                 + 'Bones.templates = '
                 + JSON.stringify(Bones.templates)
                 + ';\n';
