@@ -1,1 +1,1 @@
-module.exports = require('./bones');
+module.exports = require('./bones-server');

@@ -1,166 +1,117 @@
-// Backbone base class overrides for the server-side context. DOM-related
-// modules are required *globally* such that Backbone will pick up their
-// presence.
-$ = require('jquery-1.4.4');
-jQuery = require('jquery-1.4.4');
-jsdom  = require('jsdom').jsdom;
-window = jsdom().createWindow();
-document = window.document;
-
-var fs = require('fs'),
-    _ = require('underscore')._,
-    crypto = require('crypto'),
-    Backbone = require('backbone'),
-    Handlebars = require('handlebars'),
-    clientJS = clientJS || fs.readFileSync(__dirname + '/client.js', 'utf8');
-
-// View (server-side)
-// ------------------
-// With a server-side DOM present Backbone Views tend to take care of
-// themselves. The main override is to clear out `delegateEvents()` - the
-// `events` hash is of no use on the server-side with the View being dead
-// after initial delivery. `template()` and `html()` serve as 
-// functions to make client/server-side templating a uniform interface.
-//
-// The following conventions must be followed in order to ensure that the views
-// can be used in both environments:
-//
-// - Use `render()` only for templating. Any DOM event handlers, other
-//   js library initialization (e.g. OpenLayers) should be done in the
-//   `attach()` method.
-// - `render()` must `return this` in order to be chainable and any calls to
-//   `render()` should chain `trigger('attach')`.
-// - `template()` should be used to render an object using `template` to
-//   identify the template to use in the `Bones.templates` hash. Avoid using
-//   jquery or other doing other DOM element creation if templating could get
-//   the job done.
+// Client-side `Backbone.View` overrides. Adds an `attach()` method that can be
+// triggered after `render()` to allow client-side specific JS event handlers,
+// UI libraries to be attached or inited. `template()` and `html()` are mirrors
+// of their server-side counterparts for templating and easy generation of a
+// View's HTML contents.
 Backbone.View = Backbone.View.extend({
-    delegateEvents: function() {},
+    attach: function() {},
+    _configure_original: Backbone.View.prototype._configure,
+    _configure: function(options) {
+        this._configure_original(options);
+        this.bind('attach', this.attach);
+    },
     template: function(template, data) {
         var compiled = Handlebars.compile(Bones.templates[template]);
         return compiled(data);
     },
     html: function() {
-        if (typeof this.el === 'string') {
-            return this.el;
-        } else {
-            // Consider using the method described here:
-            // http://stackoverflow.com/questions/652763/jquery-object-to-string
-            return $(this.el).html();
-        }
+        return $(this.el).html();
     }
 });
 
-// Controller/History (server-side)
-// --------------------------------
-// Expose Backbone's controller/history routing functionality to Connect
-// as a middleware. A Connect server can add Backbone controller routing to
-// its stack of middlewares by doing:
-//
-//     server.use(Backbone.history.middleware());
-//     new MyController(); /* Routes will be added at initialize. */
+// Client-side `Backbone.Controller` overrides.
 Backbone.Controller = Backbone.Controller.extend({
-    // Override `.route()` to add a callback handler with an additional
-    // `response` argument callback for sending back a View as HTML using
-    // the Connect server.
     route: function(route, name, callback) {
         Backbone.history || (Backbone.history = new Backbone.History);
         if (!_.isRegExp(route)) route = this._routeToRegExp(route);
         Backbone.history.route(route, _.bind(function(fragment, res) {
-            var response = function(view) {
-                res.send(view.html());
-            };
-
             var args = this._extractParameters(route, fragment);
+            var response = function() {};
             var view = callback.apply(this, args.concat([response]));
             this.trigger.apply(this, ['route:' + name].concat(args));
         }, this));
     }
 });
 
-// Override `.loadUrl()` to allow `res` response object to be passed through
-// to handler callback.
-Backbone.History.prototype.loadUrl = function(fragment, res) {
-    var matched = _.any(this.handlers, function(handler) {
-        if (handler.route.test(fragment)) {
-            handler.callback(fragment, res);
-            return true;
-        }
-    });
-    return matched;
-};
-
-// Provide a custom Backbone.History middleware for use with Connect.
-Backbone.History.prototype.middleware = function(req, res, next) {
-    var fragment;
-    if (req.query && req.query['_escaped_fragment_']) {
-        fragment = req.query['_escaped_fragment_'];
-    } else {
-        fragment = req.url;
-    }
-    !Backbone.history.loadUrl(fragment, res) && next();
-};
-
-// Clear out unused/unusable methods.
-Backbone.History.prototype.start = function() {};
-Backbone.History.prototype.getFragment = function() {};
-Backbone.History.prototype.saveLocation = function() {};
-
-// Instantiate Backbone.history.
-Backbone.history || (Backbone.history = new Backbone.History);
-
-// Bones object.
-var Bones = module.exports = {
-    Bones: function(server, options) {
-        // Add CSRF protection middleware if `options.secret` is set.
-        options.secret && server.use(this.middleware.csrf(options));
-
-        // Add route rule for bones.js.
-        server.get('/bones.js', this.middleware.bonesjs);
-
-        // Add Backbone routing.
-        server.use(this.middleware.history);
-
-        // Add server reference to Bones.
-        this.server = server;
-        return this;
-    },
-    middleware: {
-        history: Backbone.history.middleware,
-        bonesjs: function(req, res, next) {
-            res.send(Bones.clientJS(),  { 'Content-Type': 'text/javascript' });
-        },
-        csrf: function(options) {
-            return function(req, res, next) {
-                var cookie;
-                if (req.cookies['bones.csrf']) {
-                    cookie = req.cookies['bones.csrf'];
-                } else {
-                    cookie = crypto.createHmac('sha256', options.secret)
-                        .update(req.sessionID)
-                        .digest('hex');
-                    res.cookie('bones.csrf', cookie);
-                }
-                if (req.method === 'GET') {
-                    next();
-                } else if (req.body && req.body['bones.csrf'] === cookie) {
-                    delete req.body['bones.csrf'];
-                    next();
-                } else {
-                    res.send('Access denied', 403);
+// Retrieve CSRF protection cookie. Cookie parsing code from
+// [jQuery.cookie](http://plugins.jquery.com/files/jquery.cookie.js.txt).
+Backbone.csrf = function() {
+    function cookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = $.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
         }
-    },
-    server: null,
-    templates: {},
-    clientJS: function() {
-        return clientJS + [
-            '// Bones object (client-side)',
-            'var Bones = {',
-            '    templates: ' + JSON.stringify(this.templates),
-            '};'
-        ].join('\n');
+        return cookieValue;
     }
+    return cookie('bones.csrf');
+}
+
+// Client-side override of `Backbone.sync`. Adds CSRF double-cookie
+// confirmation protection to all PUT/POST/DELETE requests if a cookie at
+// `bones.csrf` is found.
+Backbone.sync = function(method, model, success, error) {
+    var getUrl = function(object) {
+        if (!(object && object.url)) throw new Error("A 'url' property or function must be specified");
+        return _.isFunction(object.url) ? object.url() : object.url;
+    };
+    var methodMap = {
+        'create': 'POST',
+        'update': 'PUT',
+        'delete': 'DELETE',
+        'read'  : 'GET'
+    };
+    var type = methodMap[method];
+
+    var modelJSON = null;
+    if (method === 'create' || method === 'update' || method === 'delete') {
+        modelJSON = (method === 'create' || method === 'update')
+            ? model.toJSON()
+            : {};
+        var csrf = Backbone.csrf();
+        (csrf) && (modelJSON['bones.csrf'] = csrf);
+        modelJSON = JSON.stringify(modelJSON);
+    }
+
+    // Default JSON-request options.
+    var params = {
+        url:          getUrl(model),
+        type:         type,
+        contentType:  'application/json',
+        data:         modelJSON,
+        dataType:     'json',
+        processData:  false,
+        success:      success,
+        error:        error
+    };
+
+    // For older servers, emulate JSON by encoding the request into an HTML-form.
+    if (Backbone.emulateJSON) {
+        params.contentType = 'application/x-www-form-urlencoded';
+        params.processData = true;
+        params.data        = modelJSON ? {model : modelJSON} : {};
+    }
+
+    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
+    // And an `X-HTTP-Method-Override` header.
+    if (Backbone.emulateHTTP) {
+        if (type === 'PUT' || type === 'DELETE') {
+            if (Backbone.emulateJSON) params.data._method = type;
+            params.type = 'POST';
+            params.beforeSend = function(xhr) {
+                xhr.setRequestHeader("X-HTTP-Method-Override", type);
+            };
+        }
+    }
+
+    // Make the request.
+    $.ajax(params);
 };
 
