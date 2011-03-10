@@ -162,6 +162,9 @@ var Bones = module.exports = {
         }
     },
     server: null,
-    templates: {}
+    templates: {},
+    models: {},
+    views: {},
+    controllers: {}
 };
 
