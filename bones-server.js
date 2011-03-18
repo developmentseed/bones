@@ -44,9 +44,10 @@ Backbone.View = Backbone.View.extend({
         if (typeof this.el === 'string') {
             return this.el;
         } else {
-            // Consider using the method described here:
+            // Adapted from method described here:
             // http://stackoverflow.com/questions/652763/jquery-object-to-string
-            return $(this.el).html();
+            return $(document.createElement('div'))
+                .append($(this.el).clone()).remove().html();
         }
     }
 });
