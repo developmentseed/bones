@@ -39,30 +39,26 @@ Backbone.Controller = Backbone.Controller.extend({
     }
 });
 
-// Retrieve CSRF protection cookie. Cookie parsing code from
-// [jQuery.cookie](http://plugins.jquery.com/files/jquery.cookie.js.txt).
-Backbone.csrf = function() {
-    function cookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = $.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    return cookie('bones.csrf');
+// Generate CSRF protection cookie. Callers should provide the request path
+// to ensure the cookie is not pervasive across all requests.
+Backbone.csrf = function(path) {
+    path = path || '/';
+
+    var csrf = Math.floor(Math.random() * new Date()) + '';
+    var expires = new Date();
+    expires.setTime(expires.getTime() + 1000);
+    var cookie = 'bones.csrf='
+        + csrf
+        + ';expires=' + expires.toUTCString()
+        + ';path=' + path;
+    document.cookie = cookie;
+    return csrf;
 }
 
 // Client-side override of `Backbone.sync`. Adds CSRF double-cookie
-// confirmation protection to all PUT/POST/DELETE requests if a cookie at
-// `bones.csrf` is found.
+// confirmation protection to all PUT/POST/DELETE requests. The csrf middleware
+// must be used server-side to invalidate requests without this CSRF
+// proteciton.
 Backbone.sync = function(method, model, success, error) {
     var getUrl = function(object) {
         if (!(object && object.url)) throw new Error("A 'url' property or function must be specified");
@@ -81,8 +77,7 @@ Backbone.sync = function(method, model, success, error) {
         modelJSON = (method === 'create' || method === 'update')
             ? model.toJSON()
             : {};
-        var csrf = Backbone.csrf();
-        (csrf) && (modelJSON['bones.csrf'] = csrf);
+        modelJSON['bones.csrf'] = Backbone.csrf(getUrl(model));
         modelJSON = JSON.stringify(modelJSON);
     }
 

@@ -49,7 +49,7 @@ enjoy the normal client-side Backbone experience.
 
     var express = require('express'),
         server = express.createServer(),
-        Bones = require('bones').Bones(server, {}),
+        Bones = require('bones').Bones(server),
         mvc = require('mvc'); // Your models, views, controllers.
 
     // Adds routes for Router controller.
@@ -58,24 +58,15 @@ enjoy the normal client-side Backbone experience.
     // Start server.
     server.listen(9999);
 
-To enable CSRF protection, pass `secret: [your key]` in the options object.
-You must use the Connect `session` middleware prior to passing Bones your
-Express server:
+To enable CSRF protection use the Connect `cookieDecoder` middleware prior to
+calling `Bones`:
 
     var express = require('express'),
-        server = express.createServer(),
-        secret = 'MySecretKey';
+        server = express.createServer();
 
-    // Typical middleware for using sessions.
-    ui_server.use(express.bodyDecoder());
-    ui_server.use(express.cookieDecoder());
-    ui_server.use(express.session({
-        secret: secret,
-        store: new express.session.MemoryStore({ reapInterval: -1 })
-    }));
-
-    // Pass secret key to Bones.
-    var Bones = require('bones').Bones(server, { secret: secret }),
+    server.use(express.bodyDecoder());
+    server.use(express.cookieDecoder());
+    var Bones = require('bones').Bones(server);
 
 See `examples` for a simple example of Bones usage.
 

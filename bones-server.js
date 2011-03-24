@@ -112,9 +112,9 @@ Backbone.history || (Backbone.history = new Backbone.History);
 
 // Bones object.
 var Bones = module.exports = {
-    Bones: function(server, options) {
-        // Add CSRF protection middleware if `options.secret` is set.
-        options.secret && server.use(this.middleware.csrf(options));
+    Bones: function(server) {
+        // Add CSRF protection middleware.
+        server.use(this.middleware.csrf);
 
         // Add Backbone routing.
         server.use(this.middleware.history);
@@ -140,25 +140,14 @@ var Bones = module.exports = {
                 + ';\n';
             res.send(js, { 'Content-Type': 'text/javascript' });
         },
-        csrf: function(options) {
-            return function(req, res, next) {
-                var cookie;
-                if (req.cookies['bones.csrf']) {
-                    cookie = req.cookies['bones.csrf'];
-                } else {
-                    cookie = crypto.createHmac('sha256', options.secret)
-                        .update(req.sessionID)
-                        .digest('hex');
-                    res.cookie('bones.csrf', cookie);
-                }
-                if (req.method === 'GET') {
-                    next();
-                } else if (req.body && req.body['bones.csrf'] === cookie) {
-                    delete req.body['bones.csrf'];
-                    next();
-                } else {
-                    res.send('Access denied', 403);
-                }
+        csrf: function(req, res, next) {
+            if (req.method === 'GET') {
+                next();
+            } else if (req.body && req.cookies['bones.csrf'] && req.body['bones.csrf'] === req.cookies['bones.csrf']) {
+                delete req.body['bones.csrf'];
+                next();
+            } else {
+                res.send('Access denied', 403);
             }
         }
     },
