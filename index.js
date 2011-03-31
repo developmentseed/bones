@@ -29,4 +29,6 @@ exports.start = function() {
     return exports;
 };
 
-
+exports.middleware = require('./lib/middleware');
+exports.controller = require('./lib/controller');
+exports.model = require('./lib/model');
