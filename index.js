@@ -1,5 +1,6 @@
 var path = require('path');
 
+var tools = require('./lib/tools');
 var load = require('./lib/load');
 
 exports.init = function(dir) {
@@ -17,9 +18,15 @@ exports.init = function(dir) {
 exports.start = function() {
     var servers = global.plexus.server;
     for (var server in servers) {
-        console.warn('Starting %s on port %d...', server, servers[server].port);
+        console.warn('Starting %s on port %s...',
+            tools.colorize(server, 'green'),
+            tools.colorize(servers[server].port, 'green')
+        );
+
         servers[server].listen(servers[server].port);
     }
 
     return exports;
 };
+
+

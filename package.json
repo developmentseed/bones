@@ -4,7 +4,7 @@
 
     "dependencies": {
         "underscore": "= 1.1.5",
-        "express": ">= 2.2"
-    },
-    "bundleDependencies": [ "plexus" ]
+        "express": "= 2.2.0",
+        "backbone": "= 0.3.3"
+    }
 }
