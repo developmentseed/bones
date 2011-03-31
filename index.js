@@ -1,14 +1,25 @@
 var path = require('path');
-var express = require('express');
 
 var load = require('./lib/load');
 
 exports.init = function(dir) {
-    global.plexus = global.plexus || {
-        servers: {}
-    };
+    global.plexus = global.plexus || {};
 
-    load.servers(path.join(dir, 'servers'));
-}
+    load('server', path.join(dir, 'servers'));
+    load('route', path.join(dir, 'routes'));
+    load('controller', path.join(dir, 'controllers'));
+    load('model', path.join(dir, 'models'));
+    load('view', path.join(dir, 'views'));
 
+    return exports;
+};
 
+exports.start = function() {
+    var servers = global.plexus.server;
+    for (var server in servers) {
+        console.warn('Starting %s on port %d...', server, servers[server].port);
+        servers[server].listen(servers[server].port);
+    }
+
+    return exports;
+};
