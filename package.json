@@ -1,10 +1,10 @@
 {
-    "name": "bones",
+    "name": "plexus",
     "version": "0.9.0",
 
     "dependencies": {
         "underscore": "= 1.1.5",
         "express": ">= 2.2"
     },
-    "bundleDependencies": [ "bones" ]
+    "bundleDependencies": [ "plexus" ]
 }

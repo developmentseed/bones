@@ -4,7 +4,7 @@ var express = require('express');
 var load = require('./lib/load');
 
 exports.init = function(dir) {
-    global.bones = global.bones || {
+    global.plexus = global.plexus || {
         servers: {}
     };
 
