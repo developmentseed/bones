@@ -6,11 +6,11 @@ var load = require('./lib/load');
 exports.init = function(dir) {
     global.plexus = global.plexus || {};
 
-    load('server', path.join(dir, 'servers'));
-    load('route', path.join(dir, 'routes'));
+    load('server', path.join(dir, 'servers'), true);
     load('controller', path.join(dir, 'controllers'));
     load('model', path.join(dir, 'models'));
     load('view', path.join(dir, 'views'));
+    load('route', path.join(dir, 'routes'));
 
     return exports;
 };
@@ -18,12 +18,11 @@ exports.init = function(dir) {
 exports.start = function() {
     var servers = global.plexus.server;
     for (var server in servers) {
-        console.warn('Starting %s on port %s...',
+        servers[server].listen(servers[server].port);
+        console.warn('Started %s server on port %s.',
             tools.colorize(server, 'green'),
             tools.colorize(servers[server].port, 'green')
         );
-
-        servers[server].listen(servers[server].port);
     }
 
     return exports;
