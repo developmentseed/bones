@@ -1,22 +1,29 @@
 var path = require('path');
 
+global.plexus = global.plexus || {};
+
 var tools = require('./lib/tools');
 var load = require('./lib/load');
 
-exports.init = function(dir) {
-    global.plexus = global.plexus || {};
+exports.express = require('express');
+exports.Backbone = require('./lib/backbone');
+exports.Plexus = {
+    Router: require('./lib/router')
+};
 
-    load('server', path.join(dir, 'servers'), true);
-    load('controller', path.join(dir, 'controllers'));
-    load('model', path.join(dir, 'models'));
-    load('view', path.join(dir, 'views'));
-    load('route', path.join(dir, 'routes'));
+exports.init = function(dir) {
+    load('routers', dir);
+    load('controllers', dir);
+    // load('model', path.join(dir, 'models'));
+    // load('view', path.join(dir, 'views'));
+    load('servers', dir);
+    // load('route', path.join(dir, 'routes'));
 
     return exports;
 };
 
 exports.start = function() {
-    var servers = global.plexus.server;
+    var servers = global.plexus.servers;
     for (var server in servers) {
         servers[server].listen(servers[server].port);
         console.warn('Started %s server on port %s.',
@@ -27,7 +34,3 @@ exports.start = function() {
 
     return exports;
 };
-
-exports.middleware = require('./lib/middleware');
-exports.controller = require('./lib/controller');
-exports.model = require('./lib/model');
