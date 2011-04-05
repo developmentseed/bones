@@ -1,6 +1,6 @@
 models['page'].augment({
     sync: function(parent, method, model, success, error) {
-        model.set({ saved: true });
+        model.set({ method: method });
         success(model);
     }
 });

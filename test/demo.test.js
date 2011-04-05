@@ -53,13 +53,13 @@ exports['routes'] = function(beforeExit) {
 };
 
 exports['api endpoints'] = function() {
-    // assert.response(main.server, {
-    //     url: '/api/page/foo',
-    //     method: 'GET'
-    // }, {
-    //     body: '{"id":"foo"}',
-    //     status: 200
-    // });
+    assert.response(main.server, {
+        url: '/api/page/foo',
+        method: 'GET'
+    }, {
+        body: '{"id":"foo","method":"read"}',
+        status: 200
+    });
 
     assert.response(main.server, {
         url: '/api/page/foo',
@@ -67,7 +67,17 @@ exports['api endpoints'] = function() {
         headers: { 'content-type': 'application/json' },
         body: '{"id":"foo","key":"value"}'
     }, {
-        body: '{"id":"foo","key":"value","saved":true}',
+        body: '{"id":"foo","key":"value","method":"update"}',
+        status: 200
+    });
+};
+
+exports['backbone'] = function() {
+    assert.response(main.server, {
+        url: '/backbone.js',
+        method: 'GET'
+    }, {
+        body: '{"id":"foo","method":"read"}',
         status: 200
     });
 };
