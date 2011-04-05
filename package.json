@@ -5,6 +5,11 @@
     "dependencies": {
         "underscore": "= 1.1.5",
         "express": "= 2.2.0",
-        "backbone": "= 0.3.3"
+        "backbone": "= 0.3.3",
+        "expresso": "= 0.7.5"
+    },
+
+    "scripts": {
+        "test": "node_modules/.bin/expresso"
     }
 }

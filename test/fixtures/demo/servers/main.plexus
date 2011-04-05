@@ -1,0 +1,12 @@
+server = Plexus.Server.extend({
+    initialize: function() {
+        this.server.use(express.bodyParser());
+
+        this.register(models['page']);
+        this.register(routers['before']);
+        this.register(routers['main']);
+        this.register(controllers['page']);
+        this.register(controllers['foo']);
+        this.register(routers['after']);
+    }
+});

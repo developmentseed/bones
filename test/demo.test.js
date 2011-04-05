@@ -1,0 +1,73 @@
+var assert = require('assert');
+var demo = require('./fixtures/demo');
+var main = new demo.servers.main;
+
+exports['routes'] = function(beforeExit) {
+    assert.response(main.server, {
+        url: '/submodule-page',
+        method: 'GET'
+    }, {
+        body: 'submodule page',
+        status: 200
+    });
+
+    assert.response(main.server, {
+        url: '/page/foo',
+        method: 'GET'
+    }, {
+        body: 'page foo',
+        status: 200
+    });
+
+    assert.response(main.server, {
+        url: '/page/bar',
+        method: 'GET'
+    }, {
+        body: 'page bar',
+        status: 200
+    });
+
+    assert.response(main.server, {
+        url: '/page/special',
+        method: 'GET'
+    }, {
+        body: 'special page',
+        status: 200
+    });
+
+    assert.response(main.server, {
+        url: '/page/baz',
+        method: 'GET'
+    }, {
+        body: 'plexus router special page',
+        status: 200
+    });
+
+    assert.response(main.server, {
+        url: '/page/foo',
+        method: 'POST'
+    }, {
+        body: 'Cannot POST /page/foo',
+        status: 404
+    });
+};
+
+exports['api endpoints'] = function() {
+    // assert.response(main.server, {
+    //     url: '/api/page/foo',
+    //     method: 'GET'
+    // }, {
+    //     body: '{"id":"foo"}',
+    //     status: 200
+    // });
+
+    assert.response(main.server, {
+        url: '/api/page/foo',
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: '{"id":"foo","key":"value"}'
+    }, {
+        body: '{"id":"foo","key":"value","saved":true}',
+        status: 200
+    });
+};
