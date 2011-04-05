@@ -1,0 +1,59 @@
+var mirror = require('mirror');
+
+router = Plexus.Router.extend({
+    initialize: function(options) {
+        this.models = options.models;
+
+        this.server.all('/api/:model/:id', this.model.bind(this));
+
+        this.server.get('/plexus.js', mirror.assets(require, [
+            'underscore',
+            'backbone'
+        ]));
+
+        options.controllers = [];
+        this.server.get('/plexus.controllers.js', mirror.assets(require, options.controllers));
+    },
+
+    model: function(req, res, next) {
+        var headers = { 'Content-Type': 'application/json' };
+        if (req.params.model in this.models) {
+            var model = new this.models[req.params.model]({ id: req.params.id });
+            switch (req.method) {
+            case 'GET':
+                model.fetch({
+                    success: function(model, resp) {
+                        res.send(JSON.stringify(model), headers);
+                    },
+                    error: function(model, err) {
+                        next(err);
+                    }
+                });
+                break;
+            case 'POST':
+            case 'PUT':
+                model.save(req.body, {
+                    success: function(model, resp) {
+                        res.send(resp, headers);
+                    },
+                    error: function(model, err) {
+                        next(err);
+                    }
+                });
+                break;
+            case 'DELETE':
+                model.destroy({
+                    success: function(model, resp) {
+                        res.send({}, headers);
+                    },
+                    error: function(model, err) {
+                        next(err);
+                    }
+                });
+                break;
+            }
+        } else {
+            res.send(404);
+        }
+    }
+});

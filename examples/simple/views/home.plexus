@@ -1,0 +1,12 @@
+view = Backbone.View.extend({
+    initialize: function(options) {
+        _.bindAll(this, 'render');
+        this.render();
+        this.trigger('attach');
+    },
+    render: function() {
+        $('#view').html('main page');
+        this.options.view.trigger('ready');
+        return this;
+    }
+});

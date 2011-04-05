@@ -1,0 +1,15 @@
+router = Plexus.Router.extend({
+    initialize: function() {
+        this.server.get('/backbone.js', this.backbone);
+    },
+
+    backbone: function(req, res, next) {
+        
+        
+        
+        console.log(require.resolve('backbone'));
+        
+        
+        res.send('this should never be returned');
+    }
+});

@@ -1,0 +1,6 @@
+model = Backbone.Model.extend({
+    sync: function(method, model, success, error) {
+        model.set({ method: method });
+        success(model);
+    }
+});

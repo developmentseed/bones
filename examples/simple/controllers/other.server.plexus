@@ -1,0 +1,3 @@
+controller = Backbone.Controller.extend({
+
+});
