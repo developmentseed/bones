@@ -6,9 +6,9 @@
         "underscore": "= 1.1.5",
         "express": "= 2.2.0",
         "backbone": "= 0.3.3",
-        "expresso": "= 0.7.5",
         "jade": "= 0.10.4",
-        "jquery": "= 1.5.1"
+        "jquery": "= 1.5.1",
+        "mirror": "https://github.com/developmentseed/mirror/tarball/node-0.4"
     },
 
     "scripts": {
