@@ -35,6 +35,11 @@ router.prototype.initialize = function(server) {
             wrapper: Plexus.wrapClientFile
         }));
 
+    this.server.get('/plexus.templates.js',
+        mirror.source(server.templateSources = [], {
+            wrapper: Plexus.wrapClientFile
+        }));
+
     server.vendorFiles.push('../assets/jquery');
     server.vendorFiles.push('underscore');
     server.vendorFiles.push('backbone');
