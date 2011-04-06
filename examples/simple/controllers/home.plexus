@@ -1,9 +1,14 @@
 controller = Backbone.Controller.extend({
     routes: {
-        '/': 'home'
+        '/': 'home',
+        '/foo': 'foo'
     },
 
     home: function(res) {
-        res.send((new views.home).el);
+        res((new views['Home']).el);
+    },
+
+    foo: function(res) {
+        res((new views['Foo']).el);
     }
 });

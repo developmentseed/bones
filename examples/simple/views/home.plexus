@@ -5,8 +5,8 @@ view = Backbone.View.extend({
         this.trigger('attach');
     },
     render: function() {
-        $('#view').html('main page');
-        this.options.view.trigger('ready');
+        // $('#view').html('main page');
+        // this.options.view.trigger('ready');
         return this;
     }
 });

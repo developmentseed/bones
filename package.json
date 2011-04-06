@@ -12,6 +12,6 @@
     },
 
     "scripts": {
-        "test": "node_modules/.bin/expresso"
+        "test": "expresso"
     }
 }

@@ -2,10 +2,13 @@ var mirror = require('mirror');
 
 server = Plexus.Server.extend({
     initialize: function() {
-        this.register(routers['core']);
-        this.register(models['foo']);
-        this.register(controllers['home']);
-        this.register(controllers['other']);
+        this.register(routers['Core']);
+
+        this.register(models['Foo']);
+        this.register(controllers['Home']);
+        this.register(controllers['Other']);
+        this.register(controllers['Default']);
+        this.register(views['Home']);
 
         this.server.use(middleware.txmtErrorHandler);
     }

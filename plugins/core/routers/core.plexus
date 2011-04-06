@@ -1,59 +1,92 @@
 var mirror = require('mirror');
 
-router = Plexus.Router.extend({
-    initialize: function(options) {
-        this.models = options.models;
+router = Plexus.Router.extend({});
 
-        this.server.all('/api/:model/:id', this.model.bind(this));
+router.prototype.initialize = function(server) {
+    this.models = server.models;
 
-        this.server.get('/plexus.js', mirror.assets(require, [
-            'underscore',
-            'backbone'
-        ]));
+    // Bind model routes to server.
+    this.server.all('/api/:model/:id', this.loadModel.bind(this));
+    this.server.get('/api/:model/:id', this.getModel.bind(this));
+    this.server.post('/api/:model/:id', this.postModel.bind(this));
+    this.server.put('/api/:model/:id', this.putModel.bind(this));
+    this.server.del('/api/:model/:id', this.delModel.bind(this));
 
-        options.controllers = [];
-        this.server.get('/plexus.controllers.js', mirror.assets(require, options.controllers));
-    },
+    this.server.use(express['static'](server.plugin.directory + '/client'));
 
-    model: function(req, res, next) {
-        var headers = { 'Content-Type': 'application/json' };
-        if (req.params.model in this.models) {
-            var model = new this.models[req.params.model]({ id: req.params.id });
-            switch (req.method) {
-            case 'GET':
-                model.fetch({
-                    success: function(model, resp) {
-                        res.send(JSON.stringify(model), headers);
-                    },
-                    error: function(model, err) {
-                        next(err);
-                    }
-                });
-                break;
-            case 'POST':
-            case 'PUT':
-                model.save(req.body, {
-                    success: function(model, resp) {
-                        res.send(resp, headers);
-                    },
-                    error: function(model, err) {
-                        next(err);
-                    }
-                });
-                break;
-            case 'DELETE':
-                model.destroy({
-                    success: function(model, resp) {
-                        res.send({}, headers);
-                    },
-                    error: function(model, err) {
-                        next(err);
-                    }
-                });
-                break;
-            }
-        } else {
-            res.send(404);
-        }
+    this.server.get('/plexus.vendor.js',
+        mirror.assets(require, server.vendorFiles = []));
+
+    this.server.get('/plexus.core.js',
+        mirror.assets(require, server.coreFiles = []));
+
+    this.server.get('/plexus.controllers.js',
+        mirror.assets(require, server.controllerFiles = [], {
+            wrapper: Plexus.wrapClientFile
+        }));
+
+    this.server.get('/plexus.models.js',
+        mirror.assets(require, server.modelFiles = [], {
+            wrapper: Plexus.wrapClientFile
+        }));
+
+    this.server.get('/plexus.views.js',
+        mirror.assets(require, server.viewFiles = [], {
+            wrapper: Plexus.wrapClientFile
+        }));
+
+    server.vendorFiles.push('../assets/jquery');
+    server.vendorFiles.push('underscore');
+    server.vendorFiles.push('backbone');
+
+    server.coreFiles.push('plexus/lib/shared/plexus');
+    server.coreFiles.push('plexus/lib/client/plexus');
+    server.coreFiles.push('plexus/lib/shared/backbone');
+    server.coreFiles.push('plexus/lib/client/backbone');
+};
+
+var headers = { 'Content-Type': 'application/json' };
+
+router.prototype.loadModel = function(req, res, next) {
+    if (req.params.model in this.models) {
+        req.model = new this.models[req.params.model]({ id: req.params.id });
+        next();
+    } else {
+        res.send({ error: "Model doesn't exist" }, headers, 404);
     }
-});
+};
+
+router.prototype.getModel = function(req, res, next) {
+    req.model.fetch({
+        success: function(model, resp) {
+            res.send(JSON.stringify(model), headers);
+        },
+        error: function(model, err) {
+            next(err);
+        }
+    });
+};
+
+router.prototype.postModel = function(req, res, next) {
+    req.model.save(req.body, {
+        success: function(model, resp) {
+            res.send(resp, headers);
+        },
+        error: function(model, err) {
+            next(err);
+        }
+    });
+};
+
+router.prototype.putModel = router.prototype.postModel;
+
+router.prototype.delModel = function(req, res, next) {
+    req.model.destroy({
+        success: function(model, resp) {
+            res.send({}, headers);
+        },
+        error: function(model, err) {
+            next(err);
+        }
+    });
+};

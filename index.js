@@ -1,1 +1,1 @@
-module.exports = require('./lib/plexus');
+module.exports = require('./lib');

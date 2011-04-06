@@ -1,7 +1,14 @@
 !!!
 html
   head
-    script(src='/plexus.js')
+    script(src='/plexus.vendor.js')
+    script(src='/plexus.core.js')
+    script(src='/plexus.views.js')
+    script(src='/plexus.controllers.js')
+    script(src='/plexus.models.js')
+    script(src='/app.js')
   body
     div#view
       | home
+      a(href="#/") go to home
+      a(href="#/foo") go to foo
