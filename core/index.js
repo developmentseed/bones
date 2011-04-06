@@ -22,7 +22,7 @@ require.extensions['.jade'] = function(module, filename) {
         filename: removePrefix(filename)
     });
     module.exports.register = function(server) {
-        server.templateSources.push({
+        server.assets.templates.push({
             filename: filename,
             content: 'template = ' + this
         });

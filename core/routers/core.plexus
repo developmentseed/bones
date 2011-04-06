@@ -2,8 +2,14 @@ var mirror = require('mirror');
 
 router = Plexus.Router.extend({});
 
-router.prototype.initialize = function(server) {
-    this.models = server.models;
+router.prototype.initialize = function(options) {
+    this.initializeModels(options);
+    this.initializeStatic(options);
+    this.initializeAssets(options);
+};
+
+router.prototype.initializeModels = function(options) {
+    this.models = options.models;
 
     // Bind model routes to server.
     this.server.all('/api/:model/:id', this.loadModel.bind(this));
@@ -11,43 +17,43 @@ router.prototype.initialize = function(server) {
     this.server.post('/api/:model/:id', this.postModel.bind(this));
     this.server.put('/api/:model/:id', this.putModel.bind(this));
     this.server.del('/api/:model/:id', this.delModel.bind(this));
+};
 
-    this.server.use(express['static'](server.plugin.directory + '/client'));
+router.prototype.initializeStatic = function(options) {
+    this.server.use(express['static'](options.plugin.directory + '/client'));
+};
 
-    this.server.get('/plexus.vendor.js',
-        mirror.assets(require, server.vendorFiles = []));
+router.prototype.initializeAssets = function(options) {
+    options.assets = {
+        vendor: [
+            'plexus/core/assets/jquery',
+            'underscore',
+            'backbone'
+        ],
+        core: [
+            'plexus/lib/shared/plexus',
+            'plexus/lib/client/plexus',
+            'plexus/lib/shared/backbone',
+            'plexus/lib/client/backbone'
+        ],
+        models: [],
+        views: [],
+        controllers: [],
+        templates: []
+    };
 
-    this.server.get('/plexus.core.js',
-        mirror.assets(require, server.coreFiles = []));
+    var assets = options.assets;
+    var wrapper = {
+        wrapper: Plexus.wrapClientFile
+    };
 
-    this.server.get('/plexus.controllers.js',
-        mirror.assets(require, server.controllerFiles = [], {
-            wrapper: Plexus.wrapClientFile
-        }));
+    this.server.get('/plexus.vendor.js', mirror.assets(require, assets.vendor));
+    this.server.get('/plexus.core.js', mirror.assets(require, assets.core));
 
-    this.server.get('/plexus.models.js',
-        mirror.assets(require, server.modelFiles = [], {
-            wrapper: Plexus.wrapClientFile
-        }));
-
-    this.server.get('/plexus.views.js',
-        mirror.assets(require, server.viewFiles = [], {
-            wrapper: Plexus.wrapClientFile
-        }));
-
-    this.server.get('/plexus.templates.js',
-        mirror.source(server.templateSources = [], {
-            wrapper: Plexus.wrapClientFile
-        }));
-
-    server.vendorFiles.push('../assets/jquery');
-    server.vendorFiles.push('underscore');
-    server.vendorFiles.push('backbone');
-
-    server.coreFiles.push('plexus/lib/shared/plexus');
-    server.coreFiles.push('plexus/lib/client/plexus');
-    server.coreFiles.push('plexus/lib/shared/backbone');
-    server.coreFiles.push('plexus/lib/client/backbone');
+    this.server.get('/plexus.controllers.js', mirror.assets(require, assets.controllers, wrapper));
+    this.server.get('/plexus.models.js', mirror.assets(require, assets.models, wrapper));
+    this.server.get('/plexus.views.js', mirror.assets(require, assets.views, wrapper));
+    this.server.get('/plexus.templates.js', mirror.source(assets.templates, wrapper));
 };
 
 var headers = { 'Content-Type': 'application/json' };
