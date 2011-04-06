@@ -9,6 +9,7 @@ server = Plexus.Server.extend({
         this.register(controllers['Other']);
         this.register(controllers['Default']);
         this.register(views['Home']);
+        this.register(views['Foo']);
 
         this.server.use(middleware.txmtErrorHandler);
     }

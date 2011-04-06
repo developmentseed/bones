@@ -1,4 +1,3 @@
 $(function() {
-    new Plexus.controllers['Home'];
-    Backbone.history.start();
+    Plexus.start('Home');
 });
