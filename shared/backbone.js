@@ -28,5 +28,6 @@ Backbone.Controller.extend = Backbone.View.extend = function() {
     for (var key in this) {
          child[key] = this[key];
     }
+    delete child.title;
     return child;
 };
