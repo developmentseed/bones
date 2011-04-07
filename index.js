@@ -1,5 +1,6 @@
 var plexus = exports;
 
+plexus.underscore = require('underscore');
 plexus.express = require('express');
 
 plexus.Plexus = require('./server/core');

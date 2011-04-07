@@ -57,7 +57,6 @@ Plugin.prototype.load = function(plugin) {
         _.extend(this.views, plugin.views);
         _.extend(this.servers, plugin.servers);
     }
-    return this;
 };
 
 Plugin.prototype.require = function(kind) {
@@ -104,5 +103,7 @@ Plugin.prototype.start = function() {
 
 // plexus.plugin(__dirname)
 module.exports = function(dir) {
-    return new Plugin(dir).load(require('plexus/core'));
+    var plugin = new Plugin(dir);
+    plugin.load(require('../core'));
+    return plugin;
 };

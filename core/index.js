@@ -2,7 +2,8 @@ var jade = require('jade');
 var path = require('path');
 var fs = require('fs');
 
-module.exports = require('..').plugin(__dirname).load();
+module.exports = require('..').plugin(__dirname);
+module.exports.load();
 
 // Remove common prefix between __dirname and filename so that we don't
 // leak information about the directory structure.
