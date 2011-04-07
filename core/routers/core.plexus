@@ -3,9 +3,14 @@ var mirror = require('mirror');
 router = Plexus.Router.extend({});
 
 router.prototype.initialize = function(options) {
+    this.initializeMiddleware(options);
     this.initializeModels(options);
     this.initializeStatic(options);
     this.initializeAssets(options);
+};
+
+router.prototype.initializeMiddleware = function(options) {
+    this.server.use(express.bodyParser());
 };
 
 router.prototype.initializeModels = function(options) {
@@ -59,8 +64,9 @@ router.prototype.initializeAssets = function(options) {
 var headers = { 'Content-Type': 'application/json' };
 
 router.prototype.loadModel = function(req, res, next) {
-    if (req.params.model in this.models) {
-        req.model = new this.models[req.params.model]({ id: req.params.id });
+    var name = Plexus.camelize(req.params.model);
+    if (name in this.models) {
+        req.model = new this.models[name]({ id: req.params.id });
         next();
     } else {
         res.send({ error: "Model doesn't exist" }, headers, 404);

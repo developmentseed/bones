@@ -5,10 +5,10 @@ controller = Backbone.Controller.extend({
     },
 
     page: function(id, res) {
-        res.send('page ' + id);
+        res('page ' + id);
     },
     
     pageSpecial: function(res) {
-        res.send('special page');
+        res('special page');
     }
 });

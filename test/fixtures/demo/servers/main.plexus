@@ -1,14 +1,10 @@
 server = Plexus.Server.extend({
     initialize: function() {
-        this.server.use(express.bodyParser());
-
-        this.register(routers['backbone']);
-
-        this.register(models['page']);
-        this.register(routers['before']);
-        this.register(routers['main']);
-        this.register(controllers['page']);
-        this.register(controllers['foo']);
-        this.register(routers['after']);
+        this.register(models['Page']);
+        this.register(routers['Before']);
+        this.register(routers['Main']);
+        this.register(controllers['Page']);
+        this.register(controllers['Foo']);
+        this.register(routers['After']);
     }
 });

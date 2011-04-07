@@ -1,6 +1,6 @@
 var assert = require('assert');
 var demo = require('./fixtures/demo');
-var main = new demo.servers.main;
+var main = new demo.servers['Main'](demo);
 
 exports['routes'] = function(beforeExit) {
     assert.response(main.server, {
@@ -68,16 +68,6 @@ exports['api endpoints'] = function() {
         body: '{"id":"foo","key":"value"}'
     }, {
         body: '{"id":"foo","key":"value","method":"update"}',
-        status: 200
-    });
-};
-
-exports['backbone'] = function() {
-    assert.response(main.server, {
-        url: '/backbone.js',
-        method: 'GET'
-    }, {
-        body: '{"id":"foo","method":"read"}',
         status: 200
     });
 };
