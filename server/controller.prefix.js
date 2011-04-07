@@ -1,5 +1,5 @@
-var Plexus = require('plexus').Plexus;
-var Backbone = require('plexus').Backbone;
+var Plexus = module.plexus.Plexus;
+var Backbone = module.plexus.Backbone;
 var controllers = require('..').controllers;
 var views = require('..').views;
 var controller;

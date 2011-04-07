@@ -27,6 +27,7 @@ require.extensions['.plexus'] = function(module, filename) {
     wrappers[kind].suffix = wrappers[kind].suffix || '';
 
     content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
+    module.plexus = require('..');
     module._compile(content, filename);
 };
 

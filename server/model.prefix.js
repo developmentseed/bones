@@ -1,4 +1,4 @@
-var Plexus = require('plexus').Plexus;
-var Backbone = require('plexus').Backbone;
+var Plexus = module.plexus.Plexus;
+var Backbone = module.plexus.Backbone;
 var models = require('..').models;
 var model;

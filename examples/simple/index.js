@@ -1,4 +1,4 @@
-var plugin = module.exports = require('plexus').plugin(__dirname);
+var plugin = module.exports = require('../..').plugin(__dirname);
 
 plugin.load();
 
