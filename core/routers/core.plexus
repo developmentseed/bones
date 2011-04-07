@@ -36,8 +36,8 @@ router.prototype.initializeAssets = function(options) {
             'backbone'
         ],
         core: [
-            'plexus/lib/shared/plexus',
-            'plexus/lib/client/plexus',
+            'plexus/lib/shared/core',
+            'plexus/lib/client/core',
             'plexus/lib/shared/backbone',
             'plexus/lib/client/backbone'
         ],
