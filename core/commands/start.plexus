@@ -1,6 +1,5 @@
 command = Plexus.Command.extend();
 
-command.title = 'start';
 command.description = 'start application';
 
 command.options = {

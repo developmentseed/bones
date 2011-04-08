@@ -147,7 +147,7 @@ Plugin.prototype.loadConfig = function(command) {
             delete config[key];
         }
         else {
-            if (!(key in command.options)) {
+            if (key !== 'verbose' && !(key in command.options)) {
                 if (key in this.argv) {
                     // It was specified on the command line.
                      console.warn(Plexus.colorize('Note: Unknown option "' + key + '".', 'yellow'))
@@ -170,12 +170,18 @@ Plugin.prototype.loadConfig = function(command) {
 
 Plugin.prototype.help = function() {
     var command = this.argv._.length ? this.argv._[0] : false;
-    console.log('Usage: %s', Plexus.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' [options...]', 'green'));
-    if (!command) console.log('Usage: %s for a list of options.', Plexus.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
     if (command !== false && command in this.commands) {
         // Display information about this command.
         var command = this.commands[command];
-        if (command.description) console.log('%s: %s', Plexus.colorize(command.title, 'yellow', 'bold'), command.description);
+        console.log('Usage: %s', Plexus.colorize(this.argv['$0'] + ' ' +
+            command.title +
+            (command.usage ? ' ' + command.usage : '') +
+            ' [options...]', 'green'));
+
+        console.log('%s%s: %s',
+            Plexus.colorize(command.title, 'yellow', 'bold'),
+            Plexus.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
+            command.description);
 
         var options = [];
         for (var key in command.options) {
@@ -191,11 +197,10 @@ Plugin.prototype.help = function() {
         options.push([ '', '--verbose', 'Be more verbose. (Default: false)' ]);
         options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);
 
-
-
         table(options);
     } else {
         // Display information about all available commands.
+        console.log('Usage: %s for a list of options.', Plexus.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
         console.log('Available commands are:');
         var commands = [];
         for (var key in this.commands) {
