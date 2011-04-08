@@ -154,7 +154,12 @@ Plugin.prototype.loadConfig = function(command) {
                     console.warn(Plexus.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
             }
-            if (typeof config[key] === 'function') config[key] = config[key](this);
+        }
+    }
+
+    for (var key in config) {
+        if (typeof config[key] === 'function') {
+            config[key] = config[key](this, config);
         }
     }
 
