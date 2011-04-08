@@ -1,6 +1,7 @@
 var Plexus = module.exports = require('../shared/core');
 var fs = require('fs');
 var path = require('path');
+var tty = require('tty');
 
 var colors = {
     black: 30,
@@ -19,11 +20,16 @@ var styles = {
     underline: 4
 };
 
-Plexus.colorize = function(text, color, style) {
-    color = color || 'red';
-    style = style || 'regular';
-    return "\033[" + styles[style] + ";" + colors[color] + "m" + text + "\033[0m";
-};
+if (tty.isatty()) {
+    Plexus.colorize = function(text, color, style) {
+        color = color || 'red';
+        style = style || 'regular';
+        return "\033[" + styles[style] + ";" + colors[color] + "m" + text + "\033[0m";
+    };
+} else {
+    Plexus.colorize = function(text) { return text };
+}
+
 
 // Load client-side wrappers
 var wrappers = {};
