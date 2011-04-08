@@ -107,9 +107,7 @@ Plugin.prototype.start = function() {
 };
 
 Plugin.prototype.loadConfig = function(command) {
-    var config = {
-        verbose: false
-    };
+    var config = {};
 
     if (this.argv.config) {
         try {
@@ -127,7 +125,7 @@ Plugin.prototype.loadConfig = function(command) {
         }
         if (command.options[key]['shortcut'] in this.argv) {
             config[key] = this.argv[command.options[key]['shortcut']];
-            delete this.argv[command.options[key]['shortcut']]
+            delete this.argv[command.options[key]['shortcut']];
         }
         if (key in this.argv) {
             config[key] = this.argv[key];
@@ -147,13 +145,13 @@ Plugin.prototype.loadConfig = function(command) {
             delete config[key];
         }
         else {
-            if (key !== 'verbose' && !(key in command.options)) {
+            if (!(key in command.options)) {
                 if (key in this.argv) {
                     // It was specified on the command line.
-                     console.warn(Plexus.colorize('Note: Unknown option "' + key + '".', 'yellow'))
+                     console.warn(Plexus.colorize('Note: Unknown option "' + key + '".', 'yellow'));
                 } else {
                     // It's from the config file.
-                    console.warn(Plexus.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'))
+                    console.warn(Plexus.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
             }
             if (typeof config[key] === 'function') config[key] = config[key](this);
@@ -194,7 +192,6 @@ Plugin.prototype.help = function() {
                 (option.description ? option.description + ' ' : '') + '(Default: ' + util.inspect(value) +')'
             ]);
         }
-        options.push([ '', '--verbose', 'Be more verbose. (Default: false)' ]);
         options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);
 
         table(options);
@@ -204,7 +201,7 @@ Plugin.prototype.help = function() {
         console.log('Available commands are:');
         var commands = [];
         for (var key in this.commands) {
-            commands.push([ this.commands[key].title + ':', this.commands[key].description || ''])
+            commands.push([ this.commands[key].title + ':', this.commands[key].description || '']);
         }
         table(commands);
     }
