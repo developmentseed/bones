@@ -216,8 +216,9 @@ function table(fields) {
     fields.forEach(function(field) {
         console.log(
             '  ' + field.map(function(val, i) {
+                if (i >= lengths.length - 1) return val;
                 return val + Array(lengths[i] - val.length + 1).join(' ');
-            }).join('  ').trim()
+            }).join('  ')
         );
     });
 };
