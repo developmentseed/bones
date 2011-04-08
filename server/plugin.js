@@ -107,7 +107,10 @@ Plugin.prototype.start = function() {
 };
 
 Plugin.prototype.loadConfig = function(command) {
-    var config = {};
+    var config = {
+        verbose: false
+    };
+
     if (this.argv.config) {
         try {
             config = JSON.parse(fs.readFileSync(this.argv.config, 'utf8'));
@@ -173,32 +176,50 @@ Plugin.prototype.help = function() {
         // Display information about this command.
         var command = this.commands[command];
         if (command.description) console.log('%s: %s', Plexus.colorize(command.title, 'yellow', 'bold'), command.description);
+
+        var options = [];
         for (var key in command.options) {
             var option = command.options[key];
             var value = option['default'];
             if (typeof value === 'function') value = value(this);
-
-            console.log('  %s  %s %s (Default: %s)',
-                option.shortcut ? '-' + option.shortcut : '  ',
-                '--' + (option.title ? (option.title + Array(20 - option.title.length).join(' ')) :
-                                       (key + Array(20 - key.length).join(' '))),
-                option.description || '',
-                util.inspect(value)
-            );
+            options.push([
+                option.shortcut ? '-' + option.shortcut : '',
+                '--' + (option.title || key),
+                (option.description ? option.description + ' ' : '') + '(Default: ' + util.inspect(value) +')'
+            ]);
         }
+        options.push([ '', '--verbose', 'Be more verbose. (Default: false)' ]);
+        options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);
 
-        console.log('      --verbose             Be more verbose. (Default: false)');
-        console.log('      --config=[path]       Path to JSON configuration file.');
+
+
+        table(options);
     } else {
         // Display information about all available commands.
         console.log('Available commands are:');
+        var commands = [];
         for (var key in this.commands) {
-            console.log('    %s:\t%s',
-            this.commands[key].title,
-            this.commands[key].description || '');
+            commands.push([ this.commands[key].title + ':', this.commands[key].description || ''])
         }
+        table(commands);
     }
     process.exit(1);
+};
+
+function table(fields) {
+    if (!fields[0]) return;
+    var lengths = fields[0].map(function(val, i) {
+        return Math.max.apply(Math, fields.map(function(field) {
+            return field[i].length;
+        }));
+    });
+    fields.forEach(function(field) {
+        console.log(
+            '  ' + field.map(function(val, i) {
+                return val + Array(lengths[i] - val.length + 1).join(' ');
+            }).join('  ').trim()
+        );
+    });
 };
 
 // plexus.plugin(__dirname)
