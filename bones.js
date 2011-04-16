@@ -18,7 +18,7 @@ Backbone.View = Backbone.View.extend({
     },
     template: function(template, data) {
         var compiled = Handlebars.compile(Bones.templates[template]);
-        return compiled(data);
+        return compiled(data, {partials:Bones.templates});
     },
     html: function() {
         return $(this.el).html();

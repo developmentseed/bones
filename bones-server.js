@@ -38,7 +38,7 @@ Backbone.View = Backbone.View.extend({
     delegateEvents: function() {},
     template: function(template, data) {
         var compiled = Handlebars.compile(Bones.templates[template]);
-        return compiled(data);
+        return compiled(data, {partials:Bones.templates});
     },
     html: function() {
         if (typeof this.el === 'string') {
