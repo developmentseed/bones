@@ -8,7 +8,7 @@ $(function() {
     // Closure for models/views/controllers.
     var models = {}, views = {}, controllers = {};
 
-    Plexus.initialize = function(kind, callback) {
+    Bones.initialize = function(kind, callback) {
         if (kind === 'model') {
             var model = callback(models);
             models[model.title] = model;
@@ -21,7 +21,7 @@ $(function() {
         }
     };
 
-    Plexus.start = function(name) {
+    Bones.start = function(name) {
         new controllers[name];
         Backbone.history.start();
     }

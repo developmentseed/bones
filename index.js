@@ -1,16 +1,16 @@
-var plexus = exports;
+var bones = exports;
 
-plexus.underscore = require('underscore');
-plexus.express = require('express');
+bones.underscore = require('underscore');
+bones.express = require('express');
 
-plexus.Plexus = require('./server/core');
-plexus.Backbone = require('./server/backbone');
-plexus.Plexus.Controller = require('./server/controller');
-plexus.Plexus.Model = require('./server/model');
-plexus.Plexus.Router = require('./server/router');
-plexus.Plexus.View = require('./server/view');
-plexus.Plexus.Server = require('./server/server');
-plexus.Plexus.Command = require('./server/command');
+bones.Bones = require('./server/core');
+bones.Backbone = require('./server/backbone');
+bones.Bones.Controller = require('./server/controller');
+bones.Bones.Model = require('./server/model');
+bones.Bones.Router = require('./server/router');
+bones.Bones.View = require('./server/view');
+bones.Bones.Server = require('./server/server');
+bones.Bones.Command = require('./server/command');
 
-plexus.plugin = require('./server/plugin');
-plexus.middleware = require('./server/middleware');
+bones.plugin = require('./server/plugin');
+bones.middleware = require('./server/middleware');

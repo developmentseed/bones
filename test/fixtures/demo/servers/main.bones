@@ -1,4 +1,4 @@
-server = Plexus.Server.extend({
+server = Bones.Server.extend({
     initialize: function() {
         this.register(models['Page']);
         this.register(routers['Before']);

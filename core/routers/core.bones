@@ -1,6 +1,6 @@
 var mirror = require('mirror');
 
-router = Plexus.Router.extend({});
+router = Bones.Router.extend({});
 
 router.prototype.initialize = function(options) {
     this.initializeMiddleware(options);
@@ -31,15 +31,15 @@ router.prototype.initializeStatic = function(options) {
 router.prototype.initializeAssets = function(options) {
     options.assets = {
         vendor: [
-            'plexus/core/assets/jquery',
+            'bones/core/assets/jquery',
             'underscore',
             'backbone'
         ],
         core: [
-            'plexus/lib/shared/core',
-            'plexus/lib/client/core',
-            'plexus/lib/shared/backbone',
-            'plexus/lib/client/backbone'
+            'bones/lib/shared/core',
+            'bones/lib/client/core',
+            'bones/lib/shared/backbone',
+            'bones/lib/client/backbone'
         ],
         models: [],
         views: [],
@@ -49,22 +49,22 @@ router.prototype.initializeAssets = function(options) {
 
     var assets = options.assets;
     var wrapper = {
-        wrapper: Plexus.wrapClientFile
+        wrapper: Bones.wrapClientFile
     };
 
-    this.server.get('/plexus.vendor.js', mirror.assets(require, assets.vendor));
-    this.server.get('/plexus.core.js', mirror.assets(require, assets.core));
+    this.server.get('/bones.vendor.js', mirror.assets(require, assets.vendor));
+    this.server.get('/bones.core.js', mirror.assets(require, assets.core));
 
-    this.server.get('/plexus.controllers.js', mirror.assets(require, assets.controllers, wrapper));
-    this.server.get('/plexus.models.js', mirror.assets(require, assets.models, wrapper));
-    this.server.get('/plexus.views.js', mirror.assets(require, assets.views, wrapper));
-    this.server.get('/plexus.templates.js', mirror.source(assets.templates, wrapper));
+    this.server.get('/bones.controllers.js', mirror.assets(require, assets.controllers, wrapper));
+    this.server.get('/bones.models.js', mirror.assets(require, assets.models, wrapper));
+    this.server.get('/bones.views.js', mirror.assets(require, assets.views, wrapper));
+    this.server.get('/bones.templates.js', mirror.source(assets.templates, wrapper));
 };
 
 var headers = { 'Content-Type': 'application/json' };
 
 router.prototype.loadModel = function(req, res, next) {
-    var name = Plexus.camelize(req.params.model);
+    var name = Bones.camelize(req.params.model);
     if (name in this.models) {
         req.model = new this.models[name]({ id: req.params.id });
         next();

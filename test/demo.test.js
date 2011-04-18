@@ -39,7 +39,7 @@ exports['routes'] = function(beforeExit) {
         url: '/page/baz',
         method: 'GET'
     }, {
-        body: 'plexus router special page',
+        body: 'bones router special page',
         status: 200
     });
 

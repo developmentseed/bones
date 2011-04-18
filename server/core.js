@@ -1,4 +1,4 @@
-var Plexus = module.exports = require('../shared/core');
+var Bones = module.exports = require('../shared/core');
 var fs = require('fs');
 var path = require('path');
 var tty = require('tty');
@@ -21,13 +21,13 @@ var styles = {
 };
 
 if (tty.isatty()) {
-    Plexus.colorize = function(text, color, style) {
+    Bones.colorize = function(text, color, style) {
         color = color || 'red';
         style = style || 'regular';
         return "\033[" + styles[style] + ";" + colors[color] + "m" + text + "\033[0m";
     };
 } else {
-    Plexus.colorize = function(text) { return text };
+    Bones.colorize = function(text) { return text };
 }
 
 
@@ -43,10 +43,10 @@ fs.readdirSync(wrapperDir).forEach(function(name) {
     }
 });
 
-Plexus.wrapClientFile = function(content, filename) {
+Bones.wrapClientFile = function(content, filename) {
 
-    var kind = Plexus.singularize(path.basename(path.dirname(filename)));
-    var name = Plexus.camelize(path.basename(filename).replace(/\..+$/, ''));
+    var kind = Bones.singularize(path.basename(path.dirname(filename)));
+    var name = Bones.camelize(path.basename(filename).replace(/\..+$/, ''));
 
     wrappers[kind] = wrappers[kind] || {};
     wrappers[kind].prefix = wrappers[kind].prefix || '';

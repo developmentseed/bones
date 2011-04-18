@@ -1,4 +1,4 @@
 // ---- start __NAME__ view ----
 
-Plexus.initialize('template', function(templates) {
+Bones.initialize('template', function(templates) {
 var template;

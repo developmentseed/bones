@@ -1,4 +1,4 @@
 // ---- start __NAME__ model ----
 
-Plexus.initialize('model', function(models) {
+Bones.initialize('model', function(models) {
 var model;

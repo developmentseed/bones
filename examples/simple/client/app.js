@@ -1,5 +1,5 @@
 $(function() {
-    Plexus.start('Home');
+    Bones.start('Home');
 
     if (!location.hash) {
         location.hash = '/';

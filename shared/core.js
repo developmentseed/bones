@@ -1,21 +1,21 @@
-var Plexus = Plexus || {};
+var Bones = Bones || {};
 if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-    module.exports = Plexus;
+    module.exports = Bones;
 }
 
-Plexus.camelize = function(text) {
+Bones.camelize = function(text) {
     return text.replace(/(?:^|_)(.)/g, function(all, chr) {
         return chr.toUpperCase();
     });
 };
 
-Plexus.singularize = function(text) {
+Bones.singularize = function(text) {
     // Extend as necessary.
     // See https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js.
     return text.replace(/s$/i, '');
 };
 
-Plexus.pluralize = function(text) {
+Bones.pluralize = function(text) {
     // Extend as necessary.
     return text + 's';
 };

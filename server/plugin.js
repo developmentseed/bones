@@ -5,7 +5,7 @@ var assert = require('assert');
 var Module = require('module');
 var _ = require('underscore');
 
-var Plexus = require('..').Plexus;
+var Bones = require('..').Bones;
 
 // Load wrappers
 var wrappers = {};
@@ -19,16 +19,16 @@ fs.readdirSync(__dirname).forEach(function(name) {
     }
 });
 
-require.extensions['.plexus'] = function(module, filename) {
+require.extensions['.bones'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
-    var kind = Plexus.singularize(path.basename(path.dirname(filename)));
+    var kind = Bones.singularize(path.basename(path.dirname(filename)));
 
     wrappers[kind] = wrappers[kind] || {};
     wrappers[kind].prefix = wrappers[kind].prefix || '';
     wrappers[kind].suffix = wrappers[kind].suffix || '';
 
     content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
-    module.plexus = require('..');
+    module.bones = require('..');
     module._compile(content, filename);
 };
 
@@ -80,7 +80,7 @@ Plugin.prototype.require = function(kind) {
                     component.files.push(file);
 
                     if (!component.title) {
-                        component.title = Plexus.camelize(
+                        component.title = Bones.camelize(
                             path.basename(file).replace(/\..+$/, ''));
                     }
                     plugin[kind][component.title] = component;
@@ -113,7 +113,7 @@ Plugin.prototype.loadConfig = function(command) {
         try {
             config = JSON.parse(fs.readFileSync(this.argv.config, 'utf8'));
         } catch(e) {
-            console.error(Plexus.colorize('Invalid JSON config file: ' +
+            console.error(Bones.colorize('Invalid JSON config file: ' +
                 this.argv.config, 'red'));
             process.exit(2);
         }
@@ -148,10 +148,10 @@ Plugin.prototype.loadConfig = function(command) {
             if (!(key in command.options)) {
                 if (key in this.argv) {
                     // It was specified on the command line.
-                     console.warn(Plexus.colorize('Note: Unknown option "' + key + '".', 'yellow'));
+                     console.warn(Bones.colorize('Note: Unknown option "' + key + '".', 'yellow'));
                 } else {
                     // It's from the config file.
-                    console.warn(Plexus.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
+                    console.warn(Bones.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
             }
         }
@@ -164,7 +164,7 @@ Plugin.prototype.loadConfig = function(command) {
     }
 
     if (showConfig) {
-        console.warn(Plexus.colorize('Using configuration:', 'green'));
+        console.warn(Bones.colorize('Using configuration:', 'green'));
         console.warn(JSON.stringify(config, false, 4));
     }
 
@@ -176,14 +176,14 @@ Plugin.prototype.help = function() {
     if (command !== false && command in this.commands) {
         // Display information about this command.
         var command = this.commands[command];
-        console.log('Usage: %s', Plexus.colorize(this.argv['$0'] + ' ' +
+        console.log('Usage: %s', Bones.colorize(this.argv['$0'] + ' ' +
             command.title +
             (command.usage ? ' ' + command.usage : '') +
             ' [options...]', 'green'));
 
         console.log('%s%s: %s',
-            Plexus.colorize(command.title, 'yellow', 'bold'),
-            Plexus.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
+            Bones.colorize(command.title, 'yellow', 'bold'),
+            Bones.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
             command.description);
 
         var options = [];
@@ -202,7 +202,7 @@ Plugin.prototype.help = function() {
         table(options);
     } else {
         // Display information about all available commands.
-        console.log('Usage: %s for a list of options.', Plexus.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
+        console.log('Usage: %s for a list of options.', Bones.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
         console.log('Available commands are:');
         var commands = [];
         for (var key in this.commands) {
@@ -230,7 +230,7 @@ function table(fields) {
     });
 };
 
-// plexus.plugin(__dirname)
+// bones.plugin(__dirname)
 module.exports = function(dir) {
     var plugin = new Plugin(dir);
     plugin.load(require('../core'));

@@ -1,6 +1,6 @@
 var mirror = require('mirror');
 
-server = Plexus.Server.extend({
+server = Bones.Server.extend({
     initialize: function() {
         this.register(models['Foo']);
         this.register(views['Home']);

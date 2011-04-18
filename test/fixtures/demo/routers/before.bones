@@ -1,9 +1,9 @@
-router = Plexus.Router.extend({
+router = Bones.Router.extend({
     initialize: function() {
         this.server.get('/page/baz', this.pageSpecial);
     },
 
     pageSpecial: function(req, res, next) {
-        res.send('plexus router special page');
+        res.send('bones router special page');
     }
 });

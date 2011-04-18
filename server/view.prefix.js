@@ -1,6 +1,6 @@
-var _ = module.plexus.underscore;
-var Plexus = module.plexus.Plexus;
-var Backbone = module.plexus.Backbone;
+var _ = module.bones.underscore;
+var Bones = module.bones.Bones;
+var Backbone = module.bones.Backbone;
 var templates = require('..').templates;
 var views = require('..').views;
 var view;

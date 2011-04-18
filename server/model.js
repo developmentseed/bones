@@ -10,7 +10,7 @@ Backbone.Model.toString = function() {
 Backbone.Model.register = function(server) {
     // Add the controller if it's not a server-only controller.
     this.files.forEach(function(filename) {
-        if (!(/\.server.plexus$/).test(filename)) {
+        if (!(/\.server.bones$/).test(filename)) {
             server.assets.models.push(filename);
         }
     });
