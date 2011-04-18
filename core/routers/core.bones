@@ -36,10 +36,10 @@ router.prototype.initializeAssets = function(options) {
             'backbone'
         ],
         core: [
-            'bones/lib/shared/core',
-            'bones/lib/client/core',
-            'bones/lib/shared/backbone',
-            'bones/lib/client/backbone'
+            'bones/shared/core',
+            'bones/client/core',
+            'bones/shared/backbone',
+            'bones/client/backbone'
         ],
         models: [],
         views: [],
