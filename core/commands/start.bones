@@ -2,12 +2,10 @@ command = Bones.Command.extend();
 
 command.description = 'start application';
 
-command.options = {
-    adminParty: {
-        'shortcut': 'a',
-        'description': 'Enable admin mode.',
-        'default': false
-    }
+command.options.adminParty = {
+    'shortcut': 'a',
+    'description': 'Enable admin mode.',
+    'default': false
 };
 
 command.prototype.initialize = function(options) {
