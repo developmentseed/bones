@@ -6,18 +6,21 @@ $(function() {
 
 (function() {
     // Closure for models/views/controllers.
-    var models = {}, views = {}, controllers = {};
+    var models = {}, views = {}, controllers = {}, templates = {};
 
     Bones.initialize = function(kind, callback) {
         if (kind === 'model') {
             var model = callback(models);
             models[model.title] = model;
         } else if (kind === 'view') {
-            var view = callback(models, views);
+            var view = callback(models, views, templates);
             views[view.title] = view;
         } else if (kind === 'controller') {
             var controller = callback(models, views, controllers);
             controllers[controller.title] = controller;
+        } else if (kind === 'template') {
+            var template = callback(templates);
+            templates[template.title] = template;
         }
     };
 

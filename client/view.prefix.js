@@ -1,4 +1,4 @@
 // ---- start __NAME__ view ----
 
-Bones.initialize('view', function(models, views) {
+Bones.initialize('view', function(models, views, templates) {
 var view;
