@@ -108,6 +108,7 @@ Plugin.prototype.start = function() {
 
 Plugin.prototype.loadConfig = function(command) {
     var config = {};
+    command.options = command.options || {};
 
     if (this.argv.config) {
         try {
