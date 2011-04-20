@@ -21,7 +21,7 @@ Backbone.View.register = function(server) {
     });
 };
 
-// Backbone.View.prototype.delegateEvents = function() {};
+Backbone.View.prototype.delegateEvents = function() {};
 
 Backbone.View.prototype.template = function(template, data) {
     throw new Error('not supported');
