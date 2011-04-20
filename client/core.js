@@ -25,7 +25,9 @@ $(function() {
     };
 
     Bones.start = function(name) {
-        new controllers[name];
+        for (var k in controllers) {
+            new controllers[k];
+        }
         Backbone.history.start();
     }
 })();
