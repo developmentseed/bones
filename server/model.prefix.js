@@ -1,3 +1,4 @@
+var _ = module.bones.underscore;
 var Bones = module.bones.Bones;
 var Backbone = module.bones.Backbone;
 var models = require('..').models;

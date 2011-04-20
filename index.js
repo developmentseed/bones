@@ -1,5 +1,6 @@
 var bones = exports;
 
+bones.$ = require('jquery');
 bones.underscore = require('underscore');
 bones.express = require('express');
 
