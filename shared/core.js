@@ -9,6 +9,12 @@ Bones.camelize = function(text) {
     });
 };
 
+Bones.underscoreify = function(text) {
+    return text.replace(/[A-Z]/g, function(match) {
+        return '_'+ match.toLowerCase();
+    }).replace(/^_/, '');
+};
+
 Bones.singularize = function(text) {
     // Extend as necessary.
     // See https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js.
