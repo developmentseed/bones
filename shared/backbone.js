@@ -26,8 +26,8 @@ Backbone.Model.extend = Backbone.Collection.extend =
 Backbone.Controller.extend = Backbone.View.extend = function() {
     var child = extend.apply(this, arguments);
     for (var key in this) {
-         child[key] = this[key];
+        if (key === '__super__' || key === 'prototype' || key === 'title') continue;
+        child[key] = this[key];
     }
-    delete child.title;
     return child;
 };
