@@ -15,13 +15,59 @@ Bones.underscoreify = function(text) {
     }).replace(/^_/, '');
 };
 
+// From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
+Bones.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
+    'cooperation', 'health', 'justice', 'jeans', 'labour', 'machinery',
+    'equipment', 'information', 'pollution', 'sewage', 'paper', 'money',
+    'species', 'series', 'rain', 'rice', 'fish', 'sheep', 'moose', 'deer',
+    'bison', 'proceedings', 'shears', 'pincers', 'breeches', 'hijinks',
+    'clippers', 'chassis', 'innings', 'elk', 'rhinoceros', 'swine', 'you',
+    'news' ];
+
 Bones.singularize = function(text) {
-    // Extend as necessary.
-    // See https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js.
-    return text.replace(/s$/i, '');
+    if (Bones.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
+    for (var i = Bones.singularize.rules.length - 1; i >= 0; i--) {
+        var rule = Bones.singularize.rules[i];
+        if (rule[0].test(text)) {
+            return text.replace(rule[0], rule[1]);
+        }
+    }
+    return text;
 };
 
+// From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
+Bones.singularize.rules = [
+    [ (/s$/i), "" ],
+    [ (/(bu|mis|kis)s$/i), "$1s" ],
+    [ (/([ti])a$/i), "$1um" ],
+    [ (/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i), "$1$2sis" ],
+    [ (/(^analy)ses$/i), "$1sis" ],
+    [ (/([^f])ves$/i), "$1fe" ],
+    [ (/([lr])ves$/i), "$1f" ],
+    [ (/([^aeiouy]|qu)ies$/i), "$1y" ],
+    [ (/ies$/i), "ie" ],
+    [ (/(x|ch|ss|sh)es$/i), "$1" ],
+    [ (/([m|l])ice$/i), "$1ouse" ],
+    [ (/(bus)es$/i), "$1" ],
+    [ (/(o)es$/i), "$1" ],
+    [ (/(shoe)s$/i), "$1" ],
+    [ (/(cris|ax|test)es$/i), "$1is" ],
+    [ (/(octop|vir)i$/i), "$1us" ],
+    [ (/(alias|status)es$/i), "$1" ],
+    [ (/^(ox)en/i), "$1" ],
+    [ (/(vert|ind)ices$/i), "$1ex" ],
+    [ (/(matr)ices$/i), "$1ix" ],
+    [ (/(quiz)zes$/i), "$1" ],
+    [ (/^(p)eople$/i), "$erson" ],
+    [ (/^(m)en$/i), "$1an" ],
+    [ (/^(child)ren$/i), "$1" ],
+    [ (/^(move)s$/i), "$1" ],
+    [ (/^(sex)$es/i), "$1" ]
+];
+
+
 Bones.pluralize = function(text) {
+    if (Bones.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
     for (var i = Bones.pluralize.rules.length - 1; i >= 0; i--) {
         var rule = Bones.pluralize.rules[i];
         if (rule[0].test(text)) {
@@ -49,9 +95,9 @@ Bones.pluralize.rules = [
     [ (/([m|l])ouse$/i), "$1ice" ],
     [ (/^(ox)$/i), "$1en" ],
     [ (/(quiz)$/i), "$1zes" ],
-    [ (/^person$/i), "people" ],
-    [ (/^man$/i), "men" ],
-    [ (/^child$/i), "children" ],
-    [ (/^move$/i), "moves" ],
-    [ (/^sex$/i), "sexes" ]
+    [ (/^(p)erson$/i), "$1eople" ],
+    [ (/^(m)an$/i), "$1en" ],
+    [ (/^(child)$/i), "$1ren" ],
+    [ (/^(move)$/i), "$1s" ],
+    [ (/^(sex)$/i), "$1es" ]
 ];
