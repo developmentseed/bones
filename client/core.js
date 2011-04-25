@@ -28,6 +28,14 @@ $(function() {
         for (var k in controllers) {
             new controllers[k];
         }
+
         Backbone.history.start();
     }
+
+    Bones.DEBUG = {
+        models: models,
+        views: views,
+        controllers: controllers,
+        templates: templates
+    };
 })();
