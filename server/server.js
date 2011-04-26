@@ -19,8 +19,8 @@ _.extend(Server.prototype, Backbone.Events, {
 
     port: 3000,
 
-    register: function(component) {
-        component.register(this);
+    register: function(component, args) {
+        component.register(this, args);
         return this;
     },
 
