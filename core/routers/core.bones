@@ -5,6 +5,7 @@ router = Bones.Router.extend({});
 router.prototype.initialize = function(options) {
     this.initializeMiddleware(options);
     this.initializeModels(options);
+    this.initializeCollections(options);
     this.initializeStatic(options);
     this.initializeAssets(options);
 };
@@ -22,6 +23,12 @@ router.prototype.initializeModels = function(options) {
     this.server.post('/api/:model/:id', this.postModel.bind(this));
     this.server.put('/api/:model/:id', this.putModel.bind(this));
     this.server.del('/api/:model/:id', this.delModel.bind(this));
+};
+
+router.prototype.initializeCollections = function(options) {
+    this.models = options.models;
+
+    this.server.get('/api/:collection', this.loadCollection.bind(this));
 };
 
 router.prototype.initializeStatic = function(options) {
@@ -62,6 +69,24 @@ router.prototype.initializeAssets = function(options) {
 };
 
 var headers = { 'Content-Type': 'application/json' };
+
+router.prototype.loadCollection = function(req, res, next) {
+    var name = Bones.camelize(Bones.pluralize(req.params.collection));
+    if (name in this.models) {
+        // Pass any querystring paramaters to the collection.
+        req.collection = new this.models[name]([], req.query);
+        req.collection.fetch({
+            success: function(collection, resp){
+                res.send(collection.models);
+            },
+            error: function(collection, resp) {
+                res.send({ error: "Couldn't load collection" }, headers, 500);
+            }
+        });
+    } else {
+       res.send({ error: "Collection doesn't exist" }, headers, 404);
+    }
+};
 
 router.prototype.loadModel = function(req, res, next) {
     var name = Bones.camelize(req.params.model);
