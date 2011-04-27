@@ -85,7 +85,7 @@ router.prototype.loadCollection = function(req, res, next) {
             }
         });
     } else {
-       res.send({ error: "Collection doesn't exist" }, headers, 404);
+        next();
     }
 };
 
@@ -93,13 +93,12 @@ router.prototype.loadModel = function(req, res, next) {
     var name = Bones.camelize(req.params.model);
     if (name in this.models) {
         req.model = new this.models[name]({ id: req.params.id });
-        next();
-    } else {
-        res.send({ error: "Model doesn't exist" }, headers, 404);
     }
+    next();
 };
 
 router.prototype.getModel = function(req, res, next) {
+    if (!req.model) return next();
     req.model.fetch({
         success: function(model, resp) {
             res.send(JSON.stringify(model), headers);
@@ -111,6 +110,7 @@ router.prototype.getModel = function(req, res, next) {
 };
 
 router.prototype.postModel = function(req, res, next) {
+    if (!req.model) return next();
     req.model.save(req.body, {
         success: function(model, resp) {
             res.send(resp, headers);
@@ -124,6 +124,7 @@ router.prototype.postModel = function(req, res, next) {
 router.prototype.putModel = router.prototype.postModel;
 
 router.prototype.delModel = function(req, res, next) {
+    if (!req.model) return next();
     req.model.destroy({
         success: function(model, resp) {
             res.send({}, headers);

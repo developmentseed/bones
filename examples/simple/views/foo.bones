@@ -5,7 +5,7 @@ view = Backbone.View.extend({
         this.trigger('attach');
     },
     render: function() {
-        console.log('foo view');
+        console.log('home view');
         return this;
     }
 });
