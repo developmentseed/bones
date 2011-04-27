@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Bones = require('bones').Bones;
+var Bones = require('..').Bones;
 
 module.exports = {
   'test .pluralize()': function() {

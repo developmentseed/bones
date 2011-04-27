@@ -102,7 +102,7 @@ Plugin.prototype.start = function() {
     } else {
         var command = this.commands[command];
         this.config = this.loadConfig(command);
-        new command(this);
+        return new command(this);
     }
 };
 

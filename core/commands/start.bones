@@ -14,9 +14,10 @@ command.prototype.initialize = function(options) {
         return;
     }
 
+    this.servers = {};
     for (var server in options.servers) {
-        server = new options.servers[server](options);
-        server.start();
-        console.warn('Started %s.', Bones.colorize(server, 'green'));
+        this.servers[server] = new options.servers[server](options);
+        this.servers[server].start();
+        console.warn('Started %s.', Bones.colorize( this.servers[server], 'green'));
     }
 };
