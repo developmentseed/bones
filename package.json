@@ -6,7 +6,6 @@
         "underscore": "= 1.1.5",
         "express": "= 2.2.2",
         "backbone": "= 0.3.3",
-        "jade": "= 0.10.4",
         "jquery": "= 1.5.1",
         "optimist": "= 0.1.8",
         "mirror": "https://github.com/developmentseed/mirror/tarball/node-0.4"
