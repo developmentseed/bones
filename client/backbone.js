@@ -13,7 +13,7 @@ Backbone.Controller.prototype.route = function(route, name, callback) {
 // UI libraries to be attached or inited. `template()` and `html()` are mirrors
 // of their server-side counterparts for templating and easy generation of a
 // View's HTML contents.
-Backbone.View.amend({
+Backbone.View.augment({
     attach: function() {},
     _configure: function(parent, options) {
         parent.call(this, options);
