@@ -24,7 +24,7 @@ $(function() {
         }
     };
 
-    Bones.start = function(name) {
+    Bones.start = function() {
         for (var k in controllers) {
             new controllers[k];
         }
