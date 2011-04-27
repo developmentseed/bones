@@ -3,6 +3,7 @@ var bones = exports;
 bones.$ = require('jquery');
 bones.underscore = require('underscore');
 bones.express = require('express');
+bones.mirror = require('mirror');
 
 bones.Bones = require('./server/core');
 bones.Backbone = require('./server/backbone');

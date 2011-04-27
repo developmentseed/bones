@@ -1,5 +1,3 @@
-var mirror = require('mirror');
-
 router = Bones.Router.extend({});
 
 router.prototype.initialize = function(options) {
