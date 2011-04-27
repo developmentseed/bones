@@ -1,5 +1,5 @@
 $(function() {
-    Bones.start('Home');
+    Bones.start();
 
     if (!location.hash) {
         location.hash = '/';
