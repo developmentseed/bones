@@ -64,11 +64,13 @@ Plugin.prototype.load = function(plugin) {
     }
 };
 
+function alphabetical(a, b) { return a.toLowerCase() > b.toLowerCase(); }
+
 Plugin.prototype.require = function(kind) {
     var plugin = this, dir = path.join(plugin.directory, kind);
 
     try {
-        fs.readdirSync(dir).forEach(function(name) {
+        fs.readdirSync(dir).sort(alphabetical).forEach(function(name) {
             var file = path.join(dir, name);
             if (path.extname(file) in require.extensions &&
                 path.basename(file)[0] !== '.' &&
