@@ -12,6 +12,7 @@ router.prototype.initialize = function(options) {
 
 router.prototype.initializeMiddleware = function(options) {
     this.server.use(express.bodyParser());
+    this.server.use(express.cookieParser());
 };
 
 router.prototype.initializeModels = function(options) {
