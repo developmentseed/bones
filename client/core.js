@@ -21,6 +21,8 @@ $(function() {
         } else if (kind === 'template') {
             var template = callback(templates);
             templates[template.title] = template;
+        } else if (_.isFunction(kind)) {
+            kind(models, views, controllers, templates);
         }
     };
 
