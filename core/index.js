@@ -14,7 +14,7 @@ require.extensions['._'] = function(module, filename) {
     module.exports.register = function(server) {
         server.assets.templates.push({
             filename: filename,
-            content: 'template = _.template(' + JSON.stringify(content) + ');'
+            content: 'template = ' + module.exports + ';'
         });
     };
 };
