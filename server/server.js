@@ -10,8 +10,10 @@ function Server(plugin) {
     this.server = new express.createServer();
     this.models = {};
 
-    this.register(this.plugin.routers['Core']);
+    var core = this.register(this.plugin.routers['Core']);
     this.initialize(this.plugin);
+    core.initializeModels(this);
+    core.initializeCollections(this);
 };
 
 _.extend(Server.prototype, Backbone.Events, {
@@ -20,8 +22,7 @@ _.extend(Server.prototype, Backbone.Events, {
     port: 3000,
 
     register: function(component, args) {
-        component.register(this, args);
-        return this;
+        return component.register(this, args);
     },
 
     start: function() {

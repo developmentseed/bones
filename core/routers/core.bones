@@ -2,8 +2,6 @@ router = Bones.Router.extend({});
 
 router.prototype.initialize = function(options) {
     this.initializeMiddleware(options);
-    this.initializeModels(options);
-    this.initializeCollections(options);
     this.initializeStatic(options);
     this.initializeAssets(options);
 };
