@@ -38,12 +38,22 @@ Bones expect you to organize your application in a certain way, and treats a few
 * `/servers` - applications
 * `/templates` - templates.
 
-With the execption of `/templates/` these directories will be populated with `.bones` files. Bones automatically adds the normal boilerplate stuff you would otherwise need to add to files suffixed wth `.bones`. This has the additional benefit of not loading extra detection code to determine if the code is running on the server or client. Bones will simply add the right code.
+With the exception of `/templates/` these directories will be populated with `.bones` files. Bones automatically adds the normal boilerplate stuff you would otherwise need to add to files suffixed with `.bones`. This has the additional benefit of not loading extra detection code to determine if the code is running on the server or client. Bones will simply add the right code.
 
-* .bones files, camelizing
-* create index.js file
-* creating a server
-  * register components with the server
+Files in each of these directories are expected to provide a single model|view|controller|template|etc... The file should be named a underscoreified version of the class name. A `blogPost` model should be defined in a `blog_post.bones` file. Bones with automatically transform all-lower-with-underscore style filesystem names to camelcase code.
+
+### Creating an application
+
+Bones won't load new files automatically, you need to tell Bones to do that. Create a server by adding a file to `/servers`, and then register your models|views|controllers|templates|etc... The example application has an example server in `/bones/example/simple/server/main.bones`.
+
+Your application will need a entry point, an `index.js`. The example application again provides a good starting point here.
+
+Note, the second line of the file will need to be changed so that bones isn't included as using a relative path. Your application's `index.js` should say:
+
+  var plugin = module.exports = require('bones').plugin(__dirname);
+
+## Extending bones
+
 * adding child modules (bones-document)
 * creating new components (.extend) vs. augmenting existing (.augment)
 * adding template engines (see bones/core/index.js)
