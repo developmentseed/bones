@@ -64,7 +64,9 @@ Plugin.prototype.load = function(plugin) {
     }
 };
 
-function alphabetical(a, b) { return a.toLowerCase() > b.toLowerCase(); }
+function alphabetical(a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+}
 
 Plugin.prototype.require = function(kind) {
     var plugin = this, dir = path.join(plugin.directory, kind);
