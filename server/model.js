@@ -21,8 +21,3 @@ Backbone.Model.register = function(server) {
 Backbone.Model.prototype.toString = function() {
     return '[Model ' + this.constructor.title + ']';
 };
-
-Backbone.Model.prototype.sync = function(method, model, success, error) {
-    // Note: `this` is not set. Do not use. Use `model` instead.
-    throw new Error(model + " does not implement sync().");
-};
