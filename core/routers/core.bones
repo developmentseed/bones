@@ -75,7 +75,7 @@ router.prototype.loadCollection = function(req, res, next) {
         // Pass any querystring paramaters to the collection.
         req.collection = new this.models[name]([], req.query);
         req.collection.fetch({
-            success: function(collection){
+            success: function(collection) {
                 res.send(collection.models);
             },
             error: function(collection) {
