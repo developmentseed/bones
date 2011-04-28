@@ -15,11 +15,11 @@ router.prototype.initializeModels = function(options) {
     this.models = options.models;
 
     // Bind model routes to server.
-    this.server.all('/api/:model/:id', this.loadModel.bind(this));
-    this.server.get('/api/:model/:id', this.getModel.bind(this));
-    this.server.post('/api/:model/:id', this.postModel.bind(this));
-    this.server.put('/api/:model/:id', this.putModel.bind(this));
-    this.server.del('/api/:model/:id', this.delModel.bind(this));
+    _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel');
+    this.server.get('/api/:model/:id', this.loadModel, this.getModel);
+    this.server.post('/api/:model', this.loadModel, this.saveModel);
+    this.server.put('/api/:model/:id', this.loadModel, this.saveModel);
+    this.server.del('/api/:model/:id', this.loadModel, this.delModel);
 };
 
 router.prototype.initializeCollections = function(options) {
@@ -97,15 +97,16 @@ router.prototype.getModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.fetch({
         success: function(model, resp) {
+            console.warn(model);
             res.send(JSON.stringify(model), headers);
         },
         error: function(model, err) {
-            next({ error: err });
+            next(JSON.stringify({ error: err }));
         }
     });
 };
 
-router.prototype.postModel = function(req, res, next) {
+router.prototype.saveModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.save(req.body, {
         success: function(model, resp) {
@@ -116,8 +117,6 @@ router.prototype.postModel = function(req, res, next) {
         }
     });
 };
-
-router.prototype.putModel = router.prototype.postModel;
 
 router.prototype.delModel = function(req, res, next) {
     if (!req.model) return next();
