@@ -99,7 +99,6 @@ router.prototype.getModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.fetch({
         success: function(model, resp) {
-            console.warn(model);
             res.send(JSON.stringify(model), headers);
         },
         error: function(model, err) {
