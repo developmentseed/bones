@@ -4,6 +4,8 @@ router.prototype.initialize = function(options) {
     this.initializeMiddleware(options);
     this.initializeStatic(options);
     this.initializeAssets(options);
+    this.initializeModels(options);
+    this.initializeCollections(options);
 };
 
 router.prototype.initializeMiddleware = function(options) {

@@ -10,10 +10,8 @@ function Server(plugin) {
     this.server = new express.createServer();
     this.models = {};
 
-    var core = this.register(this.plugin.routers['Core']);
+    this.register(this.plugin.routers['Core']);
     this.initialize(this.plugin);
-    core.initializeModels(this);
-    core.initializeCollections(this);
 };
 
 _.extend(Server.prototype, Backbone.Events, {
