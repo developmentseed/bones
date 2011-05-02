@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <script src="/bones.vendor.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/bones.core.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/bones.views.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/bones.controllers.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/bones.models.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/app.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/vendor.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/views.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/controllers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/models.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/simple/app.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <div id="view">
