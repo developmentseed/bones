@@ -5,6 +5,7 @@ var bones = require('bones');
 
 require('bones').load(__dirname);
 
+// Default template engine.
 require.extensions['._'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
     var name = bones.utils.camelize(path.basename(filename).replace(/\..+$/, ''));

@@ -6,23 +6,31 @@ module.exports = Server;
 
 function Server(plugin) {
     this.plugin = plugin;
-
     this.server = new express.createServer();
 
-    // Stores models served by this server.
+    // Stores models, views served by this server.
     this.models = {};
+    this.views = {};
+
+    // Stores instances of routers and controllers registered with this server.
+    this.routers = {};
+    this.controllers = {};
 
     this.initialize(plugin);
 };
 
 _.extend(Server.prototype, Backbone.Events, {
-    initialize : function(plugin) {},
+    initialize : function(plugin) {
+        // Default implementation loads all components.
+        var components = ['routers', 'controllers', 'models', 'views', 'templates'];
+        components.forEach(function(kind) {
+            for (var name in plugin[kind]) {
+                plugin[kind][name].register(this);
+            }
+        }, this);
+    },
 
     port: 3000,
-
-    register: function(component, args) {
-        return component.register(this, args);
-    },
 
     start: function() {
         this.server.listen(this.port);

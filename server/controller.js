@@ -11,7 +11,7 @@ Backbone.Controller.register = function(app) {
         }
     });
 
-    return new this(app);
+    return app.controllers[this.title] = new this(app);
 };
 
 Backbone.Controller.toString = function() {

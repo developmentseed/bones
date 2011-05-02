@@ -1,5 +1,6 @@
 server = Bones.Server.extend({
     initialize: function() {
-        this.register(models['Houses']);
+        routers['Core'].register(this);
+        models['Houses'].register(this);
     }
 });

@@ -1,10 +1,11 @@
 server = Bones.Server.extend({
     initialize: function() {
-        this.register(models['Page']);
-        this.register(routers['Before']);
-        this.register(routers['Main']);
-        this.register(controllers['Page']);
-        this.register(controllers['Foo']);
-        this.register(routers['After']);
+        routers['Core'].register(this);
+        models['Page'].register(this);
+        routers['Before'].register(this);
+        routers['Main'].register(this);
+        controllers['Page'].register(this);
+        controllers['Foo'].register(this);
+        routers['After'].register(this);
     }
 });
