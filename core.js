@@ -10,7 +10,15 @@ require.extensions['._'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
     var name = bones.utils.camelize(path.basename(filename).replace(/\..+$/, ''));
 
-    module.exports = _.template(content);
+    try {
+        module.exports = _.template(content);
+    } catch (err) {
+        var lines = err.message.split('\n');
+        lines.splice(1, 0, '    in template ' + filename);
+        err.message = lines.join('\n');
+        throw err;
+    }
+
     module.exports.register = function(app) {
         if (app.assets) {
             app.assets.templates.push({
