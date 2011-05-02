@@ -96,7 +96,8 @@ router.prototype.loadCollection = function(req, res, next) {
 router.prototype.loadModel = function(req, res, next) {
     var name = Bones.utils.camelize(req.params.model);
     if (name in this.models) {
-        req.model = new this.models[name]({ id: req.params.id });
+        // Pass any querystring paramaters to the model.
+        req.model = new this.models[name]({ id: req.params.id }, req.query);
     }
     next();
 };
