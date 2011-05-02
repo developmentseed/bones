@@ -13,7 +13,7 @@ $(function() {
             var model = callback(models);
             models[model.title] = model;
         } else if (kind === 'view') {
-            var view = callback(models, views, templates);
+            var view = callback(views, templates);
             views[view.title] = view;
         } else if (kind === 'controller') {
             var controller = callback(models, views, controllers);
@@ -32,7 +32,7 @@ $(function() {
         }
 
         Backbone.history.start();
-    }
+    };
 
     Bones.DEBUG = {
         models: models,

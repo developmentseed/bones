@@ -1,20 +1,23 @@
+var fs = require('fs');
+var path = require('path');
+
 router = Bones.Router.extend({});
 
-router.prototype.initialize = function(options) {
-    this.initializeMiddleware(options);
-    this.initializeStatic(options);
-    this.initializeAssets(options);
-    this.initializeModels(options);
-    this.initializeCollections(options);
+router.prototype.initialize = function(app) {
+    this.initializeMiddleware(app);
+    this.initializeStatic(app);
+    this.initializeAssets(app);
+    this.initializeModels(app);
+    this.initializeCollections(app);
 };
 
-router.prototype.initializeMiddleware = function(options) {
+router.prototype.initializeMiddleware = function(app) {
     this.server.use(express.bodyParser());
     this.server.use(express.cookieParser());
 };
 
-router.prototype.initializeModels = function(options) {
-    this.models = options.models;
+router.prototype.initializeModels = function(app) {
+    this.models = app.models;
 
     // Bind model routes to server.
     _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel');
@@ -24,26 +27,29 @@ router.prototype.initializeModels = function(options) {
     this.server.del('/api/:model/:id', this.loadModel, this.delModel);
 };
 
-router.prototype.initializeCollections = function(options) {
-    this.models = options.models;
+router.prototype.initializeCollections = function(app) {
+    this.models = app.models;
 
     this.server.get('/api/:collection', this.loadCollection.bind(this));
 };
 
-router.prototype.initializeStatic = function(options) {
-    this.server.use(express['static'](options.plugin.directory + '/client'));
+router.prototype.initializeStatic = function(app) {
+    app.plugin.directories.forEach(function(dir) {
+        var pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+        app.server.use('/assets/' + pkg.name, express['static'](path.join(dir, 'assets')));
+    });
 };
 
-router.prototype.initializeAssets = function(options) {
-    options.assets = {
+router.prototype.initializeAssets = function(app) {
+    app.assets = {
         vendor: [
-            'bones/core/assets/jquery',
+            'bones/assets/jquery',
             'underscore',
             'backbone'
         ],
         core: [
-            'bones/shared/core',
-            'bones/client/core',
+            'bones/shared/utils',
+            'bones/client/utils',
             'bones/shared/backbone',
             'bones/client/backbone'
         ],
@@ -53,24 +59,24 @@ router.prototype.initializeAssets = function(options) {
         templates: []
     };
 
-    var assets = options.assets;
+    var assets = app.assets;
     var wrapper = {
-        wrapper: Bones.wrapClientFile
+        wrapper: Bones.utils.wrapClientFile
     };
 
-    this.server.get('/bones.vendor.js', mirror.assets(require, assets.vendor));
-    this.server.get('/bones.core.js', mirror.assets(require, assets.core));
+    this.server.get('/assets/bones/vendor.js', mirror.assets(require, assets.vendor));
+    this.server.get('/assets/bones/core.js', mirror.assets(require, assets.core));
 
-    this.server.get('/bones.controllers.js', mirror.assets(require, assets.controllers, wrapper));
-    this.server.get('/bones.models.js', mirror.assets(require, assets.models, wrapper));
-    this.server.get('/bones.views.js', mirror.assets(require, assets.views, wrapper));
-    this.server.get('/bones.templates.js', mirror.source(assets.templates, wrapper));
+    this.server.get('/assets/bones/controllers.js', mirror.assets(require, assets.controllers, wrapper));
+    this.server.get('/assets/bones/models.js', mirror.assets(require, assets.models, wrapper));
+    this.server.get('/assets/bones/views.js', mirror.assets(require, assets.views, wrapper));
+    this.server.get('/assets/bones/templates.js', mirror.source(assets.templates, wrapper));
 };
 
 var headers = { 'Content-Type': 'application/json' };
 
 router.prototype.loadCollection = function(req, res, next) {
-    var name = Bones.camelize(Bones.pluralize(req.params.collection));
+    var name = Bones.utils.camelize(Bones.utils.pluralize(req.params.collection));
     if (name in this.models) {
         // Pass any querystring paramaters to the collection.
         req.collection = new this.models[name]([], req.query);
@@ -88,7 +94,7 @@ router.prototype.loadCollection = function(req, res, next) {
 };
 
 router.prototype.loadModel = function(req, res, next) {
-    var name = Bones.camelize(req.params.model);
+    var name = Bones.utils.camelize(req.params.model);
     if (name in this.models) {
         req.model = new this.models[name]({ id: req.params.id });
     }

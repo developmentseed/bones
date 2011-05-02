@@ -8,14 +8,15 @@ function Server(plugin) {
     this.plugin = plugin;
 
     this.server = new express.createServer();
+
+    // Stores models served by this server.
     this.models = {};
 
-    this.register(this.plugin.routers['Core']);
-    this.initialize(this.plugin);
+    this.initialize(plugin);
 };
 
 _.extend(Server.prototype, Backbone.Events, {
-    initialize : function(root) {},
+    initialize : function(plugin) {},
 
     port: 3000,
 

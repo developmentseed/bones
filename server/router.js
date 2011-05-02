@@ -3,13 +3,13 @@ var _ = require('underscore');
 
 module.exports = Router;
 
-function Router(options, args) {
-    if (!options.server) {
+function Router(app, args) {
+    if (!app.server) {
         throw new Error("Can't initialize router without server.");
     }
-    this.server = options.server;
+    this.server = app.server;
 
-    this.initialize(options, args);
+    this.initialize(app, args);
 };
 
 _.extend(Router.prototype, Backbone.Events, {
@@ -22,8 +22,8 @@ _.extend(Router.prototype, Backbone.Events, {
 Router.augment = Backbone.Controller.augment;
 Router.extend = Backbone.Controller.extend;
 
-Router.register = function(server, args) {
-    return new this(server, args);
+Router.register = function(app, args) {
+    return new this(app, args);
 };
 
 Router.toString = function() {

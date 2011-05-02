@@ -2,6 +2,8 @@
     "name": "bones",
     "version": "1.0.0",
 
+    "main": "./bones.js",
+
     "dependencies": {
         "underscore": "= 1.1.5",
         "express": "= 2.2.2",

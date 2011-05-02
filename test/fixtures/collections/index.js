@@ -1,3 +1,1 @@
-var plugin = module.exports = require('../../..').plugin(__dirname);
-
-plugin.load();
+require('bones').load(__dirname);

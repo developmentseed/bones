@@ -1,5 +1,7 @@
-var _ = module.bones.underscore;
-var Bones = module.bones.Bones;
-var Backbone = module.bones.Backbone;
-var models = require('..').models;
-var model;
+var Bones = require('bones');
+
+var $ = Bones.$, jQuery = $;
+var _ = Bones._;
+var Backbone = Bones.Backbone;
+
+var models = Bones.plugin.models;

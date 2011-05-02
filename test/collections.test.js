@@ -1,5 +1,7 @@
 var assert = require('assert');
-var demo = require('./fixtures/collections');
+
+require('./fixtures/collections');
+var demo = require('bones').plugin;
 var main = new demo.servers['Main'](demo);
 
 exports['api endpoints'] = function() {

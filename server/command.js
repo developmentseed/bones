@@ -3,12 +3,12 @@ var _ = require('underscore');
 
 module.exports = Command;
 
-function Command(options) {
+function Command(app) {
     this.options = Object.create(Command.options);
-    this.initialize(options);
+    this.initialize(app);
 };
 
-Command.prototype.initialize = function() {};
+Command.prototype.initialize = function(app) {};
 
 Command.augment = Backbone.Controller.augment;
 Command.extend = Backbone.Controller.extend;
