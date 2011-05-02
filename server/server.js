@@ -21,16 +21,12 @@ _.extend(Server.prototype, Backbone.Events, {
         var components = ['routers', 'controllers', 'models', 'views', 'templates'];
         components.forEach(function(kind) {
             for (var name in plugin[kind]) {
-                this.register(plugin[kind][name]);
+                plugin[kind][name].register(this);
             }
         }, this);
     },
 
     port: 3000,
-
-    register: function(component, args) {
-        return component.register(this, args);
-    },
 
     start: function() {
         this.server.listen(this.port);
