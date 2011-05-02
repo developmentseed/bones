@@ -16,7 +16,15 @@ function Server(plugin) {
 };
 
 _.extend(Server.prototype, Backbone.Events, {
-    initialize : function(plugin) {},
+    initialize : function(plugin) {
+        // Default implementation loads all components.
+        var components = ['routers', 'controllers', 'models', 'views', 'templates'];
+        components.forEach(function(kind) {
+            for (var name in plugin[kind]) {
+                this.register(plugin[kind][name]);
+            }
+        }, this);
+    },
 
     port: 3000,
 
