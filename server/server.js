@@ -6,11 +6,15 @@ module.exports = Server;
 
 function Server(plugin) {
     this.plugin = plugin;
-
     this.server = new express.createServer();
 
-    // Stores models served by this server.
+    // Stores models, views served by this server.
     this.models = {};
+    this.views = {};
+
+    // Stores instances of routers and controllers registered with this server.
+    this.routers = {};
+    this.controllers = {};
 
     this.initialize(plugin);
 };

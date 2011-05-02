@@ -23,7 +23,7 @@ Router.augment = Backbone.Controller.augment;
 Router.extend = Backbone.Controller.extend;
 
 Router.register = function(app, args) {
-    return new this(app, args);
+    return app.routers[this.title] = new this(app, args);
 };
 
 Router.toString = function() {

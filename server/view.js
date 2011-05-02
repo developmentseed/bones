@@ -19,6 +19,8 @@ Backbone.View.register = function(app) {
             app.assets.views.push(filename);
         }
     });
+
+    app.views[this.title] = this;
 };
 
 Backbone.View.prototype.delegateEvents = function() {};
