@@ -16,6 +16,10 @@ function Server(plugin) {
     this.routers = {};
     this.controllers = {};
 
+    this.middleware.forEach(function(middleware) {
+        this.server.use(middleware());
+    }, this);
+
     this.initialize(plugin);
 };
 
@@ -29,6 +33,8 @@ _.extend(Server.prototype, Backbone.Events, {
             }
         }, this);
     },
+
+    middleware: [ express.bodyParser, express.cookieParser ],
 
     port: 3000,
 

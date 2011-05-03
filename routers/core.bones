@@ -4,16 +4,10 @@ var path = require('path');
 router = Bones.Router.extend({});
 
 router.prototype.initialize = function(app) {
-    this.initializeMiddleware(app);
     this.initializeStatic(app);
     this.initializeAssets(app);
     this.initializeModels(app);
     this.initializeCollections(app);
-};
-
-router.prototype.initializeMiddleware = function(app) {
-    this.server.use(express.bodyParser());
-    this.server.use(express.cookieParser());
 };
 
 router.prototype.initializeModels = function(app) {
