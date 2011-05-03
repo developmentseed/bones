@@ -34,6 +34,7 @@ require.extensions['.bones'] = function(module, filename) {
 module.exports = Plugin;
 function Plugin() {
     this.directories = [];
+    this.config = {};
     this.controllers = {};
     this.models = {};
     this.routers = {};
@@ -85,18 +86,18 @@ Plugin.prototype.start = function() {
         this.help();
     } else {
         var command = this.commands[command];
-        this.config = this.loadConfig(command);
+        this.loadConfig(command);
         return new command(this);
     }
 };
 
 Plugin.prototype.loadConfig = function(command) {
-    var config = {};
+    var config = this.config;
     command.options = command.options || {};
 
     if (this.argv.config) {
         try {
-            config = JSON.parse(fs.readFileSync(this.argv.config, 'utf8'));
+            _.extend(config, JSON.parse(fs.readFileSync(this.argv.config, 'utf8')));
         } catch(e) {
             console.error(utils.colorize('Invalid JSON config file: ' +
                 this.argv.config, 'red'));
@@ -152,8 +153,6 @@ Plugin.prototype.loadConfig = function(command) {
         console.warn(utils.colorize('Using configuration:', 'green'));
         console.warn(JSON.stringify(config, false, 4));
     }
-
-    return config;
 };
 
 Plugin.prototype.help = function() {
