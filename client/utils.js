@@ -8,6 +8,8 @@ $(function() {
     // Closure for models/views/controllers.
     var models = {}, views = {}, controllers = {}, templates = {};
 
+    Bones.server = false;
+
     Bones.initialize = function(kind, callback) {
         if (kind === 'model') {
             var model = callback(models);

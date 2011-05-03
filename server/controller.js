@@ -51,9 +51,11 @@ Backbone.Controller.prototype.route = function(route, name, callback) {
     this.server.get(route, _.bind(function(req, res, next) {
         var fragment = (req.query && req.query['_escaped_fragment_']) || req.url;
         var args = this._extractParameters(route, fragment);
-        callback.apply(this, args.concat([ function(content) {
-            res.send(content);
-        }, res ]));
+        var cb = function(content) {
+            res.send(content.el);
+        };
+        cb.req = req; cb.res = res;
+        callback.apply(this, args.concat([ cb ]));
         this.trigger.apply(this, ['route:' + name].concat(args));
     }, this));
 };

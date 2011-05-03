@@ -6,6 +6,8 @@ module.exports = {
 
     utils: require('bones/server/utils'),
 
+    server: true,
+
     Backbone: require('bones/server/backbone'),
     Controller: require('bones/server/controller'),
     Model: require('bones/server/model'),
