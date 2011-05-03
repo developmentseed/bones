@@ -48,14 +48,12 @@ Backbone.Controller.prototype.route = function(route, name, callback) {
     if (!_.isFunction(callback)) throw new Error("'" + name + "' is not a function in " + this);
 
     // Add route to express server.
-    this.server.get(route, _.bind(function(req, res, next) {
+    var controller = this;
+    this.server.get(route, function(req, res, next) {
         var fragment = (req.query && req.query['_escaped_fragment_']) || req.url;
-        var args = this._extractParameters(route, fragment);
-        var cb = function(content) {
-            res.send(content);
-        };
-        cb.req = req; cb.res = res;
-        callback.apply(this, args.concat([ cb ]));
-        this.trigger.apply(this, ['route:' + name].concat(args));
-    }, this));
+        var args = controller._extractParameters(route, fragment);
+        var context = Object.create(controller, { req: { value: req }, res: { value: res } });
+        callback.apply(context, args);
+        controller.trigger.apply(controller, ['route:' + name].concat(args));
+    });
 };
