@@ -18,9 +18,6 @@ Backbone.View.augment({
     _configure: function(parent, options) {
         parent.call(this, options);
         this.bind('attach', this.attach);
-    },
-    html: function() {
-        return $(this.el).html();
     }
 });
 

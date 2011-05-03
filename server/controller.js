@@ -3,26 +3,26 @@ var _ = require('underscore');
 
 module.exports = Backbone.Controller;
 
-Backbone.Controller.register = function(server) {
+Backbone.Controller.register = function(app) {
     // Add the controller if it's not a server-only controller.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename)) {
-            server.assets.controllers.push(filename);
+        if (!(/\.server\.bones$/).test(filename) && app.assets) {
+            app.assets.controllers.push(filename);
         }
     });
 
-    return new this(server);
+    return app.controllers[this.title] = new this(app);
 };
 
 Backbone.Controller.toString = function() {
     return '<Controller ' + this.title + '>';
 };
 
-Backbone.Controller.prototype.initialize = function(options) {
-    if (!options.server) {
+Backbone.Controller.prototype.initialize = function(app) {
+    if (!app.server) {
         throw new Error("Can't initialize controller without server.");
     }
-    this.server = options.server;
+    this.server = app.server;
 
     // Bind routes.
     if (this.routes) {
@@ -48,12 +48,12 @@ Backbone.Controller.prototype.route = function(route, name, callback) {
     if (!_.isFunction(callback)) throw new Error("'" + name + "' is not a function in " + this);
 
     // Add route to express server.
-    this.server.get(route, _.bind(function(req, res, next) {
+    var controller = this;
+    this.server.get(route, function(req, res, next) {
         var fragment = (req.query && req.query['_escaped_fragment_']) || req.url;
-        var args = this._extractParameters(route, fragment);
-        callback.apply(this, args.concat([ function(content) {
-            res.send(content);
-        }, res ]));
-        this.trigger.apply(this, ['route:' + name].concat(args));
-    }, this));
+        var args = controller._extractParameters(route, fragment);
+        var context = Object.create(controller, { req: { value: req }, res: { value: res } });
+        callback.apply(context, args);
+        controller.trigger.apply(controller, ['route:' + name].concat(args));
+    });
 };

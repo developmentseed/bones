@@ -1,5 +1,4 @@
-var plugin = module.exports = require('bones').plugin(__dirname);
+require('othermodule');
+require('submodule');
 
-plugin.load(require('othermodule'));
-plugin.load(require('submodule'));
-plugin.load();
+require('bones').load(__dirname);

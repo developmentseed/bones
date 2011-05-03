@@ -12,13 +12,15 @@ Backbone.View.prototype.toString = function() {
     return '[View ' + this.constructor.title + ']';
 };
 
-Backbone.View.register = function(server) {
+Backbone.View.register = function(app) {
     // Add the views if it's not a server-only view.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename)) {
-            server.assets.views.push(filename);
+        if (!(/\.server\.bones$/).test(filename) && app.assets) {
+            app.assets.views.push(filename);
         }
     });
+
+    app.views[this.title] = this;
 };
 
 Backbone.View.prototype.delegateEvents = function() {};

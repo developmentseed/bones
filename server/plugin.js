@@ -5,7 +5,7 @@ var assert = require('assert');
 var Module = require('module');
 var _ = require('underscore');
 
-var Bones = require('..').Bones;
+var utils = require('bones').utils;
 
 // Load wrappers
 var wrappers = {};
@@ -21,19 +21,20 @@ fs.readdirSync(__dirname).forEach(function(name) {
 
 require.extensions['.bones'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
-    var kind = Bones.singularize(path.basename(path.dirname(filename)));
+    var kind = utils.singularize(path.basename(path.dirname(filename)));
 
     wrappers[kind] = wrappers[kind] || {};
     wrappers[kind].prefix = wrappers[kind].prefix || '';
     wrappers[kind].suffix = wrappers[kind].suffix || '';
 
     content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
-    module.bones = require('..');
     module._compile(content, filename);
 };
 
-function Plugin(dir) {
-    this.directory = dir;
+module.exports = Plugin;
+function Plugin() {
+    this.directories = [];
+    this.config = {};
     this.controllers = {};
     this.models = {};
     this.routers = {};
@@ -43,33 +44,12 @@ function Plugin(dir) {
     this.commands = {};
 };
 
-Plugin.prototype.load = function(plugin) {
-    if (!plugin) {
-        // Load the current directory.
-        this.require('controllers');
-        this.require('models');
-        this.require('routers');
-        this.require('templates');
-        this.require('views');
-        this.require('servers');
-        this.require('commands');
-    } else {
-        _.extend(this.controllers, plugin.controllers);
-        _.extend(this.models, plugin.models);
-        _.extend(this.routers, plugin.routers);
-        _.extend(this.templates, plugin.templates);
-        _.extend(this.views, plugin.views);
-        _.extend(this.servers, plugin.servers);
-        _.extend(this.commands, plugin.commands);
-    }
-};
-
 function alphabetical(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-Plugin.prototype.require = function(kind) {
-    var plugin = this, dir = path.join(plugin.directory, kind);
+Plugin.prototype.require = function(dir, kind) {
+    var plugin = this, dir = path.join(dir, kind);
 
     try {
         fs.readdirSync(dir).sort(alphabetical).forEach(function(name) {
@@ -84,7 +64,7 @@ Plugin.prototype.require = function(kind) {
                     component.files.push(file);
 
                     if (!component.title) {
-                        component.title = Bones.camelize(
+                        component.title = utils.camelize(
                             path.basename(file).replace(/\..+$/, ''));
                     }
                     plugin[kind][component.title] = component;
@@ -93,8 +73,9 @@ Plugin.prototype.require = function(kind) {
         });
     } catch(err) {
         if (err.code !== 'ENOENT') throw err;
-        return {};
     }
+
+    return this;
 };
 
 Plugin.prototype.start = function() {
@@ -105,20 +86,20 @@ Plugin.prototype.start = function() {
         this.help();
     } else {
         var command = this.commands[command];
-        this.config = this.loadConfig(command);
+        this.loadConfig(command);
         return new command(this);
     }
 };
 
 Plugin.prototype.loadConfig = function(command) {
-    var config = {};
+    var config = this.config;
     command.options = command.options || {};
 
     if (this.argv.config) {
         try {
-            config = JSON.parse(fs.readFileSync(this.argv.config, 'utf8'));
+            _.extend(config, JSON.parse(fs.readFileSync(this.argv.config, 'utf8')));
         } catch(e) {
-            console.error(Bones.colorize('Invalid JSON config file: ' +
+            console.error(utils.colorize('Invalid JSON config file: ' +
                 this.argv.config, 'red'));
             process.exit(2);
         }
@@ -153,10 +134,10 @@ Plugin.prototype.loadConfig = function(command) {
             if (!(key in command.options)) {
                 if (key in this.argv) {
                     // It was specified on the command line.
-                     console.warn(Bones.colorize('Note: Unknown option "' + key + '".', 'yellow'));
+                     console.warn(utils.colorize('Note: Unknown option "' + key + '".', 'yellow'));
                 } else {
                     // It's from the config file.
-                    console.warn(Bones.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
+                    console.warn(utils.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
             }
         }
@@ -169,11 +150,9 @@ Plugin.prototype.loadConfig = function(command) {
     }
 
     if (showConfig) {
-        console.warn(Bones.colorize('Using configuration:', 'green'));
+        console.warn(utils.colorize('Using configuration:', 'green'));
         console.warn(JSON.stringify(config, false, 4));
     }
-
-    return config;
 };
 
 Plugin.prototype.help = function() {
@@ -181,14 +160,14 @@ Plugin.prototype.help = function() {
     if (command !== false && command in this.commands) {
         // Display information about this command.
         var command = this.commands[command];
-        console.log('Usage: %s', Bones.colorize(this.argv['$0'] + ' ' +
+        console.log('Usage: %s', utils.colorize(this.argv['$0'] + ' ' +
             command.title +
             (command.usage ? ' ' + command.usage : '') +
             ' [options...]', 'green'));
 
         console.log('%s%s: %s',
-            Bones.colorize(command.title, 'yellow', 'bold'),
-            Bones.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
+            utils.colorize(command.title, 'yellow', 'bold'),
+            utils.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
             command.description);
 
         var options = [];
@@ -207,7 +186,7 @@ Plugin.prototype.help = function() {
         table(options);
     } else {
         // Display information about all available commands.
-        console.log('Usage: %s for a list of options.', Bones.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
+        console.log('Usage: %s for a list of options.', utils.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
         console.log('Available commands are:');
         var commands = [];
         for (var key in this.commands) {
@@ -233,11 +212,4 @@ function table(fields) {
             }).join('  ')
         );
     });
-};
-
-// bones.plugin(__dirname)
-module.exports = function(dir) {
-    var plugin = new Plugin(dir);
-    plugin.load(require('../core'));
-    return plugin;
 };

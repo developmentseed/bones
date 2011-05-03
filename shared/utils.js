@@ -1,22 +1,24 @@
 var Bones = Bones || {};
+Bones.utils = Bones.utils || {};
+
 if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-    module.exports = Bones;
+    module.exports = Bones.utils;
 }
 
-Bones.camelize = function(text) {
+Bones.utils.camelize = function(text) {
     return text.replace(/(?:^|_)(.)/g, function(all, chr) {
         return chr.toUpperCase();
     });
 };
 
-Bones.underscoreify = function(text) {
+Bones.utils.underscoreify = function(text) {
     return text.replace(/[A-Z]/g, function(match) {
         return '_'+ match.toLowerCase();
     }).replace(/^_/, '');
 };
 
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
-Bones.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
+Bones.utils.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
     'cooperation', 'health', 'justice', 'jeans', 'labour', 'machinery',
     'equipment', 'information', 'pollution', 'sewage', 'paper', 'money',
     'species', 'series', 'rain', 'rice', 'fish', 'sheep', 'moose', 'deer',
@@ -24,10 +26,10 @@ Bones.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
     'clippers', 'chassis', 'innings', 'elk', 'rhinoceros', 'swine', 'you',
     'news' ];
 
-Bones.singularize = function(text) {
-    if (Bones.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
-    for (var i = Bones.singularize.rules.length - 1; i >= 0; i--) {
-        var rule = Bones.singularize.rules[i];
+Bones.utils.singularize = function(text) {
+    if (Bones.utils.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
+    for (var i = Bones.utils.singularize.rules.length - 1; i >= 0; i--) {
+        var rule = Bones.utils.singularize.rules[i];
         if (rule[0].test(text)) {
             return text.replace(rule[0], rule[1]);
         }
@@ -36,7 +38,7 @@ Bones.singularize = function(text) {
 };
 
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
-Bones.singularize.rules = [
+Bones.utils.singularize.rules = [
     [ (/s$/i), "" ],
     [ (/(bu|mis|kis)s$/i), "$1s" ],
     [ (/([ti])a$/i), "$1um" ],
@@ -66,10 +68,10 @@ Bones.singularize.rules = [
 ];
 
 
-Bones.pluralize = function(text) {
-    if (Bones.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
-    for (var i = Bones.pluralize.rules.length - 1; i >= 0; i--) {
-        var rule = Bones.pluralize.rules[i];
+Bones.utils.pluralize = function(text) {
+    if (Bones.utils.uncountable.indexOf(text.toLowerCase()) >= 0) return text;
+    for (var i = Bones.utils.pluralize.rules.length - 1; i >= 0; i--) {
+        var rule = Bones.utils.pluralize.rules[i];
         if (rule[0].test(text)) {
             return text.replace(rule[0], rule[1]);
         }
@@ -79,7 +81,7 @@ Bones.pluralize = function(text) {
 };
 
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
-Bones.pluralize.rules = [
+Bones.utils.pluralize.rules = [
     [ (/$/), "s" ],
     [ (/(s|ss|sh|ch|x|o)$/i), "$1es" ],
     [ (/y$/i), "ies" ],

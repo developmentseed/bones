@@ -1,14 +1,14 @@
 var _ = require('underscore');
 var path = require('path');
 var fs = require('fs');
-var bones = require('..');
+var bones = require('bones');
 
-module.exports = bones.plugin(__dirname);
-module.exports.load();
+require('bones').load(__dirname);
 
+// Default template engine.
 require.extensions['._'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
-    var name = bones.Bones.camelize(path.basename(filename).replace(/\..+$/, ''));
+    var name = bones.utils.camelize(path.basename(filename).replace(/\..+$/, ''));
 
     try {
         module.exports = _.template(content);
@@ -19,10 +19,12 @@ require.extensions['._'] = function(module, filename) {
         throw err;
     }
 
-    module.exports.register = function(server) {
-        server.assets.templates.push({
-            filename: filename,
-            content: 'template = ' + module.exports + ';'
-        });
+    module.exports.register = function(app) {
+        if (app.assets) {
+            app.assets.templates.push({
+                filename: filename,
+                content: 'template = ' + module.exports + ';'
+            });
+        }
     };
 };

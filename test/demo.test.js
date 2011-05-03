@@ -1,5 +1,7 @@
 var assert = require('assert');
-var demo = require('./fixtures/demo');
+
+require('./fixtures/demo');
+var demo = require('bones').plugin;
 var main = new demo.servers['Main'](demo);
 
 exports['routes'] = function(beforeExit) {
