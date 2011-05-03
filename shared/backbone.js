@@ -1,6 +1,7 @@
 if (typeof process !== 'undefined' && process.versions && process.versions.node) {
     module.exports = Backbone = require('backbone');
     _ = require('underscore');
+    $ = require('jquery');
 }
 
 Backbone.Model.augment = Backbone.Collection.augment =
@@ -30,4 +31,8 @@ Backbone.Controller.extend = Backbone.View.extend = function() {
         child[key] = this[key];
     }
     return child;
+};
+
+Backbone.View.prototype.html = function() {
+    return $(this.el).html();
 };
