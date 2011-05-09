@@ -1,6 +1,8 @@
 var Backbone = require('./backbone');
 var _ = require('underscore');
 var express = require('express');
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = Server;
 
@@ -32,6 +34,7 @@ var middleware = {
     }
 };
 
+util.inherits(Server, EventEmitter);
 function Server(plugin) {
     this.plugin = plugin;
     this.server = new express.createServer();
@@ -66,8 +69,8 @@ _.extend(Server.prototype, Backbone.Events, {
 
     port: 3000,
 
-    start: function() {
-        this.server.listen(this.port);
+    start: function(callback) {
+        this.server.listen(this.port, callback);
         return this;
     },
 

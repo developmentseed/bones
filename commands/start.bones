@@ -17,8 +17,9 @@ command.prototype.initialize = function(plugin) {
     this.servers = {};
     for (var server in plugin.servers) {
         this.servers[server] = new plugin.servers[server](plugin);
-        if (this.servers[server].start()) {
-            console.warn('Started %s.', Bones.utils.colorize(this.servers[server], 'green'));
-        }
+        this.servers[server].start(function() {
+            console.warn('Started %s.', Bones.utils.colorize(this, 'green'));
+            this.emit('start');
+        }.bind(this.servers[server]));
     }
 };
