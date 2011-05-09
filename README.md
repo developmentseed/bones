@@ -26,6 +26,8 @@ enjoy the normal client-side Backbone experience.
 * Create package.json file
 * Add bones as a bundleDependency/clone repo for development
 
+See https://github.com/developmentseed/skeleton for an example app that layout.
+
 ### Application layout
 
 Bones expect you to organize your application in a certain way, and treats a few directories in special ways.
