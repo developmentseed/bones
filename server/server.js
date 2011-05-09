@@ -4,6 +4,34 @@ var express = require('express');
 
 module.exports = Server;
 
+var middleware = {
+    csrf: function() {
+        return function(req, res, next) {
+            if (req.method === 'GET') {
+                next();
+            } else if (req.body && req.cookies['bones.token'] && req.body['bones.token'] === req.cookies['bones.token']) {
+                delete req.body['bones.token'];
+                next();
+            } else {
+                res.send(403);
+            }
+        }
+    },
+    fragRedirect: function() {
+        return function(req, res, next) {
+            // @see https://code.google.com/web/ajaxcrawling/docs/specification.html
+            if (req.query._escaped_fragment_ === undefined) {
+                next();
+            } else {
+                // Force the first char of the path to be a slash to prevent
+                // foreign redirects.
+                var path = '/' + req.query._escaped_fragment_.substr(1);
+                res.redirect(path, 301);
+            }
+        }
+    }
+};
+
 function Server(plugin) {
     this.plugin = plugin;
     this.server = new express.createServer();
@@ -34,7 +62,7 @@ _.extend(Server.prototype, Backbone.Events, {
         }, this);
     },
 
-    middleware: [ express.bodyParser, express.cookieParser ],
+    middleware: [ express.bodyParser, express.cookieParser, middleware.csrf, middleware.fragRedirect ],
 
     port: 3000,
 

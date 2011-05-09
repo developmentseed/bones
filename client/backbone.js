@@ -38,3 +38,17 @@ Backbone.History.prototype.start = function() {
     }
     return this.loadUrl();
 };
+
+Backbone.History.prototype.getFragment = function(loc) {
+    var hashStrip = /#!/;
+    return (loc || window.location).hash.replace(hashStrip, '');
+};
+
+Backbone.History.prototype._saveLocation = Backbone.History.prototype.saveLocation;
+Backbone.History.prototype.saveLocation = function(fragment) {
+    var hashStrip = /#!/;
+    // Next two lines are duplicated withing the original saveLocation method.
+    fragment = (fragment || '').replace(hashStrip, '');
+    if (this.fragment == fragment) return;
+    Backbone.History.prototype._saveLocation('!' + fragment);
+};
