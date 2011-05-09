@@ -4,8 +4,9 @@ var util = require('util');
 var assert = require('assert');
 var Module = require('module');
 var _ = require('underscore');
+var Bones = require('bones');
 
-var utils = require('bones').utils;
+var utils = Bones.utils;
 
 // Load wrappers
 var wrappers = {};
@@ -29,6 +30,20 @@ require.extensions['.bones'] = function(module, filename) {
 
     content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
     module._compile(content, filename);
+
+    var component = module.exports;
+    if (component) {
+        if (!component.files) component.files = [];
+        component.files.push(filename);
+
+        if (!component.title) {
+            component.title = utils.camelize(
+                path.basename(filename).replace(/\..+$/, ''));
+        }
+
+        var kind = path.basename(path.dirname(filename));
+        Bones.plugin[kind][component.title] = component;
+    }
 };
 
 module.exports = Plugin;
@@ -49,26 +64,14 @@ function alphabetical(a, b) {
 }
 
 Plugin.prototype.require = function(dir, kind) {
-    var plugin = this, dir = path.join(dir, kind);
-
+    dir = path.join(dir, kind);
     try {
         fs.readdirSync(dir).sort(alphabetical).forEach(function(name) {
             var file = path.join(dir, name);
             if (path.extname(file) in require.extensions &&
                 path.basename(file)[0] !== '.' &&
                 fs.statSync(file).isFile()) {
-                var component = require(file);
-
-                if (component) {
-                    if (!component.files) component.files = [];
-                    component.files.push(file);
-
-                    if (!component.title) {
-                        component.title = utils.camelize(
-                            path.basename(file).replace(/\..+$/, ''));
-                    }
-                    plugin[kind][component.title] = component;
-                }
+                require(file);
             }
         });
     } catch(err) {
