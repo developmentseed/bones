@@ -31,7 +31,6 @@ require.extensions['.bones'] = function(module, filename) {
     content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
     module._compile(content, filename);
 
-    var component = module.exports;
     if (module.exports) {
         Bones.plugin.add(module.exports, filename);
     }
