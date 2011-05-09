@@ -32,17 +32,8 @@ require.extensions['.bones'] = function(module, filename) {
     module._compile(content, filename);
 
     var component = module.exports;
-    if (component) {
-        if (!component.files) component.files = [];
-        component.files.push(filename);
-
-        if (!component.title) {
-            component.title = utils.camelize(
-                path.basename(filename).replace(/\..+$/, ''));
-        }
-
-        var kind = path.basename(path.dirname(filename));
-        Bones.plugin[kind][component.title] = component;
+    if (module.exports) {
+        Bones.plugin.add(module.exports, filename);
     }
 };
 
@@ -79,6 +70,19 @@ Plugin.prototype.require = function(dir, kind) {
     }
 
     return this;
+};
+
+Plugin.prototype.add = function(component, filename) {
+    if (!component.files) component.files = [];
+    component.files.push(filename);
+
+    if (!component.title) {
+        component.title = utils.camelize(
+            path.basename(filename).replace(/\..+$/, ''));
+    }
+
+    var kind = path.basename(path.dirname(filename));
+    Bones.plugin[kind][component.title] = component;
 };
 
 Plugin.prototype.start = function() {
