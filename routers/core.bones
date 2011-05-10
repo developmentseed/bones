@@ -30,7 +30,7 @@ router.prototype.initializeCollections = function(app) {
 router.prototype.initializeStatic = function(app) {
     app.plugin.directories.forEach(function(dir) {
         var pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
-        app.server.use('/assets/' + pkg.name, express['static'](path.join(dir, 'assets')));
+        app.server.use('/assets/' + pkg.name, middleware['static'](path.join(dir, 'assets')));
     });
 };
 
