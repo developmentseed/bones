@@ -60,3 +60,7 @@ Note, the second line of the file will need to be changed so that bones isn't in
 * creating new components (.extend) vs. augmenting existing (.augment)
 * adding template engines (see bones/core/index.js)
   * server side vs. client side template compilation
+
+### Defining models & controllers
+
+Bones provdes default routes for loading models and collections. To take advantage of these endpoints your models and collections should implement a `url` method that returns a string of the form; `api/:collection` or `api/:model/:id`. The result of the `url` method is treated as the canonical resource identifier for that object.
