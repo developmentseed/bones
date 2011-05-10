@@ -45,7 +45,7 @@ fs.readdirSync(wrapperDir).forEach(function(name) {
 
 utils.wrapClientFile = function(content, filename) {
     var kind = utils.singularize(path.basename(path.dirname(filename)));
-    var name = utils.camelize(path.basename(filename).replace(/\..+$/, ''));
+    var name = path.basename(filename).replace(/\..+$/, '');
 
     wrappers[kind] = wrappers[kind] || {};
     wrappers[kind].prefix = wrappers[kind].prefix || '';

@@ -6,7 +6,7 @@ var main = new demo.servers['Main'](demo);
 
 exports['api endpoints'] = function() {
     assert.response(main.server, {
-        url: '/api/house',
+        url: '/api/House',
         method: 'GET'
     }, {
         body: '[{"foo":"bar"},{"foo":"baz"},{"foo":"blah"}]',

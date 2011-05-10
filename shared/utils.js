@@ -5,18 +5,6 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
     module.exports = Bones.utils;
 }
 
-Bones.utils.camelize = function(text) {
-    return text.replace(/(?:^|_)(.)/g, function(all, chr) {
-        return chr.toUpperCase();
-    });
-};
-
-Bones.utils.underscoreify = function(text) {
-    return text.replace(/[A-Z]/g, function(match) {
-        return '_'+ match.toLowerCase();
-    }).replace(/^_/, '');
-};
-
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
 Bones.utils.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
     'cooperation', 'health', 'justice', 'jeans', 'labour', 'machinery',

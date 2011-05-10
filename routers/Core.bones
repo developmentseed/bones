@@ -30,7 +30,7 @@ router.prototype.initializeCollections = function(app) {
 router.prototype.initializeStatic = function(app) {
     app.plugin.directories.forEach(function(dir) {
         var pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
-        app.server.use('/assets/' + pkg.name, express['static'](path.join(dir, 'assets')));
+        app.server.use('/assets/' + pkg.name, middleware['static'](path.join(dir, 'assets')));
     });
 };
 
@@ -70,7 +70,7 @@ router.prototype.initializeAssets = function(app) {
 var headers = { 'Content-Type': 'application/json' };
 
 router.prototype.loadCollection = function(req, res, next) {
-    var name = Bones.utils.camelize(Bones.utils.pluralize(req.params.collection));
+    var name = Bones.utils.pluralize(req.params.collection);
     if (name in this.models) {
         // Pass any querystring paramaters to the collection.
         req.collection = new this.models[name]([], req.query);
@@ -88,7 +88,7 @@ router.prototype.loadCollection = function(req, res, next) {
 };
 
 router.prototype.loadModel = function(req, res, next) {
-    var name = Bones.utils.camelize(req.params.model);
+    var name = req.params.model;
     if (name in this.models) {
         // Pass any querystring paramaters to the model.
         req.model = new this.models[name]({ id: req.params.id }, req.query);

@@ -3,37 +3,9 @@ var _ = require('underscore');
 var express = require('express');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
+var middleware = require('..').middleware;
 
 module.exports = Server;
-
-var middleware = {
-    csrf: function() {
-        return function(req, res, next) {
-            if (req.method === 'GET') {
-                next();
-            } else if (req.body && req.cookies['bones.token'] && req.body['bones.token'] === req.cookies['bones.token']) {
-                delete req.body['bones.token'];
-                next();
-            } else {
-                res.send(403);
-            }
-        }
-    },
-    fragRedirect: function() {
-        return function(req, res, next) {
-            // @see https://code.google.com/web/ajaxcrawling/docs/specification.html
-            if (req.query._escaped_fragment_ === undefined) {
-                next();
-            } else {
-                // Force the first char of the path to be a slash to prevent
-                // foreign redirects.
-                var path = '/' + req.query._escaped_fragment_.substr(1);
-                res.redirect(path, 301);
-            }
-        }
-    }
-};
-
 util.inherits(Server, EventEmitter);
 function Server(plugin) {
     this.plugin = plugin;
@@ -47,10 +19,7 @@ function Server(plugin) {
     this.routers = {};
     this.controllers = {};
 
-    this.middleware.forEach(function(middleware) {
-        this.server.use(middleware());
-    }, this);
-
+    this.middleware(plugin);
     this.initialize(plugin);
 };
 
@@ -65,7 +34,12 @@ _.extend(Server.prototype, Backbone.Events, {
         }, this);
     },
 
-    middleware: [ express.bodyParser, express.cookieParser, middleware.csrf, middleware.fragRedirect ],
+    middleware: function(plugin) {
+        this.server.use(middleware.bodyParser());
+        this.server.use(middleware.cookieParser());
+        this.server.use(middleware.csrf());
+        this.server.use(middleware.fragmentRedirect());
+    },
 
     port: 3000,
 

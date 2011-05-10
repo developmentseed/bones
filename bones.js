@@ -1,44 +1,44 @@
-module.exports = {
-    $: require('jquery'),
-    _: require('underscore'),
-    express: require('express'),
-    mirror: require('mirror'),
+exports.$ = require('jquery');
+exports._ = require('underscore');
+exports.mirror = require('mirror');
 
-    utils: require('bones/server/utils'),
+exports.utils = require('bones/server/utils');
+exports.middleware = require('bones/server/middleware');
 
-    server: true,
+exports.server = true;
 
-    Backbone: require('bones/server/backbone'),
-    Controller: require('bones/server/controller'),
-    Model: require('bones/server/model'),
-    Collection: require('bones/server/collection'),
-    Router: require('bones/server/router'),
-    View: require('bones/server/view'),
-    Server: require('bones/server/server'),
-    Command: require('bones/server/command'),
+exports.Backbone = require('bones/server/backbone');
+exports.Controller = require('bones/server/controller');
+exports.Model = require('bones/server/model');
+exports.Collection = require('bones/server/collection');
+exports.Router = require('bones/server/router');
+exports.View = require('bones/server/view');
+exports.Server = require('bones/server/server');
+exports.Command = require('bones/server/command');
 
-    get plugin() {
+Object.defineProperty(exports, 'plugin', {
+    get: function() {
         if (!global.__BonesPlugin__) {
             var Plugin = require('./server/plugin');
             global.__BonesPlugin__ = new Plugin();
             require('./core');
         }
         return global.__BonesPlugin__;
-    },
-
-    load: function(dir) {
-        this.plugin.directories.push(dir);
-        this.plugin
-            .require(dir, 'controllers')
-            .require(dir, 'models')
-            .require(dir, 'routers')
-            .require(dir, 'templates')
-            .require(dir, 'views')
-            .require(dir, 'servers')
-            .require(dir, 'commands');
-    },
-
-    start: function() {
-        return this.plugin.start();
     }
+});
+
+exports.load = function(dir) {
+    this.plugin.directories.push(dir);
+    this.plugin
+        .require(dir, 'controllers')
+        .require(dir, 'models')
+        .require(dir, 'routers')
+        .require(dir, 'templates')
+        .require(dir, 'views')
+        .require(dir, 'servers')
+        .require(dir, 'commands');
+};
+
+exports.start = function() {
+    return this.plugin.start();
 };

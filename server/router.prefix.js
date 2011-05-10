@@ -3,7 +3,7 @@ var Bones = require('bones');
 var $ = Bones.$, jQuery = $;
 var _ = Bones._;
 var Backbone = Bones.Backbone;
-var express = Bones.express;
+var middleware = Bones.middleware;
 var mirror = Bones.mirror;
 
 var models = Bones.plugin.models;

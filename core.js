@@ -8,7 +8,7 @@ require('bones').load(__dirname);
 // Default template engine.
 require.extensions['._'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
-    var name = Bones.utils.camelize(path.basename(filename).replace(/\..+$/, ''));
+    var name = path.basename(filename).replace(/\..+$/, '');
 
     try {
         module.exports = _.template(content);
