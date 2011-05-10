@@ -42,7 +42,7 @@ Bones expect you to organize your application in a certain way, and treats a few
 
 With the exception of `/templates/` these directories will be populated with `.bones` files. Bones automatically adds the normal boilerplate stuff you would otherwise need to add to files suffixed with `.bones`. This has the additional benefit of not loading extra detection code to determine if the code is running on the server or client. Bones will simply add the right code.
 
-Files in each of these directories are expected to provide a single model|view|controller|template|etc... The file should be named a underscoreified version of the class name. A `blogPost` model should be defined in a `blog_post.bones` file. Bones with automatically transform all-lower-with-underscore style filesystem names to camelcase code.
+Files in each of these directories are expected to provide a single model|view|controller|template|etc... The file should be named as the class is name, capitalization is important! A `BlogPost` model should be defined in a `BlogPost.bones` file.
 
 ### Creating an application
 
