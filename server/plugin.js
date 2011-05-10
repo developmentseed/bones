@@ -76,8 +76,7 @@ Plugin.prototype.add = function(component, filename) {
     component.files.push(filename);
 
     if (!component.title) {
-        component.title = utils.camelize(
-            path.basename(filename).replace(/\..+$/, ''));
+        component.title = path.basename(filename).replace(/\..+$/, '');
     }
 
     var kind = path.basename(path.dirname(filename));

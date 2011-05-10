@@ -69,7 +69,7 @@ exports['routes'] = function(beforeExit) {
 
 exports['api endpoints'] = function() {
     assert.response(main.server, {
-        url: '/api/page/foo',
+        url: '/api/Page/foo',
         method: 'GET'
     }, {
         body: '{"id":"foo","method":"read"}',
@@ -78,6 +78,14 @@ exports['api endpoints'] = function() {
 
     assert.response(main.server, {
         url: '/api/page/foo',
+        method: 'GET'
+    }, {
+        body: 'Cannot GET /api/page/foo',
+        status: 404
+    });
+
+    assert.response(main.server, {
+        url: '/api/Page/foo',
         method: 'PUT',
         headers: {
             'content-type': 'application/json',
