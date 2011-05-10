@@ -1,6 +1,6 @@
 exports = module.exports = require('express');
 
-exports['csrf'] = function() {
+exports['csrf'] = function csrf() {
     return function(req, res, next) {
         if (req.method === 'GET') {
             next();
@@ -13,7 +13,7 @@ exports['csrf'] = function() {
     }
 };
 
-exports['fragmentRedirect'] = function() {
+exports['fragmentRedirect'] = function fragmentRedirect() {
     return function(req, res, next) {
         // @see https://code.google.com/web/ajaxcrawling/docs/specification.html
         if (req.query._escaped_fragment_ === undefined) {
