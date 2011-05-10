@@ -49,6 +49,19 @@ exports['routes'] = function(beforeExit) {
         url: '/page/foo',
         method: 'POST'
     }, {
+        body: 'Forbidden',
+        status: 403
+    });
+
+    assert.response(main.server, {
+        url: '/page/foo',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'cookie': 'bones.token=1f4a1137268b8e384e50d0fb72c627c4'
+        },
+        body: '{"bones.token":"1f4a1137268b8e384e50d0fb72c627c4"}'
+    }, {
         body: 'Cannot POST /page/foo',
         status: 404
     });
@@ -66,8 +79,11 @@ exports['api endpoints'] = function() {
     assert.response(main.server, {
         url: '/api/page/foo',
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: '{"id":"foo","key":"value"}'
+        headers: {
+            'content-type': 'application/json',
+            'cookie': 'bones.token=1f4a1137268b8e384e50d0fb72c627c4'
+        },
+        body: '{"bones.token":"1f4a1137268b8e384e50d0fb72c627c4","id":"foo","key":"value"}'
     }, {
         body: '{"id":"foo","key":"value","method":"update"}',
         status: 200
