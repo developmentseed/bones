@@ -5,12 +5,12 @@
     "main": "./bones.js",
 
     "dependencies": {
-        "underscore": ">= 1.1.6 < 1.2.0",
-        "express": ">= 2.2.2 < 2.3.0",
-        "backbone": ">= 0.3.3 < 0.4.0",
-        "jquery": ">= 1.5.1 < 1.6.0",
-        "optimist": ">= 0.1.9 < 0.2.0",
-        "mirror": ">= 0.1.0 < 0.2.0"
+        "underscore": "1.1.x",
+        "express": "2.2.x",
+        "backbone": "0.3.x",
+        "jquery": "1.5.x",
+        "optimist": "0.1.x",
+        "mirror": "0.1.x"
     },
 
     "scripts": {
