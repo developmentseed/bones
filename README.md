@@ -33,7 +33,7 @@ See https://github.com/developmentseed/skeleton for an example app that layout.
 Bones expect you to organize your application in a certain way, and treats a few directories in special ways.
 
 * `/commands` - extra command line commands
-* `/controllers` - Bankbone controllers
+* `/controllers` - Backbone controllers
 * `/models` - Backbone models
 * `/routers` - server only routes
 * `/views` - Backbone views
