@@ -35,7 +35,7 @@ router.prototype.initializeStatic = function(app) {
 };
 
 router.prototype.initializeAssets = function(app) {
-    app.assets = {
+    var assets = app.assets = {
         vendor: [
             require.resolve('bones/assets/jquery'),
             require.resolve('underscore'),
@@ -53,14 +53,14 @@ router.prototype.initializeAssets = function(app) {
         templates: []
     };
 
-    var assets = app.assets;
-    var options = {
-        wrapper: Bones.utils.wrapClientFile
-    };
 
     this.server.get('/assets/bones/vendor.js', mirror.assets(assets.vendor));
     this.server.get('/assets/bones/core.js', mirror.assets(assets.core));
 
+    var options = {
+        wrapper: Bones.utils.wrapClientFile,
+        sort: Bones.utils.sortByLoadOrder
+    };
     this.server.get('/assets/bones/controllers.js', mirror.assets(assets.controllers, options));
     this.server.get('/assets/bones/models.js', mirror.assets(assets.models, options));
     this.server.get('/assets/bones/views.js', mirror.assets(assets.views, options));

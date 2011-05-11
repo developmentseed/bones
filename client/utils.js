@@ -13,16 +13,16 @@ $(function() {
     Bones.initialize = function(kind, callback) {
         if (kind === 'model') {
             var model = callback(models);
-            models[model.title] = model;
+            if (model) models[model.title] = model;
         } else if (kind === 'view') {
             var view = callback(models, views, templates);
-            views[view.title] = view;
+            if (view) views[view.title] = view;
         } else if (kind === 'controller') {
             var controller = callback(models, views, controllers);
-            controllers[controller.title] = controller;
+            if (controller) controllers[controller.title] = controller;
         } else if (kind === 'template') {
             var template = callback(templates);
-            templates[template.title] = template;
+            if (template) templates[template.title] = template;
         } else if (_.isFunction(kind)) {
             kind(models, views, controllers, templates);
         }

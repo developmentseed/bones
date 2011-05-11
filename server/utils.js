@@ -3,6 +3,8 @@ var fs = require('fs');
 var path = require('path');
 var tty = require('tty');
 
+var bones = require('..');
+
 var colors = {
     black: 30,
     red: 31,
@@ -27,7 +29,7 @@ if (tty.isatty()) {
         return "\033[" + styles[style] + ";" + colors[color] + "m" + text + "\033[0m";
     };
 } else {
-    utils.colorize = function(text) { return text };
+    utils.colorize = function(text) { return text; };
 }
 
 
@@ -43,15 +45,35 @@ fs.readdirSync(wrapperDir).forEach(function(name) {
     }
 });
 
+// Remove common prefix between the working directory and filename so that we don't
+// leak information about the directory structure.
+utils.removePrefix = function(str) {
+    var prefix = process.cwd().split('/');
+    str = str.split('/');
+    while (prefix.length && str[0] === prefix[0]) {
+        str.shift();
+        prefix.shift();
+    }
+    return str.join('/');
+};
+
+
 utils.wrapClientFile = function(content, filename) {
     var kind = utils.singularize(path.basename(path.dirname(filename)));
     var name = path.basename(filename).replace(/\..+$/, '');
+    var file = utils.removePrefix(filename);
 
     wrappers[kind] = wrappers[kind] || {};
     wrappers[kind].prefix = wrappers[kind].prefix || '';
     wrappers[kind].suffix = wrappers[kind].suffix || '';
 
-    return wrappers[kind].prefix.replace(/__NAME__/g, name) +
+    return wrappers[kind].prefix.replace(/__NAME__/g, name).replace(/__FILE__/g, file) +
            "\n" + content + "\n" +
-           wrappers[kind].suffix.replace(/__NAME__/g, name);
+           wrappers[kind].suffix.replace(/__NAME__/g, name).replace(/__FILE__/g, file);
+};
+
+utils.sortByLoadOrder = function(assets) {
+    var order = _.intersect(bones.plugin.order, assets);
+    assets.length = 0;
+    for (var i = 0; i < order.length; i++) assets[i] = order[i];
 };

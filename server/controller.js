@@ -6,10 +6,13 @@ module.exports = Backbone.Controller;
 Backbone.Controller.register = function(app) {
     // Add the controller if it's not a server-only controller.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename) && app.assets) {
+        if (!(/\.server\.bones$/).test(filename) && app.assets &&
+            app.assets.controllers.indexOf(filename) < 0) {
             app.assets.controllers.push(filename);
         }
     });
+
+    // TODO push the order of the controllers to the client
 
     return app.controllers[this.title] = new this(app);
 };

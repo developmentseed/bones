@@ -1,5 +1,5 @@
-if (!controller.title) controller.title = '__NAME__';
+if (controller && !controller.title) controller.title = '__NAME__';
 return controller;
 });
 
-// ---- end __NAME__ controller ----
+// ---- end __FILE__ ----

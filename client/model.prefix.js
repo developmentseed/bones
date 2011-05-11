@@ -1,4 +1,4 @@
-// ---- start __NAME__ model ----
+// ---- start __FILE__ ----
 
 Bones.initialize('model', function(models) {
 var model;

@@ -39,6 +39,7 @@ require.extensions['.bones'] = function(module, filename) {
 module.exports = Plugin;
 function Plugin() {
     this.directories = [];
+    this.order = [];
     this.config = {};
     this.controllers = {};
     this.models = {};
@@ -81,6 +82,7 @@ Plugin.prototype.add = function(component, filename) {
 
     var kind = path.basename(path.dirname(filename));
     Bones.plugin[kind][component.title] = component;
+    Bones.plugin.order.push(filename);
 };
 
 Plugin.prototype.start = function() {

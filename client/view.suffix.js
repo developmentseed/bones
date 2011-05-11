@@ -1,5 +1,5 @@
-if (!view.title) view.title = '__NAME__';
+if (view && !view.title) view.title = '__NAME__';
 return view;
 });
 
-// ---- end __NAME__ view ----
+// ---- end __FILE__ ----

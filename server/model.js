@@ -10,7 +10,8 @@ Backbone.Model.toString = function() {
 Backbone.Model.register = function(app) {
     // Add the controller if it's not a server-only controller.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename) && app.assets) {
+        if (!(/\.server\.bones$/).test(filename) && app.assets &&
+            app.assets.models.indexOf(filename) < 0) {
             app.assets.models.push(filename);
         }
     });

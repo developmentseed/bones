@@ -15,7 +15,8 @@ Backbone.View.prototype.toString = function() {
 Backbone.View.register = function(app) {
     // Add the views if it's not a server-only view.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename) && app.assets) {
+        if (!(/\.server\.bones$/).test(filename) && app.assets &&
+            app.assets.views.indexOf(filename) < 0) {
             app.assets.views.push(filename);
         }
     });
