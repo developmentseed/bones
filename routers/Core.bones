@@ -54,17 +54,17 @@ router.prototype.initializeAssets = function(app) {
     };
 
     var assets = app.assets;
-    var wrapper = {
+    var options = {
         wrapper: Bones.utils.wrapClientFile
     };
 
     this.server.get('/assets/bones/vendor.js', mirror.assets(assets.vendor));
     this.server.get('/assets/bones/core.js', mirror.assets(assets.core));
 
-    this.server.get('/assets/bones/controllers.js', mirror.assets(assets.controllers, wrapper));
-    this.server.get('/assets/bones/models.js', mirror.assets(assets.models, wrapper));
-    this.server.get('/assets/bones/views.js', mirror.assets(assets.views, wrapper));
-    this.server.get('/assets/bones/templates.js', mirror.source(assets.templates, wrapper));
+    this.server.get('/assets/bones/controllers.js', mirror.assets(assets.controllers, options));
+    this.server.get('/assets/bones/models.js', mirror.assets(assets.models, options));
+    this.server.get('/assets/bones/views.js', mirror.assets(assets.views, options));
+    this.server.get('/assets/bones/templates.js', mirror.source(assets.templates, options));
 };
 
 var headers = { 'Content-Type': 'application/json' };
