@@ -57,14 +57,13 @@ Backbone.History.prototype.saveLocation = function(fragment) {
 // Generate CSRF protection cookie. Callers should provide the request path
 // to ensure the cookie is not pervasive across all requests.
 Backbone.csrf = function(path) {
-    var expires = new Date(1000 + (+new Date)).toUTCString();
-    for (var token = ''; token.length < 32;) {
-        token += 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789'.charAt(Math.random() * 62);
+    var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789';
+    var token = '';
+    while (token.length < 32) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    path = path || '/';
-
-    document.cookie = 'bones.token=' + token + '; expires=' + expires + '; path=' + path;
-    return csrf;
+    document.cookie = 'bones.token=' + token + ';max-age=60;path=' + (path || '/') + ';';
+    return token;
 };
 
 // Client-side override of `Backbone.sync`. Adds CSRF double-cookie
@@ -78,8 +77,9 @@ Backbone.sync = _.wrap(Backbone.sync, function(parent, method, model, success, e
     };
 
     if (method !== 'read') {
-        model['bones.token'] = Backbone.csrf(getUrl(model));
+        var clone = model.clone();
+        clone.set({ 'bones.token': Backbone.csrf(getUrl(model)) });
     }
 
-    return parent.call(this, method, model, success, error);
+    return parent.call(this, method, clone, success, error);
 });
