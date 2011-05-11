@@ -54,15 +54,17 @@ Backbone.History.prototype.saveLocation = function(fragment) {
 };
 
 
-// Generate CSRF protection cookie. Callers should provide the request path
-// to ensure the cookie is not pervasive across all requests.
-Backbone.csrf = function(path) {
+// Generate CSRF protection token that is valid for the specified amount of msec.
+// The default is 1 second.
+Backbone.csrf = function(timeout) {
     var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789';
     var token = '';
     while (token.length < 32) {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    document.cookie = 'bones.token=' + token + ';max-age=60;';
+
+    var expires = new Date(+new Date + (timeout || 1000)).toGMTString();
+    document.cookie = 'bones.token=' + token + ';expires=' + expires + ';';
     return token;
 };
 
@@ -77,9 +79,13 @@ Backbone.sync = _.wrap(Backbone.sync, function(parent, method, model, success, e
     };
 
     if (method !== 'read') {
-        var clone = model.clone();
-        clone.set({ 'bones.token': Backbone.csrf(getUrl(model)) });
-    }
+        var token = Backbone.csrf(getUrl(model));
 
-    return parent.call(this, method, clone || model, success, error);
+        model.set({ 'bones.token': token }, { silent: true });
+        var result = parent.call(this, method, model, success, error);
+        model.unset('bones.token', { silent: true });
+        return result;
+    } else {
+        return parent.call(this, method, model, success, error);
+    }
 });
