@@ -62,7 +62,7 @@ Backbone.csrf = function(path) {
     while (token.length < 32) {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    document.cookie = 'bones.token=' + token + ';max-age=60;path=' + (path || '/') + ';';
+    document.cookie = 'bones.token=' + token + ';max-age=60;';
     return token;
 };
 
