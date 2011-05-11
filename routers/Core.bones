@@ -37,15 +37,15 @@ router.prototype.initializeStatic = function(app) {
 router.prototype.initializeAssets = function(app) {
     app.assets = {
         vendor: [
-            'bones/assets/jquery',
-            'underscore',
-            'backbone'
+            require.resolve('bones/assets/jquery'),
+            require.resolve('underscore'),
+            require.resolve('backbone')
         ],
         core: [
-            'bones/shared/utils',
-            'bones/client/utils',
-            'bones/shared/backbone',
-            'bones/client/backbone'
+            require.resolve('bones/shared/utils'),
+            require.resolve('bones/client/utils'),
+            require.resolve('bones/shared/backbone'),
+            require.resolve('bones/client/backbone')
         ],
         models: [],
         views: [],
@@ -58,12 +58,12 @@ router.prototype.initializeAssets = function(app) {
         wrapper: Bones.utils.wrapClientFile
     };
 
-    this.server.get('/assets/bones/vendor.js', mirror.assets(require, assets.vendor));
-    this.server.get('/assets/bones/core.js', mirror.assets(require, assets.core));
+    this.server.get('/assets/bones/vendor.js', mirror.assets(assets.vendor));
+    this.server.get('/assets/bones/core.js', mirror.assets(assets.core));
 
-    this.server.get('/assets/bones/controllers.js', mirror.assets(require, assets.controllers, wrapper));
-    this.server.get('/assets/bones/models.js', mirror.assets(require, assets.models, wrapper));
-    this.server.get('/assets/bones/views.js', mirror.assets(require, assets.views, wrapper));
+    this.server.get('/assets/bones/controllers.js', mirror.assets(assets.controllers, wrapper));
+    this.server.get('/assets/bones/models.js', mirror.assets(assets.models, wrapper));
+    this.server.get('/assets/bones/views.js', mirror.assets(assets.views, wrapper));
     this.server.get('/assets/bones/templates.js', mirror.source(assets.templates, wrapper));
 };
 
