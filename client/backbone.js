@@ -81,5 +81,5 @@ Backbone.sync = _.wrap(Backbone.sync, function(parent, method, model, success, e
         clone.set({ 'bones.token': Backbone.csrf(getUrl(model)) });
     }
 
-    return parent.call(this, method, clone, success, error);
+    return parent.call(this, method, clone || model, success, error);
 });
