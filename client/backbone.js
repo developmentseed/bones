@@ -54,17 +54,24 @@ Backbone.History.prototype.saveLocation = function(fragment) {
 };
 
 
-// Generate CSRF protection token that is valid for the specified amount of msec.
-// The default is 1 second.
-Backbone.csrf = function(timeout) {
+// Generate CSRF protection token that is valid for the specified amount of
+// msec. The default is 1 second. Callers should provide the request path to
+// ensure the cookie is not pervasive across requests.
+Backbone.csrf = function(path, timeout) {
     var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789';
     var token = '';
     while (token.length < 32) {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
+    // Remove hashes, query strings from cookie path.
+    path = path || '/';
+    path = path.split('#')[0].split('?')[0];
+
     var expires = new Date(+new Date + (timeout || 1000)).toGMTString();
-    document.cookie = 'bones.token=' + token + ';expires=' + expires + ';';
+    document.cookie = 'bones.token=' + token
+        + ';expires=' + expires
+        + ';path=' + path + ';';
     return token;
 };
 
