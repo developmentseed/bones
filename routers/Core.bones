@@ -54,10 +54,11 @@ router.prototype.initializeAssets = function(app) {
     };
 
 
-    this.server.get('/assets/bones/vendor.js', mirror.assets(assets.vendor));
-    this.server.get('/assets/bones/core.js', mirror.assets(assets.core));
+    this.server.get('/assets/bones/vendor.js', mirror.assets(assets.vendor), { type: '.js' });
+    this.server.get('/assets/bones/core.js', mirror.assets(assets.core), { type: '.js' });
 
     var options = {
+        type: '.js',
         wrapper: Bones.utils.wrapClientFile,
         sort: Bones.utils.sortByLoadOrder
     };
