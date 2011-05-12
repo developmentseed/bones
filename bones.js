@@ -1,3 +1,8 @@
+if (global.__BonesPlugin__) {
+    console.trace("\033[0;31mMultiple instances of bones are not supported.\033[0m");
+    process.exit(1);
+}
+
 exports.$ = require('jquery');
 exports._ = require('underscore');
 exports.mirror = require('mirror');
@@ -16,29 +21,14 @@ exports.View = require('bones/server/view');
 exports.Server = require('bones/server/server');
 exports.Command = require('bones/server/command');
 
-Object.defineProperty(exports, 'plugin', {
-    get: function() {
-        if (!global.__BonesPlugin__) {
-            var Plugin = require('./server/plugin');
-            global.__BonesPlugin__ = new Plugin();
-            require('./core');
-        }
-        return global.__BonesPlugin__;
-    }
-});
-
 exports.load = function(dir) {
-    this.plugin.directories.push(dir);
-    this.plugin
-        .require(dir, 'controllers')
-        .require(dir, 'models')
-        .require(dir, 'routers')
-        .require(dir, 'templates')
-        .require(dir, 'views')
-        .require(dir, 'servers')
-        .require(dir, 'commands');
+    return exports.plugin.load(dir);
 };
 
 exports.start = function() {
-    return this.plugin.start();
+    return exports.plugin.start();
 };
+
+var Plugin = require('./server/plugin');
+exports.plugin = global.__BonesPlugin__ = new Plugin();
+exports.plugin.load(__dirname);

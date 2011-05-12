@@ -36,6 +36,33 @@ require.extensions['.bones'] = function(module, filename) {
     }
 };
 
+
+// Default template engine.
+require.extensions['._'] = function(module, filename) {
+    var content = fs.readFileSync(filename, 'utf8');
+    var name = path.basename(filename).replace(/\..+$/, '');
+
+    try {
+        module.exports = _.template(content);
+        Bones.plugin.add(module.exports, filename);
+    } catch (err) {
+        var lines = err.message.split('\n');
+        lines.splice(1, 0, '    in template ' + filename);
+        err.message = lines.join('\n');
+        throw err;
+    }
+
+    module.exports.register = function(app) {
+        if (app.assets) {
+            app.assets.templates.push({
+                filename: filename,
+                content: 'template = ' + module.exports + ';'
+            });
+        }
+    };
+};
+
+
 module.exports = Plugin;
 function Plugin() {
     this.directories = [];
@@ -52,6 +79,20 @@ function Plugin() {
 
 function alphabetical(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());
+}
+
+Plugin.prototype.load = function(dir) {
+    if (this.directories.indexOf(dir) < 0) {
+        this.directories.push(dir);
+        this.require(dir, 'controllers');
+        this.require(dir, 'models');
+        this.require(dir, 'routers');
+        this.require(dir, 'templates');
+        this.require(dir, 'views');
+        this.require(dir, 'servers');
+        this.require(dir, 'commands');
+    }
+    return this;
 }
 
 Plugin.prototype.require = function(dir, kind) {
