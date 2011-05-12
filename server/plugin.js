@@ -126,7 +126,7 @@ Plugin.prototype.add = function(component, filename) {
     Bones.plugin.order.push(filename);
 };
 
-Plugin.prototype.start = function() {
+Plugin.prototype.start = function(callback) {
     this.argv = require('optimist').argv;
 
     var command = this.argv._.length ? this.argv._[0] : 'start';
@@ -135,7 +135,7 @@ Plugin.prototype.start = function() {
     } else {
         var command = this.commands[command];
         this.loadConfig(command);
-        return new command(this);
+        return new command(this, callback);
     }
 };
 

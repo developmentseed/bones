@@ -25,8 +25,8 @@ exports.load = function(dir) {
     return exports.plugin.load(dir);
 };
 
-exports.start = function() {
-    return exports.plugin.start();
+exports.start = function(callback) {
+    return exports.plugin.start(callback);
 };
 
 var Plugin = require('./server/plugin');
