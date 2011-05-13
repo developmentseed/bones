@@ -76,11 +76,11 @@ router.prototype.loadCollection = function(req, res, next) {
         // Pass any querystring paramaters to the collection.
         req.collection = new this.models[name]([], req.query);
         req.collection.fetch({
-            success: function(collection) {
-                res.send(collection.models);
+            success: function(collection, resp) {
+                res.send(resp, headers);
             },
-            error: function(collection) {
-                res.send({ error: "Couldn't load collection" }, headers, 500);
+            error: function(collection, err) {
+                next({ error: err });
             }
         });
     } else {
@@ -101,10 +101,10 @@ router.prototype.getModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.fetch({
         success: function(model, resp) {
-            res.send(JSON.stringify(model), headers);
+            res.send(resp, headers);
         },
         error: function(model, err) {
-            next(JSON.stringify({ error: err }));
+            next({ error: err });
         }
     });
 };
