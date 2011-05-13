@@ -78,21 +78,39 @@ Backbone.csrf = function(path, timeout) {
 // Client-side override of `Backbone.sync`. Adds CSRF double-cookie
 // confirmation protection to all PUT/POST/DELETE requests. The csrf middleware
 // must be used server-side to invalidate requests without this CSRF
-// proteciton.
-Backbone.sync = _.wrap(Backbone.sync, function(parent, method, model, success, error) {
+// protection. The original `Backbone.sync` cannot be reused because it does
+// not send a request body for DELETE requests.
+Backbone.sync = function(method, model, success, error) {
     function getUrl(object) {
         if (!(object && object.url)) throw new Error("A 'url' property or function must be specified");
         return _.isFunction(object.url) ? object.url() : object.url;
     };
 
-    if (method !== 'read') {
-        var token = Backbone.csrf(getUrl(model));
+    var type = {
+        'create': 'POST',
+        'update': 'PUT',
+        'delete': 'DELETE',
+        'read'  : 'GET'
+    }[method];
 
-        model.set({ 'bones.token': token }, { silent: true });
-        var result = parent.call(this, method, model, success, error);
-        model.unset('bones.token', { silent: true });
-        return result;
-    } else {
-        return parent.call(this, method, model, success, error);
+    if (method !== 'read') {
+        var modelJSON = model.toJSON();
+        modelJSON['bones.token'] = Backbone.csrf(getUrl(model));
+        modelJSON = JSON.stringify(modelJSON);
     }
-});
+
+    // Default JSON-request options.
+    var params = {
+        url:          getUrl(model),
+        type:         type,
+        contentType:  'application/json',
+        data:         (modelJSON || null),
+        dataType:     'json',
+        processData:  false,
+        success:      success,
+        error:        error
+    };
+
+    // Make the request.
+    $.ajax(params);
+};
