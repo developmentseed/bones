@@ -104,7 +104,8 @@ router.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            next({ error: err });
+            err = err instanceof Object ? err.toString() : err;
+            res.send({ error: err });
         }
     });
 };
@@ -116,6 +117,7 @@ router.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
+            err = err instanceof Object ? err.toString() : err;
             res.send({ error: err }, headers, 409);
         }
     });
@@ -128,7 +130,8 @@ router.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            next({ error: err });
+            err = err instanceof Object ? err.toString() : err;
+            res.send({ error: err }, headers, 409);
         }
     });
 };
