@@ -43,8 +43,11 @@ _.extend(Server.prototype, Backbone.Events, {
         this.server.error(middleware.showError());
     },
 
+    // TODO: Find a better solution for pre/post hooks
     conclude: function(plugin) {
-        this.server.all('*', middleware.notFound());
+        if (this.server) {
+            this.server.all('*', middleware.notFound());
+        }
     },
 
     port: 3000,
