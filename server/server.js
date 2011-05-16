@@ -46,7 +46,7 @@ _.extend(Server.prototype, Backbone.Events, {
     // TODO: Find a better solution for pre/post hooks
     conclude: function(plugin) {
         if (this.server) {
-            this.server.all('*', middleware.notFound());
+            this.server.use(middleware.notFound());
         }
     },
 
