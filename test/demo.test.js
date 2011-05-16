@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 var assert = require('assert');
 
 require('./fixtures/demo');
@@ -62,7 +63,7 @@ exports['routes'] = function(beforeExit) {
         },
         body: '{"bones.token":"1f4a1137268b8e384e50d0fb72c627c4"}'
     }, {
-        body: 'Cannot POST /page/foo',
+        body: 'Not Found',
         status: 404
     });
 };
@@ -80,7 +81,7 @@ exports['api endpoints'] = function() {
         url: '/api/page/foo',
         method: 'GET'
     }, {
-        body: 'Cannot GET /api/page/foo',
+        body: 'Not Found',
         status: 404
     });
 

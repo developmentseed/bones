@@ -21,6 +21,7 @@ function Server(plugin) {
 
     this.middleware(plugin);
     this.initialize(plugin);
+    this.conclude(plugin);
 };
 
 _.extend(Server.prototype, Backbone.Events, {
@@ -39,6 +40,11 @@ _.extend(Server.prototype, Backbone.Events, {
         this.server.use(middleware.cookieParser());
         this.server.use(middleware.csrf());
         this.server.use(middleware.fragmentRedirect());
+        this.server.error(middleware.showError());
+    },
+
+    conclude: function(plugin) {
+        this.server.all('*', middleware.notFound());
     },
 
     port: 3000,

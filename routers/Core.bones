@@ -80,7 +80,7 @@ router.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                next({ error: err });
+                next(new Error.HTTP(err, 404));
             }
         });
     } else {
@@ -104,8 +104,7 @@ router.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            res.send({ error: err });
+            next(new Error.HTTP(err, 404));
         }
     });
 };
@@ -118,7 +117,7 @@ router.prototype.saveModel = function(req, res, next) {
         },
         error: function(model, err) {
             err = err instanceof Object ? err.toString() : err;
-            res.send({ error: err }, headers, 409);
+            next(new Error.HTTP(err, 409));
         }
     });
 };
@@ -131,7 +130,7 @@ router.prototype.delModel = function(req, res, next) {
         },
         error: function(model, err) {
             err = err instanceof Object ? err.toString() : err;
-            res.send({ error: err }, headers, 409);
+            next(new Error.HTTP(err, 409));
         }
     });
 };

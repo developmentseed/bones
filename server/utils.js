@@ -1,5 +1,6 @@
 var utils = module.exports = require('../shared/utils');
 var fs = require('fs');
+var http = require('http');
 var path = require('path');
 var tty = require('tty');
 
@@ -77,3 +78,21 @@ utils.sortByLoadOrder = function(assets) {
     assets.length = 0;
     for (var i = 0; i < order.length; i++) assets[i] = order[i];
 };
+
+
+Error.HTTP = function(message, status) {
+    if (typeof message === 'number') {
+        status = message;
+        message = null;
+    }
+    if (!message) {
+        message = http.STATUS_CODES[status] || 'Unknown';
+    }
+
+    Error.call(this, message);
+    Error.captureStackTrace(this, arguments.callee);
+    this.message = message;
+    this.status = status;
+};
+
+Error.HTTP.prototype.__proto__ = Error.prototype;
