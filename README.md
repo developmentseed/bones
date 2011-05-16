@@ -4,7 +4,7 @@ Bones provides conventions for [Backbone](http://documentcloud.github.com/backbo
 
 ## Getting started
 
-The [wiki contains more informatin on **getting started**](https://github.com/developmentseed/bones/wiki).
+The [wiki](https://github.com/developmentseed/bones/wiki) contains more information on [**Getting Started**](https://github.com/developmentseed/bones/wiki/Getting-Started) and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Architecture) in Bones.
 
 ## License
 
