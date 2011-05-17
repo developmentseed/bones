@@ -16,7 +16,6 @@ exports.Backbone = require('bones/server/backbone');
 exports.Controller = require('bones/server/controller');
 exports.Model = require('bones/server/model');
 exports.Collection = require('bones/server/collection');
-exports.Router = require('bones/server/router');
 exports.View = require('bones/server/view');
 exports.Server = require('bones/server/server');
 exports.Command = require('bones/server/command');

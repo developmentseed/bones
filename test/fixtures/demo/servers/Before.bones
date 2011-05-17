@@ -1,6 +1,6 @@
-router = Bones.Router.extend({
+server = Bones.Server.extend({
     initialize: function() {
-        this.server.get('/page/baz', this.pageSpecial);
+        this.get('/page/baz', this.pageSpecial);
     },
 
     pageSpecial: function(req, res, next) {

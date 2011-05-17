@@ -3,10 +3,10 @@ var assert = require('assert');
 
 require('./fixtures/collections');
 var demo = require('bones').plugin;
-var main = new demo.servers['Main'](demo);
+var server = new demo.servers['Core'](demo);
 
 exports['api endpoints'] = function() {
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/House',
         method: 'GET'
     }, {

@@ -3,10 +3,10 @@ var assert = require('assert');
 
 require('./fixtures/demo');
 var demo = require('bones').plugin;
-var main = new demo.servers['Main'](demo);
+var server = new demo.servers['Core'](demo);
 
 exports['routes'] = function(beforeExit) {
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/submodule-page',
         method: 'GET'
     }, {
@@ -14,7 +14,7 @@ exports['routes'] = function(beforeExit) {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/foo',
         method: 'GET'
     }, {
@@ -22,7 +22,7 @@ exports['routes'] = function(beforeExit) {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/bar',
         method: 'GET'
     }, {
@@ -30,7 +30,7 @@ exports['routes'] = function(beforeExit) {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/special',
         method: 'GET'
     }, {
@@ -38,7 +38,7 @@ exports['routes'] = function(beforeExit) {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/baz',
         method: 'GET'
     }, {
@@ -46,7 +46,7 @@ exports['routes'] = function(beforeExit) {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/foo',
         method: 'POST'
     }, {
@@ -54,7 +54,7 @@ exports['routes'] = function(beforeExit) {
         status: 403
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/page/foo',
         method: 'POST',
         headers: {
@@ -69,7 +69,7 @@ exports['routes'] = function(beforeExit) {
 };
 
 exports['api endpoints'] = function() {
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/foo',
         method: 'GET'
     }, {
@@ -77,7 +77,7 @@ exports['api endpoints'] = function() {
         status: 200
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/page/foo',
         method: 'GET'
     }, {
@@ -85,7 +85,7 @@ exports['api endpoints'] = function() {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/foo',
         method: 'PUT',
         headers: {

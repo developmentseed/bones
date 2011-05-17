@@ -3,10 +3,10 @@ var assert = require('assert');
 
 require('./fixtures/assets');
 var demo = require('bones').plugin;
-var main = new demo.servers['Main'](demo);
+var server = new demo.servers['Core'](demo);
 
 exports['assets'] = function(beforeExit) {
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/assets/assets/does-not-exist',
         method: 'GET'
     }, {
@@ -14,7 +14,7 @@ exports['assets'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/assets/assets/foo',
         method: 'GET'
     }, {
