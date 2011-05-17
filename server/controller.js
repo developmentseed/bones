@@ -3,29 +3,29 @@ var _ = require('underscore');
 
 module.exports = Backbone.Controller;
 
-Backbone.Controller.register = function(app) {
+Backbone.Controller.register = function(server) {
     // Add the controller if it's not a server-only controller.
     this.files.forEach(function(filename) {
-        if (!(/\.server\.bones$/).test(filename) && app.assets &&
-            app.assets.controllers.indexOf(filename) < 0) {
-            app.assets.controllers.push(filename);
+        if (!(/\.server\.bones$/).test(filename) && server.assets &&
+            server.assets.controllers.indexOf(filename) < 0) {
+            server.assets.controllers.push(filename);
         }
     });
 
     // TODO push the order of the controllers to the client
 
-    return app.controllers[this.title] = new this(app);
+    return server.controllers[this.title] = new this({ server: server });
 };
 
 Backbone.Controller.toString = function() {
     return '<Controller ' + this.title + '>';
 };
 
-Backbone.Controller.prototype.initialize = function(app) {
-    if (!app.server) {
+Backbone.Controller.prototype.initialize = function(options) {
+    if (!options.server) {
         throw new Error("Can't initialize controller without server.");
     }
-    this.server = app.server;
+    this.server = options.server;
 
     // Bind routes.
     if (this.routes) {
