@@ -70,7 +70,6 @@ function Plugin() {
     this.config = {};
     this.controllers = {};
     this.models = {};
-    this.routers = {};
     this.templates = {};
     this.views = {};
     this.servers = {};
@@ -86,7 +85,6 @@ Plugin.prototype.load = function(dir) {
         this.directories.push(dir);
         this.require(dir, 'controllers');
         this.require(dir, 'models');
-        this.require(dir, 'routers');
         this.require(dir, 'templates');
         this.require(dir, 'views');
         this.require(dir, 'servers');
