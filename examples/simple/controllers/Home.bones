@@ -4,11 +4,13 @@ controller = Backbone.Controller.extend({
         '/foo': 'foo'
     },
 
-    home: function(res) {
-        res((new views['Home']).el);
+    home: function() {
+        var view = new views['Home'];
+        if (this.res) this.res.send(view.el);
     },
 
-    foo: function(res) {
-        res((new views['Foo']).el);
+    foo: function() {
+        var view = new views['Foo'];
+        if (this.res) this.res.send(view.el);
     }
 });
