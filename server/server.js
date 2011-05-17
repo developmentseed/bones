@@ -6,7 +6,6 @@ var middleware = require('..').middleware;
 module.exports = Server;
 function Server(plugin) {
     HTTPServer.call(this, []);
-    this.init([]);
     this.plugin = plugin;
     this.initialize(plugin);
     this.conclude(plugin);
