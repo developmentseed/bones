@@ -3,10 +3,10 @@ var assert = require('assert');
 
 require('./fixtures/demo');
 var demo = require('bones').plugin;
-var main = new demo.servers['Main'](demo);
+var server = new demo.servers['Core'](demo);
 
 exports['error 404'] = function(beforeExit) {
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/does-not-exist',
         method: 'GET'
     }, {
@@ -14,7 +14,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/does-not-exist',
         method: 'GET',
         headers: { 'accept': 'application/json' }
@@ -23,7 +23,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
         headers: { 'accept': 'application/json' }
@@ -32,7 +32,7 @@ exports['error 404'] = function(beforeExit) {
         status: 403
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
         headers: {
@@ -45,7 +45,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
         headers: {
@@ -59,7 +59,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/DoesNotExit/asdf',
         method: 'GET'
     }, {
@@ -67,7 +67,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/DoesNotExit/asdf',
         method: 'GET',
         headers: { 'accept': 'application/json' }
@@ -76,7 +76,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'GET'
     }, {
@@ -84,7 +84,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'GET',
         headers: { 'accept': 'application/json' }
@@ -93,7 +93,7 @@ exports['error 404'] = function(beforeExit) {
         status: 404
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'PUT',
         headers: {
@@ -106,7 +106,7 @@ exports['error 404'] = function(beforeExit) {
         status: 409
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'PUT',
         headers: {
@@ -120,7 +120,7 @@ exports['error 404'] = function(beforeExit) {
         status: 409
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'DELETE',
         headers: {
@@ -133,7 +133,7 @@ exports['error 404'] = function(beforeExit) {
         status: 409
     });
 
-    assert.response(main.server, {
+    assert.response(server, {
         url: '/api/Page/asdf',
         method: 'DELETE',
         headers: {
