@@ -1,9 +1,9 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert');
 
-require('./fixtures/collections');
-var demo = require('bones').plugin;
-var server = new demo.servers['Core'](demo);
+require('./fixture');
+var fixture = require('bones').plugin;
+var server = new fixture.servers['Core'](fixture);
 
 exports['api endpoints'] = function() {
     assert.response(server, {

@@ -2,13 +2,13 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert');
 var fs = require('fs');
 
-require('./fixtures/assets');
-var demo = require('bones').plugin;
-var server = new demo.servers['Core'](demo);
+require('./fixture');
+var fixture = require('bones').plugin;
+var server = new fixture.servers['Core'](fixture);
 
 exports['assets'] = function(beforeExit) {
     assert.response(server, {
-        url: '/assets/assets/does-not-exist',
+        url: '/assets/fixture/does-not-exist',
         method: 'GET'
     }, {
         body: 'Not Found',
@@ -16,7 +16,7 @@ exports['assets'] = function(beforeExit) {
     });
 
     assert.response(server, {
-        url: '/assets/assets/foo',
+        url: '/assets/fixture/foo',
         method: 'GET'
     }, {
         body: 'lorem ipsum',
@@ -24,7 +24,7 @@ exports['assets'] = function(beforeExit) {
     });
 };
 
-exports['core assets'] = function(beforeExit) {
+exports['/assets/bones/core.js'] = function() {
     assert.response(server, {
         url: '/assets/bones/core.js',
         method: 'GET'
@@ -34,7 +34,9 @@ exports['core assets'] = function(beforeExit) {
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/shared/backbone.js'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/shared/utils.js'))) >= 0);
     });
+};
 
+exports['/assets/bones/core.js'] = function() {
     assert.response(server, {
         url: '/assets/bones/vendor.js',
         method: 'GET'

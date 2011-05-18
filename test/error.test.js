@@ -1,9 +1,9 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert');
 
-require('./fixtures/demo');
-var demo = require('bones').plugin;
-var server = new demo.servers['Core'](demo);
+require('./fixture');
+var fixture = require('bones').plugin;
+var server = new fixture.servers['Core'](fixture);
 
 exports['error 404'] = function(beforeExit) {
     assert.response(server, {
