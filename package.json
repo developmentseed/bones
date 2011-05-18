@@ -14,6 +14,7 @@
     },
 
     "scripts": {
-        "test": "expresso"
+        "test": "expresso",
+        "coverage": "./test/coverage.sh"
     }
 }
