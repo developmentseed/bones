@@ -77,7 +77,7 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                next(new Error.HTTP(err, 404));
+                next(new Error.HTTP(err, 500));
             }
         });
     } else {
