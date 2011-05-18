@@ -14,15 +14,20 @@ command.prototype.initialize = function(plugin, callback) {
         return;
     }
 
-    var started = 0;
     this.servers = {};
-    for (var server in plugin.servers) {
-        this.servers[server] = new plugin.servers[server](plugin);
-        this.servers[server].start(function() {
-            console.warn('Started %s.', Bones.utils.colorize(this, 'green'));
-            this.emit('start');
-            started++;
-            (started === _(plugin.servers).size()) && callback && callback();
-        }.bind(this.servers[server]));
-    }
+    var queue = _(plugin.servers)
+        .filter(function(server) { return !!server.prototype.port })
+        .length;
+    _(plugin.servers)
+        .chain()
+        .filter(function(server) { return !!server.prototype.port })
+        .each(function(server) {
+            this.servers[server.title] = new server(plugin);
+            this.servers[server.title].start(function() {
+                console.warn('Started %s.', Bones.utils.colorize(this, 'green'));
+                this.emit('start');
+                queue--;
+                queue === 0 && callback && callback();
+            }.bind(this.servers[server.title]));
+        }.bind(this));
 };
