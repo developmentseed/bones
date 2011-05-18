@@ -28,6 +28,7 @@ exports['test start --help'] = function(beforeExit) {
         assert.deepEqual(output, [
             [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture start [options...]\u001b[0m' ],
             [ '%s%s: %s', '\u001b[1;33mstart\u001b[0m', '\u001b[0;33m\u001b[0m', 'start application' ],
+            [ '    --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '    --config=[path]  Path to JSON configuration file.' ]
         ]);
     });
