@@ -2,9 +2,8 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert');
 var fs = require('fs');
 
-require('./fixture');
+require('./fixture')
 var fixture = require('bones').plugin;
-var server = new fixture.servers['Core'](fixture);
 
 exports['stringify'] = function() {
     assert.equal(fixture.controllers.Foo + '', '<Controller Foo>');
@@ -23,7 +22,7 @@ exports['stringify'] = function() {
     assert.equal(fixture.servers.Asset + '', '<Server Asset>');
     assert.equal(fixture.servers.Core + '', '<Server Core>');
     assert.equal(fixture.servers.Middleware + '', '<Server Middleware>');
-    assert.equal(new fixture.servers.Middleware + '', '[Server Middleware]');
+    assert.equal(new fixture.servers.Asset({directories: []}) + '', '[Server Asset]');
 
     assert.equal(fixture.commands.foo + '', '<Command foo>');
     assert.equal(new fixture.commands.foo + '', '[Command foo]');

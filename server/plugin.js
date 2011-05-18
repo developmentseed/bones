@@ -231,7 +231,7 @@ Plugin.prototype.help = function(callback) {
             options.push([
                 option.shortcut ? '-' + option.shortcut : '',
                 '--' + (option.title || key),
-                (option.description ? option.description + ' ' : '') + '(Default: ' + util.inspect(value) +')'
+                (option.description ? option.description + ' ' : '') + '(Default: ' + JSON.stringify(value) +')'
             ]);
         }
         options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);

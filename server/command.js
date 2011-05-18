@@ -32,4 +32,9 @@ Command.toString = function() {
     return '<Command ' + this.title + '>';
 };
 
-Command.options = {};
+Command.options = {
+    'host': {
+        'description': 'Hostnames allowed for requests. Wildcards are allowed.',
+        'default': [ require('os').hostname() ]
+    }
+};

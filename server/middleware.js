@@ -1,6 +1,37 @@
 var env = process.env.NODE_ENV || 'development';
+var host = require('os').hostname();
 
 exports = module.exports = require('express');
+
+exports['sanitizeHost'] = function sanitizeHost(app) {
+    var hosts = app.config.host;
+    if (hosts) {
+        hosts.forEach(function(host, i) {
+            if (typeof host === 'string') {
+                hosts[i] = new RegExp('^' + hosts[i].replace(/\./g, '\\.').replace(/\*/g, '[a-z0-9_-]+') + '$', 'i');
+                // Make sure we get the original host names when stringifying the host name matcher.
+                hosts[i].toJSON = function() { return host; };
+            }
+        });
+    }
+
+    return function(req, res, next) {
+        if (!req.headers.host) {
+            return next();
+        } else if (!hosts.length) {
+            req.headers.host = host;
+            return next();
+        } else {
+            for (var i = 0; i < hosts.length; i++) {
+                if (hosts[i].test(req.headers.host)) {
+                    return next();
+                }
+            }
+        }
+
+        res.send(400);
+    };
+};
 
 exports['csrf'] = function csrf() {
     return function(req, res, next) {
@@ -12,7 +43,7 @@ exports['csrf'] = function csrf() {
         } else {
             next(new Error.HTTP(403));
         }
-    }
+    };
 };
 
 exports['fragmentRedirect'] = function fragmentRedirect() {
@@ -26,7 +57,7 @@ exports['fragmentRedirect'] = function fragmentRedirect() {
             var path = '/' + req.query._escaped_fragment_.substr(1);
             res.redirect(path, 301);
         }
-    }
+    };
 };
 
 exports['showError'] = function showError() {

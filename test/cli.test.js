@@ -1,5 +1,8 @@
 var assert = require('assert');
+var os = require('os');
 var exec = require('child_process').exec;
+
+var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["' + os.hostname() + '","other","*.third"])';
 
 exports['test --help'] = function() {
     exec('node test/fixture --help', function(err, stdout, stderr) {
@@ -19,6 +22,7 @@ exports['test start --help'] = function() {
         assert.equal(stdout,
             'Usage: node ./test/fixture start [options...]\n' +
             'start: start application\n' +
+            '    --host           ' + hostnameDescription + '\n' +
             '    --adminParty     Celebrate with administrators! (Default: false)\n' +
             '    --config=[path]  Path to JSON configuration file.\n');
         assert.equal(stderr, '');
@@ -31,8 +35,9 @@ exports['test foo --help'] = function() {
         assert.equal(stdout,
             'Usage: node ./test/fixture foo [options...]\n' +
             'foo: demo command\n' +
-            '      --lorem          Lorem ipsum dolor sit amet. (Default: \'ipsum\')\n' +
-            '  -d  --dolor          (Default: \'' + __dirname + '/fixture/commands\')\n' +
+            '      --lorem          Lorem ipsum dolor sit amet. (Default: "ipsum")\n' +
+            '  -d  --dolor          (Default: "' + __dirname + '/fixture/commands")\n' +
+            '      --host           ' + hostnameDescription + '\n' +
             '      --adminParty     Celebrate with administrators! (Default: false)\n' +
             '      --config=[path]  Path to JSON configuration file.\n');
         assert.equal(stderr, '');
@@ -46,7 +51,8 @@ exports['test foo --config=test/fixture/config.json'] = function() {
             adminParty: true,
             unknownOption: 42,
             lorem: "ipsum",
-            dolor: __dirname + '/fixture/commands'
+            dolor: __dirname + '/fixture/commands',
+            host: [ os.hostname(), 'other', '*.third' ]
         });
         assert.equal(stderr, 'Note: Unknown option "unknownOption" in config file.\n');
     });
@@ -58,7 +64,8 @@ exports['test foo --dolor=pain'] = function() {
         assert.deepEqual(JSON.parse(stdout), {
             adminParty: false,
             lorem: "ipsum",
-            dolor: 'pain'
+            dolor: 'pain',
+            host: [ os.hostname(), 'other', '*.third' ]
         });
         assert.equal(stderr, '');
     });
@@ -76,7 +83,12 @@ exports['test foo --config=test/fixture/config.json --show-config'] = function()
             '    "adminParty": true,\n' +
             '    "unknownOption": 42,\n' +
             '    "lorem": "ipsum",\n' +
-            '    "dolor": "' + __dirname + '/fixture/commands"\n' +
+            '    "dolor": "' + __dirname + '/fixture/commands",\n' +
+            '    "host": [\n' +
+            '        "' + os.hostname() + '",\n' +
+            '        "other",\n' +
+            '        "*.third"\n' +
+            '    ]\n' +
             '}\n');
     });
 };

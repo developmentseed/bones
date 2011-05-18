@@ -1,7 +1,16 @@
 var assert = require('assert');
+var os = require('os');
 var exec = require('child_process').exec;
 
+var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["' + os.hostname() + '","other","*.third"])';
+
+// Remove all hidden properties from an object.
+function makePlain(json) {
+    return JSON.parse(JSON.stringify(json));
+}
+
 require('./fixture');
+
 exports['test --help'] = function(beforeExit) {
     var completed = false;
 
@@ -29,6 +38,7 @@ exports['test start --help'] = function(beforeExit) {
         assert.deepEqual(output, [
             [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture start [options...]\u001b[0m' ],
             [ '%s%s: %s', '\u001b[1;33mstart\u001b[0m', '\u001b[0;33m\u001b[0m', 'start application' ],
+            [ '    --host           ' + hostnameDescription ],
             [ '    --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '    --config=[path]  Path to JSON configuration file.' ]
         ]);
@@ -47,8 +57,9 @@ exports['test foo --help'] = function(beforeExit) {
         assert.deepEqual(output, [
             [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture foo [options...]\u001b[0m' ],
             [ '%s%s: %s', '\u001b[1;33mfoo\u001b[0m', '\u001b[0;33m\u001b[0m', 'demo command' ],
-            [ '      --lorem          Lorem ipsum dolor sit amet. (Default: \'ipsum\')' ],
-            [ '  -d  --dolor          (Default: \'' + __dirname + '/fixture/commands\')' ],
+            [ '      --lorem          Lorem ipsum dolor sit amet. (Default: "ipsum")' ],
+            [ '  -d  --dolor          (Default: "' + __dirname + '/fixture/commands")' ],
+            [ '      --host           ' + hostnameDescription ],
             [ '      --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '      --config=[path]  Path to JSON configuration file.' ]
         ]);
@@ -77,9 +88,10 @@ exports['test foo --config=test/fixture/config.json'] = function(beforeExit) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', config: 'test/fixture/config.json' };
     require('bones').start(function(output) {
         completed = true;
-        assert.deepEqual(require('bones').plugin.config, {
+        assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: __dirname + '/fixture/commands',
+            host: [ os.hostname(), 'other', '*.third' ],
             adminParty: true,
             unknownOption: 42
         });
@@ -97,9 +109,10 @@ exports['test foo --dolor=pain'] = function(beforeExit) {
     require('bones').plugin.config = {};
     require('bones').start(function(output) {
         completed = true;
-        assert.deepEqual(require('bones').plugin.config, {
+        assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
+            host: [ os.hostname(), 'other', '*.third' ],
             adminParty: false
         });
         assert.equal(output, 'successfully started!');
@@ -115,9 +128,10 @@ exports['test foo --config=test/fixture/config.json --show-config'] = function(b
     require('bones').start(function(output) {
         completed = true;
         assert.equal(output, undefined);
-        assert.deepEqual(require('bones').plugin.config, {
+        assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
+            host: [ os.hostname(), 'other', '*.third' ],
             adminParty: true,
             unknownOption: 42
         });

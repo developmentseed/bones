@@ -2,9 +2,7 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert');
 var fs = require('fs');
 
-require('./fixture');
-var fixture = require('bones').plugin;
-var server = new fixture.servers['Core'](fixture);
+var server = require('./fixture/start').servers.Core;
 
 exports['assets'] = function(beforeExit) {
     assert.response(server, {
