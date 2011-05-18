@@ -2,7 +2,7 @@ var assert = require('assert');
 var os = require('os');
 var exec = require('child_process').exec;
 
-var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["' + os.hostname() + '","other","*.third"])';
+var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["localhost","' + os.hostname() + '","other","*.third"])';
 
 // Remove all hidden properties from an object.
 function makePlain(json) {
@@ -91,7 +91,7 @@ exports['test foo --config=test/fixture/config.json'] = function(beforeExit) {
         assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: __dirname + '/fixture/commands',
-            host: [ os.hostname(), 'other', '*.third' ],
+            host: [ 'localhost', os.hostname(), 'other', '*.third' ],
             adminParty: true,
             unknownOption: 42
         });
@@ -112,7 +112,7 @@ exports['test foo --dolor=pain'] = function(beforeExit) {
         assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
-            host: [ os.hostname(), 'other', '*.third' ],
+            host: [ 'localhost', os.hostname(), 'other', '*.third' ],
             adminParty: false
         });
         assert.equal(output, 'successfully started!');
@@ -131,7 +131,7 @@ exports['test foo --config=test/fixture/config.json --show-config'] = function(b
         assert.deepEqual(makePlain(require('bones').plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
-            host: [ os.hostname(), 'other', '*.third' ],
+            host: [ 'localhost', os.hostname(), 'other', '*.third' ],
             adminParty: true,
             unknownOption: 42
         });
