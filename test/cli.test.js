@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 exports['test --help'] = function() {
     exec('node test/fixture --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
-        assert.equal(stdout, 'Usage: node ./test/fixture [command] --help for a list of options.\nAvailable commands are:\n  start:  start application\n');
+        assert.equal(stdout, 'Usage: node ./test/fixture [command] --help for a list of options.\nAvailable commands are:\n  start:  start application\n  foo:    demo command\n');
         assert.equal(stderr, '');
     });
 };

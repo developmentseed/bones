@@ -12,7 +12,8 @@ exports['test --help'] = function(beforeExit) {
         assert.deepEqual(output, [
             [ 'Usage: %s for a list of options.', '\u001b[0;32mnode ./test/fixture [command] --help\u001b[0m' ],
             [ 'Available commands are:' ],
-            [ '  start:  start application' ]
+            [ '  start:  start application' ],
+            [ '  foo:    demo command' ]
         ]);
     });
 
