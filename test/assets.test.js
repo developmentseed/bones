@@ -52,8 +52,6 @@ exports['/assets/bones/controllers.js'] = function() {
         url: '/assets/bones/controllers.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.equal(res.body.length, 1141);
-
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/node_modules/submodule/controllers/Foo'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/controllers/Page'))) >= 0);
 
@@ -73,8 +71,6 @@ exports['/assets/bones/models.js'] = function() {
         url: '/assets/bones/models.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.equal(res.body.length, 1651);
-
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Failure'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Failures'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/House'))) >= 0);
@@ -103,8 +99,6 @@ exports['/assets/bones/views.js'] = function() {
         url: '/assets/bones/views.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.equal(res.body.length, 1780);
-
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/views/Error'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/views/App'))) >= 0);
 

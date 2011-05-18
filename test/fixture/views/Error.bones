@@ -4,7 +4,7 @@ view = Backbone.View.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(templates.Error(this.options));
+        this.el = templates.Error(this.options);
         return this;
     }
 });
