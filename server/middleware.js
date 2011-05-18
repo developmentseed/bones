@@ -5,6 +5,9 @@ exports = module.exports = require('express');
 
 exports['sanitizeHost'] = function sanitizeHost(app) {
     var hosts = app.config.host;
+    if (!Array.isArray(hosts)) {
+        hosts = app.config.host = [ hosts ];
+    }
     if (hosts) {
         hosts.forEach(function(host, i) {
             if (typeof host === 'string') {
