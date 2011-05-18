@@ -132,8 +132,11 @@ Plugin.prototype.start = function(callback) {
         this.help(callback);
     } else {
         var command = this.commands[command];
-        this.loadConfig(command);
-        return new command(this, callback);
+        if (this.loadConfig(command)) {
+            return new command(this, callback);
+        } else if (callback) {
+            callback();
+        }
     }
 };
 
@@ -198,6 +201,9 @@ Plugin.prototype.loadConfig = function(command) {
     if (showConfig) {
         console.warn(utils.colorize('Using configuration:', 'green'));
         console.warn(JSON.stringify(config, false, 4));
+        return false;
+    } else {
+        return true;
     }
 };
 

@@ -107,3 +107,21 @@ exports['test foo --dolor=pain'] = function(beforeExit) {
 
     beforeExit(function() { assert.ok(completed); });
 };
+
+exports['test foo --config=test/fixture/config.json --show-config'] = function(beforeExit) {
+    var completed = false;
+
+    require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', config: 'test/fixture/config.json', 'show-config': true };
+    require('bones').start(function(output) {
+        completed = true;
+        assert.equal(output, undefined);
+        assert.deepEqual(require('bones').plugin.config, {
+            lorem: 'ipsum',
+            dolor: 'pain',
+            adminParty: true,
+            unknownOption: 42
+        });
+    });
+
+    beforeExit(function() { assert.ok(completed); });
+};

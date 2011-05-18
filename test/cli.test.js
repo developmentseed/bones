@@ -63,3 +63,20 @@ exports['test foo --dolor=pain'] = function() {
         assert.equal(stderr, '');
     });
 };
+
+
+exports['test foo --config=test/fixture/config.json --show-config'] = function() {
+    exec('node test/fixture foo --config=test/fixture/config.json --show-config', function(err, stdout, stderr) {
+        assert.ok(!err);
+        assert.equal(stdout, '');
+        assert.equal(stderr,
+            'Note: Unknown option "unknownOption" in config file.\n' +
+            'Using configuration:\n' +
+            '{\n' +
+            '    "adminParty": true,\n' +
+            '    "unknownOption": 42,\n' +
+            '    "lorem": "ipsum",\n' +
+            '    "dolor": "' + __dirname + '/fixture/commands"\n' +
+            '}\n');
+    });
+};
