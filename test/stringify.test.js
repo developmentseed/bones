@@ -16,6 +16,7 @@ exports['stringify'] = function() {
     assert.equal(fixture.models.Failures + '', '<Collection Failures>');
     assert.equal(fixture.models.House + '', '<Model House>');
     assert.equal(fixture.models.Houses + '', '<Collection Houses>');
+    assert.equal(new fixture.models.Houses + '', '[Collection Houses]');
     assert.equal(fixture.models.Page + '', '<Model Page>');
     assert.equal(new fixture.models.Page + '', '[Model Page]');
 
