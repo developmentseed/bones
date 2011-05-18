@@ -25,6 +25,9 @@ exports['stringify'] = function() {
     assert.equal(fixture.servers.Middleware + '', '<Server Middleware>');
     assert.equal(new fixture.servers.Middleware + '', '[Server Middleware]');
 
+    assert.equal(fixture.commands.foo + '', '<Command foo>');
+    assert.equal(new fixture.commands.foo + '', '[Command foo]');
+
     assert.equal(fixture.views.App + '', '<View App>');
     assert.equal(fixture.views.Error + '', '<View Error>');
     assert.equal(new fixture.views.Error({ error: 'test' }) + '', '[View Error]');

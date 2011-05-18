@@ -15,6 +15,10 @@ Command.prototype.bootstrap = function(plugin, callback) {
 
 Command.prototype.initialize = function(plugin, callback) {};
 
+Command.prototype.toString = function() {
+    return '[Command ' + this.constructor.title + ']';
+};
+
 Command.augment = Backbone.Controller.augment;
 Command.extend = Backbone.Controller.extend;
 
