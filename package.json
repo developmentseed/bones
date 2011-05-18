@@ -1,6 +1,6 @@
 {
     "name": "bones",
-    "version": "1.3.0beta",
+    "version": "1.3.0",
 
     "main": "./bones.js",
 
