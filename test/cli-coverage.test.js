@@ -55,3 +55,16 @@ exports['test foo --help'] = function(beforeExit) {
 
     beforeExit(function() { assert.ok(completed); });
 };
+
+
+exports['test foo'] = function(beforeExit) {
+    var completed = false;
+
+    require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture' };
+    require('bones').start(function(output) {
+        completed = true;
+        assert.equal(output, 'successfully started!');
+    });
+
+    beforeExit(function() { assert.ok(completed); });
+};
