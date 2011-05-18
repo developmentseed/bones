@@ -9,8 +9,8 @@ var server = new fixture.servers['Core'](fixture);
 exports['stringify'] = function() {
     assert.equal(fixture.controllers.Foo + '', '<Controller Foo>');
     assert.equal(fixture.controllers.Page + '', '<Controller Page>');
-    var server = new (require('bones').Server.extend({}, { title: 'Demo' }));
-    assert.equal(new fixture.controllers.Page({ server: server }) + '', '[Controller Page]');
+    var srv = new (require('bones').Server.extend({}, { title: 'Demo' }));
+    assert.equal(new fixture.controllers.Page({ server: srv }) + '', '[Controller Page]');
 
     assert.equal(fixture.models.Failure + '', '<Model Failure>');
     assert.equal(fixture.models.Failures + '', '<Collection Failures>');
