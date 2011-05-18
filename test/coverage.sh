@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
 cd ..
+rm -rf coverage/node_modules
 mkdir -p coverage/node_modules
-rm -rf coverage/node_modules/bones
 jscoverage --no-instrument=test \
            --no-instrument=node_modules \
            --no-instrument=assets \
