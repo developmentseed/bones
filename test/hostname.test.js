@@ -21,6 +21,14 @@ exports['hostname'] = function() {
 
     assert.response(server, {
         url: '/hostname',
+        headers: { host: os.hostname() + ':3000' }
+    }, {
+        body: os.hostname() + ':3000',
+        status: 200
+    });
+
+    assert.response(server, {
+        url: '/hostname',
         headers: { host: 'other' }
     }, {
         body: 'other',
@@ -32,6 +40,14 @@ exports['hostname'] = function() {
         headers: { host: 'foo.third' }
     }, {
         body: 'foo.third',
+        status: 200
+    });
+
+    assert.response(server, {
+        url: '/hostname',
+        headers: { host: 'foo.third:3000' }
+    }, {
+        body: 'foo.third:3000',
         status: 200
     });
 

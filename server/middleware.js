@@ -8,7 +8,7 @@ exports['sanitizeHost'] = function sanitizeHost(app) {
     if (hosts) {
         hosts.forEach(function(host, i) {
             if (typeof host === 'string') {
-                hosts[i] = new RegExp('^' + hosts[i].replace(/\./g, '\\.').replace(/\*/g, '[a-z0-9_-]+') + '$', 'i');
+                hosts[i] = new RegExp('^' + hosts[i].replace(/\./g, '\\.').replace(/\*/g, '[a-z0-9_-]+') + '(:\\d+)?$', 'i');
                 // Make sure we get the original host names when stringifying the host name matcher.
                 hosts[i].toJSON = function() { return host; };
             }
