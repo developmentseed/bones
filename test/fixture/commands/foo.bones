@@ -7,6 +7,13 @@ command.options['lorem'] = {
     'default': 'ipsum'
 };
 
+command.options['dolor'] = {
+    'shortcut': 'd',
+    'default': function() {
+        return __dirname;
+    }
+}
+
 command.prototype.initialize = function(plugin, callback) {
     if (callback) callback('successfully started!');
 };
