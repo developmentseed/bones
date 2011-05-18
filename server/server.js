@@ -17,9 +17,14 @@ _.extend(Server.prototype, Backbone.Events, {
     initialize : function(plugin) {},
 
     conclude: function(plugin) {
+        // Add catchall 404 middleware and error handler for root servers.
         if (this.port) {
             this.use(middleware.notFound());
             this.error(middleware.showError());
+        // Remove redundant frontmost middleware from each server that will not
+        // be a root server. See `express/lib/http.js`.
+        } else {
+            this.stack.shift();
         }
     },
 
