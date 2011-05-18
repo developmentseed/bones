@@ -1,5 +1,6 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert');
+var os = require('os');
 
 require('./fixture');
 var fixture = require('bones').plugin;
@@ -36,6 +37,17 @@ exports['routes'] = function(beforeExit) {
     }, {
         body: 'special page',
         status: 200
+    });
+
+    assert.response(server, {
+        url: '/?_escaped_fragment_=/page/special',
+        method: 'GET',
+        headers: { host: os.hostname() }
+    }, {
+        body: '<p>Moved Permanently. Redirecting to <a href="http://' + os.hostname() + '/page/special">http://' + os.hostname() + '/page/special</a></p>',
+        status: 301
+    }, function(res) {
+        assert.equal(res.headers.location, 'http://' + os.hostname() + '/page/special');
     });
 
     assert.response(server, {
