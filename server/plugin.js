@@ -91,7 +91,7 @@ Plugin.prototype.load = function(dir) {
         this.require(dir, 'commands');
     }
     return this;
-}
+};
 
 Plugin.prototype.require = function(dir, kind) {
     dir = path.join(dir, kind);
@@ -129,7 +129,7 @@ Plugin.prototype.start = function(callback) {
 
     var command = this.argv._.length ? this.argv._[0] : 'start';
     if (this.argv.help || !(command in this.commands)) {
-        this.help();
+        this.help(callback);
     } else {
         var command = this.commands[command];
         this.loadConfig(command);
@@ -201,20 +201,21 @@ Plugin.prototype.loadConfig = function(command) {
     }
 };
 
-Plugin.prototype.help = function() {
+Plugin.prototype.help = function(callback) {
+    var output = [];
     var command = this.argv._.length ? this.argv._[0] : false;
     if (command !== false && command in this.commands) {
         // Display information about this command.
         var command = this.commands[command];
-        console.log('Usage: %s', utils.colorize(this.argv['$0'] + ' ' +
+        output.push(['Usage: %s', utils.colorize(this.argv['$0'] + ' ' +
             command.title +
             (command.usage ? ' ' + command.usage : '') +
-            ' [options...]', 'green'));
+            ' [options...]', 'green')]);
 
-        console.log('%s%s: %s',
+        output.push(['%s%s: %s',
             utils.colorize(command.title, 'yellow', 'bold'),
             utils.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
-            command.description);
+            command.description]);
 
         var options = [];
         for (var key in command.options) {
@@ -229,33 +230,43 @@ Plugin.prototype.help = function() {
         }
         options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);
 
-        table(options);
+        table(options).forEach(function(line) { output.push(line); });
     } else {
         // Display information about all available commands.
-        console.log('Usage: %s for a list of options.', utils.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green'));
-        console.log('Available commands are:');
+        output.push(['Usage: %s for a list of options.', utils.colorize(this.argv['$0'] + ' ' + (command || '[command]') + ' --help', 'green')]);
+        output.push(['Available commands are:']);
         var commands = [];
         for (var key in this.commands) {
             commands.push([ this.commands[key].title + ':', this.commands[key].description || '']);
         }
-        table(commands);
+        table(commands).forEach(function(line) { output.push(line); });
     }
-    process.exit(1);
+
+    if (callback) {
+        callback(output);
+    } else {
+        output.forEach(function(params) {
+            console.log.apply(console, params);
+        });
+        process.exit(1);
+    }
 };
 
 function table(fields) {
-    if (!fields[0]) return;
+    var output = [];
+    if (!fields[0]) return output;
     var lengths = fields[0].map(function(val, i) {
         return Math.max.apply(Math, fields.map(function(field) {
             return field[i].length;
         }));
     });
     fields.forEach(function(field) {
-        console.log(
+        output.push([
             '  ' + field.map(function(val, i) {
                 if (i >= lengths.length - 1) return val;
                 return val + Array(lengths[i] - val.length + 1).join(' ');
             }).join('  ')
-        );
+        ]);
     });
+    return output;
 };
