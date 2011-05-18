@@ -16,4 +16,5 @@ command.options['dolor'] = {
 
 command.prototype.initialize = function(plugin, callback) {
     if (callback) callback('successfully started!');
+    else if (plugin) console.log(JSON.stringify(plugin.config));
 };

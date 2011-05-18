@@ -42,7 +42,24 @@ exports['test foo --help'] = function() {
 exports['test foo --config=test/fixture/config.json'] = function() {
     exec('node test/fixture foo --config=test/fixture/config.json', function(err, stdout, stderr) {
         assert.ok(!err);
-        assert.equal(stdout, '');
+        assert.deepEqual(JSON.parse(stdout), {
+            adminParty: true,
+            unknownOption: 42,
+            lorem: "ipsum",
+            dolor: __dirname + '/fixture/commands'
+        });
         assert.equal(stderr, 'Note: Unknown option "unknownOption" in config file.\n');
+    });
+};
+
+exports['test foo --dolor=pain'] = function() {
+    exec('node test/fixture foo --dolor=pain', function(err, stdout, stderr) {
+        assert.ok(!err);
+        assert.deepEqual(JSON.parse(stdout), {
+            adminParty: false,
+            lorem: "ipsum",
+            dolor: 'pain'
+        });
+        assert.equal(stderr, '');
     });
 };
