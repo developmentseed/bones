@@ -25,7 +25,7 @@ exports['test start --help'] = function() {
     });
 };
 
-exports['test start foo --help'] = function() {
+exports['test foo --help'] = function() {
     exec('node test/fixture foo --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
         assert.equal(stdout,
@@ -35,5 +35,13 @@ exports['test start foo --help'] = function() {
             '    --adminParty     Celebrate with administrators! (Default: false)\n' +
             '    --config=[path]  Path to JSON configuration file.\n');
         assert.equal(stderr, '');
+    });
+};
+
+exports['test foo --config=test/fixture/config.json'] = function() {
+    exec('node test/fixture foo --config=test/fixture/config.json', function(err, stdout, stderr) {
+        assert.ok(!err);
+        assert.equal(stdout, '');
+        assert.equal(stderr, 'Note: Unknown option "unknownOption" in config file.\n');
     });
 };

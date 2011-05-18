@@ -68,3 +68,21 @@ exports['test foo'] = function(beforeExit) {
 
     beforeExit(function() { assert.ok(completed); });
 };
+
+
+exports['test foo --config=test/fixture/config.json'] = function(beforeExit) {
+    var completed = false;
+
+    require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', config: 'test/fixture/config.json' };
+    require('bones').start(function(output) {
+        completed = true;
+        assert.deepEqual(require('bones').plugin.config, {
+            lorem: 'ipsum',
+            adminParty: true,
+            unknownOption: 42
+        });
+        assert.equal(output, 'successfully started!');
+    });
+
+    beforeExit(function() { assert.ok(completed); });
+};
