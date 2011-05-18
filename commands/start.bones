@@ -2,12 +2,6 @@ command = Bones.Command.extend();
 
 command.description = 'start application';
 
-command.options.adminParty = {
-    'shortcut': 'a',
-    'description': 'Enable admin mode.',
-    'default': false
-};
-
 command.prototype.initialize = function(plugin, callback) {
     if (!Object.keys(plugin.servers).length) {
         console.warn(Bones.utils.colorize('No servers defined.', 'red'));
