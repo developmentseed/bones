@@ -1,6 +1,6 @@
 if (global.__BonesPlugin__) {
     console.trace("\033[0;31mMultiple instances of bones are not supported.\033[0m");
-    process.exit(1);
+    process.exit(4);
 }
 
 exports.$ = require('jquery');
