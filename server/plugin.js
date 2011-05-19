@@ -188,6 +188,9 @@ Plugin.prototype.loadConfig = function(command) {
                     // It's from the config file.
                     console.warn(utils.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
+            } else if (command.options[key].required && typeof config[key] === 'undefined') {
+                console.warn(utils.colorize('Error: "' + key + '" is required.', 'red'));
+                process.exit(2);
             }
         }
     }
@@ -226,12 +229,19 @@ Plugin.prototype.help = function(callback) {
         var options = [];
         for (var key in command.options) {
             var option = command.options[key];
-            var value = option['default'];
-            if (typeof value === 'function') value = value(this);
+            var required = '';
+            if (option.required) {
+                required = utils.colorize('(Required)', 'default', 'bold');
+            } else {
+                var value = option['default'];
+                if (typeof value === 'function') value = value(this);
+                required = '(Default: ' + JSON.stringify(value) +')';
+            }
+
             options.push([
                 option.shortcut ? '-' + option.shortcut : '',
                 '--' + (option.title || key),
-                (option.description ? option.description + ' ' : '') + '(Default: ' + JSON.stringify(value) +')'
+                (option.description ? option.description + ' ' : '') + required
             ]);
         }
         options.push([ '', '--config=[path]', 'Path to JSON configuration file.' ]);

@@ -7,6 +7,7 @@ var tty = require('tty');
 var bones = require('..');
 
 var colors = {
+    'default': 1,
     black: 30,
     red: 31,
     green: 32,
