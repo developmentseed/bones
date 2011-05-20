@@ -28,7 +28,7 @@ require.extensions['.bones'] = function(module, filename) {
     wrappers[kind].prefix = wrappers[kind].prefix || '';
     wrappers[kind].suffix = wrappers[kind].suffix || '';
 
-    content = wrappers[kind].prefix + ';' + content + ';' + wrappers[kind].suffix;
+    content = wrappers[kind].prefix + ';' + content + '\n;' + wrappers[kind].suffix;
     module._compile(content, filename);
 
     if (module.exports) {

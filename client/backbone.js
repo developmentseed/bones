@@ -94,7 +94,7 @@ Backbone.sync = function(method, model, success, error) {
     }[method];
 
     if (method !== 'read') {
-        var modelJSON = model.toJSON();
+        var modelJSON = model.toJSON ? model.toJSON() : model;
         modelJSON['bones.token'] = Backbone.csrf(getUrl(model));
         modelJSON = JSON.stringify(modelJSON);
     }
