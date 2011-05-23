@@ -35,6 +35,6 @@ Command.toString = function() {
 Command.options = {
     'host': {
         'description': 'Hostnames allowed for requests. Wildcards are allowed.',
-        'default': [ 'localhost', require('os').hostname() ]
+        'default': [ '127.0.0.1', 'localhost', require('os').hostname() ]
     }
 };
