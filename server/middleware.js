@@ -5,18 +5,18 @@ exports = module.exports = require('express');
 
 exports['sanitizeHost'] = function sanitizeHost(app) {
     var hosts = app.config.host;
-    if (!Array.isArray(hosts)) {
+    if (!hosts) {
+        hosts = app.config.host = [];
+    } else if (!Array.isArray(hosts)) {
         hosts = app.config.host = [ hosts ];
     }
-    if (hosts) {
-        hosts.forEach(function(host, i) {
-            if (typeof host === 'string') {
-                hosts[i] = new RegExp('^' + hosts[i].replace(/\./g, '\\.').replace(/\*/g, '[a-z0-9_-]+') + '(:\\d+)?$', 'i');
-                // Make sure we get the original host names when stringifying the host name matcher.
-                hosts[i].toJSON = function() { return host; };
-            }
-        });
-    }
+    hosts.forEach(function(host, i) {
+        if (typeof host === 'string') {
+            hosts[i] = new RegExp('^' + hosts[i].replace(/\./g, '\\.').replace(/\*/g, '[a-z0-9_-]+') + '(:\\d+)?$', 'i');
+            // Make sure we get the original host names when stringifying the host name matcher.
+            hosts[i].toJSON = function() { return host; };
+        }
+    });
 
     return function(req, res, next) {
         if (!req.headers.host) {
