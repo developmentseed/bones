@@ -40,7 +40,7 @@ Backbone.History.prototype.start = function() {
 };
 
 Backbone.History.prototype.getFragment = function(loc) {
-    var hashStrip = /#!/;
+    var hashStrip = /#!?/;
     return (loc || window.location).hash.replace(hashStrip, '');
 };
 
@@ -53,6 +53,21 @@ Backbone.History.prototype.saveLocation = function(fragment) {
     Backbone.History.prototype._saveLocation('!' + fragment);
 };
 
+Backbone.History.prototype.checkUrl = function() {
+    var current = this.getFragment();
+    if (current == this.fragment && this.iframe) {
+        current = this.getFragment(this.iframe.location);
+    }
+    if (current == this.fragment ||
+        current == decodeURIComponent(this.fragment)) return false;
+    if (this.iframe) {
+      alert('changing from "'+this.fragment+'" to "'+current+'"');
+      // These are the only changed lines from Backbone.
+      this.iframe.location.hash = current;
+      window.location.hash = '!' + current;
+    }
+    this.loadUrl();
+};
 
 // Generate CSRF protection token that is valid for the specified amount of
 // msec. The default is 1 second. Callers should provide the request path to
