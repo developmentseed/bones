@@ -61,7 +61,6 @@ Backbone.History.prototype.checkUrl = function() {
     if (current == this.fragment ||
         current == decodeURIComponent(this.fragment)) return false;
     if (this.iframe) {
-      alert('changing from "'+this.fragment+'" to "'+current+'"');
       // These are the only changed lines from Backbone.
       this.iframe.location.hash = current;
       window.location.hash = '!' + current;
