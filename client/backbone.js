@@ -39,18 +39,10 @@ Backbone.History.prototype.start = function() {
     return this.loadUrl();
 };
 
-Backbone.History.prototype.getFragment = function(loc) {
-    var hashStrip = /#!?/;
-    return (loc || window.location).hash.replace(hashStrip, '');
-};
-
 Backbone.History.prototype._saveLocation = Backbone.History.prototype.saveLocation;
 Backbone.History.prototype.saveLocation = function(fragment) {
-    var hashStrip = /#!/;
-    // Next two lines are duplicated withing the original saveLocation method.
-    fragment = (fragment || '').replace(hashStrip, '');
-    if (this.fragment == fragment) return;
-    Backbone.History.prototype._saveLocation('!' + fragment);
+    // Override: Ensure ! so browser behaves correctly when using back button.
+    Backbone.History.prototype._saveLocation.call(this, '!' + fragment.replace(/^!*/, ''));
 };
 
 Backbone.History.prototype.checkUrl = function() {
@@ -61,11 +53,24 @@ Backbone.History.prototype.checkUrl = function() {
     if (current == this.fragment ||
         current == decodeURIComponent(this.fragment)) return false;
     if (this.iframe) {
-      // These are the only changed lines from Backbone.
+      // Override: Keep IE happy.
       this.iframe.location.hash = current;
       window.location.hash = '!' + current;
     }
     this.loadUrl();
+};
+
+Backbone.History.prototype.loadUrl = function() {
+  this.fragment = this.getFragment();
+  // Override: Remove ! to look up route.
+  var fragment = this.fragment.replace(/^!*/, '');
+  var matched = _.any(this.handlers, function(handler) {
+    if (handler.route.test(fragment)) {
+      handler.callback(fragment);
+      return true;
+    }
+  });
+  return matched;
 };
 
 // Generate CSRF protection token that is valid for the specified amount of
