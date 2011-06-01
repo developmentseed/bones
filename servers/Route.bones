@@ -1,4 +1,5 @@
 var headers = { 'Content-Type': 'application/json' };
+var env = process.env.NODE_ENV || 'development';
 
 server = Bones.Server.extend({});
 
@@ -43,13 +44,16 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-    this.get('/assets/bones/vendor.js', mirror.assets(this.assets.vendor), { type: '.js' });
-    this.get('/assets/bones/core.js', mirror.assets(this.assets.core), { type: '.js' });
+    var maxAge = env == 'production' ? 3600 : 0;
+
+    this.get('/assets/bones/vendor.js', mirror.assets(this.assets.vendor, { type: '.js', maxAge: maxAge }));
+    this.get('/assets/bones/core.js', mirror.assets(this.assets.core, { type: '.js', maxAge: maxAge }));
 
     var options = {
         type: '.js',
         wrapper: Bones.utils.wrapClientFile,
-        sort: Bones.utils.sortByLoadOrder
+        sort: Bones.utils.sortByLoadOrder,
+        maxAge: maxAge
     };
     this.get('/assets/bones/controllers.js', mirror.assets(this.assets.controllers, options));
     this.get('/assets/bones/models.js', mirror.assets(this.assets.models, options));
