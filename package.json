@@ -10,7 +10,7 @@
         "backbone": "0.3.3",
         "jquery": "1.5.x",
         "optimist": "0.1.x",
-        "mirror": "0.2.x"
+        "mirror": "0.3.x"
     },
 
     "scripts": {

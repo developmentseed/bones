@@ -1,5 +1,4 @@
 var headers = { 'Content-Type': 'application/json' };
-var env = process.env.NODE_ENV || 'development';
 
 server = Bones.Server.extend({});
 
@@ -44,21 +43,34 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-    var maxAge = env == 'production' ? 3600 : 0;
+    var vendor = new mirror(this.assets.vendor, { type: '.js' });
+    this.get('/assets/bones/vendor.js', vendor);
 
-    this.get('/assets/bones/vendor.js', mirror.assets(this.assets.vendor, { type: '.js', maxAge: maxAge }));
-    this.get('/assets/bones/core.js', mirror.assets(this.assets.core, { type: '.js', maxAge: maxAge }));
+    var core = new mirror(this.assets.core, { type: '.js' });
+    this.get('/assets/bones/core.js', core);
 
     var options = {
         type: '.js',
         wrapper: Bones.utils.wrapClientFile,
-        sort: Bones.utils.sortByLoadOrder,
-        maxAge: maxAge
+        sort: Bones.utils.sortByLoadOrder
     };
-    this.get('/assets/bones/controllers.js', mirror.assets(this.assets.controllers, options));
-    this.get('/assets/bones/models.js', mirror.assets(this.assets.models, options));
-    this.get('/assets/bones/views.js', mirror.assets(this.assets.views, options));
-    this.get('/assets/bones/templates.js', mirror.source(this.assets.templates, options));
+
+    var controllers = new mirror(this.assets.controllers, options);
+    this.get('/assets/bones/controllers.js', controllers);
+
+    var models = new mirror(this.assets.models, options);
+    this.get('/assets/bones/models.js', models);
+
+    var views = new mirror(this.assets.views, options);
+    this.get('/assets/bones/views.js', views);
+
+    var templates = new mirror(this.assets.templates, options);
+    this.get('/assets/bones/templates.js', templates);
+
+    this.get('/assets/bones/all.js', new mirror(
+        [ vendor, core, controllers, models, views, templates ],
+        { type: '.js' }
+    ));
 };
 
 server.prototype.initializeModels = function(app) {
