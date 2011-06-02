@@ -2,29 +2,48 @@ var headers = { 'Content-Type': 'application/json' };
 
 server = Bones.Server.extend({});
 
+var options = {
+    type: '.js',
+    wrapper: Bones.utils.wrapClientFile,
+    sort: Bones.utils.sortByLoadOrder
+};
+
+// TODO for Bones 1.4: This should be moved to the initialize method!
 server.prototype.assets = {
-    vendor: [
+    vendor: new mirror([
         require.resolve('bones/assets/jquery'),
         require.resolve('underscore'),
         require.resolve('backbone')
-    ],
-    core: [
+    ], { type: '.js' }),
+    core: new mirror([
         require.resolve('bones/shared/utils'),
         require.resolve('bones/client/utils'),
         require.resolve('bones/shared/backbone'),
         require.resolve('bones/client/backbone')
-    ],
-    models: [],
-    views: [],
-    controllers: [],
-    templates: []
+    ], { type: '.js' }),
+    models: new mirror([], options),
+    views: new mirror([], options),
+    controllers: new mirror([], options),
+    templates: new mirror([], options)
 };
 
+// TODO for Bones 1.4: This should be moved to the initialize method!
+server.prototype.assets.all = new mirror([
+    server.prototype.assets.vendor,
+    server.prototype.assets.core,
+    server.prototype.assets.controllers,
+    server.prototype.assets.models,
+    server.prototype.assets.views,
+    server.prototype.assets.templates
+], { type: '.js' });
+
 // Stores models, views served by this server.
+// TODO for Bones 1.4: This should be moved to the initialize method!
 server.prototype.models = {};
 server.prototype.views = {};
 
 // Stores instances of controllers registered with this server.
+// TODO for Bones 1.4: This should be moved to the initialize method!
 server.prototype.controllers = {};
 
 server.prototype.initialize = function(app) {
@@ -43,34 +62,14 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-    var vendor = new mirror(this.assets.vendor, { type: '.js' });
-    this.get('/assets/bones/vendor.js', vendor);
+    this.get('/assets/bones/vendor.js', this.assets.vendor);
+    this.get('/assets/bones/core.js', this.assets.core);
+    this.get('/assets/bones/controllers.js', this.assets.controllers);
+    this.get('/assets/bones/models.js', this.assets.models);
+    this.get('/assets/bones/views.js', this.assets.views);
+    this.get('/assets/bones/templates.js', this.assets.templates);
 
-    var core = new mirror(this.assets.core, { type: '.js' });
-    this.get('/assets/bones/core.js', core);
-
-    var options = {
-        type: '.js',
-        wrapper: Bones.utils.wrapClientFile,
-        sort: Bones.utils.sortByLoadOrder
-    };
-
-    var controllers = new mirror(this.assets.controllers, options);
-    this.get('/assets/bones/controllers.js', controllers);
-
-    var models = new mirror(this.assets.models, options);
-    this.get('/assets/bones/models.js', models);
-
-    var views = new mirror(this.assets.views, options);
-    this.get('/assets/bones/views.js', views);
-
-    var templates = new mirror(this.assets.templates, options);
-    this.get('/assets/bones/templates.js', templates);
-
-    this.get('/assets/bones/all.js', new mirror(
-        [ vendor, core, controllers, models, views, templates ],
-        { type: '.js' }
-    ));
+    this.get('/assets/bones/all.js', this.assets.all);
 };
 
 server.prototype.initializeModels = function(app) {
