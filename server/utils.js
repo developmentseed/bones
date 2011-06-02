@@ -75,9 +75,12 @@ utils.wrapClientFile = function(content, filename) {
 };
 
 utils.sortByLoadOrder = function(assets) {
-    var order = _.intersect(bones.plugin.order, assets);
-    assets.length = 0;
-    for (var i = 0; i < order.length; i++) assets[i] = order[i];
+    var reference = bones.plugin.order;
+    assets.sort(function loadOrderSort(a, b) {
+        a = reference.indexOf(a);
+        b = reference.indexOf(b);
+        return (a < 0 || b < 0) ? b - a : a - b;
+    });
 };
 
 
