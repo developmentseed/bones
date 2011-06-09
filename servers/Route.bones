@@ -92,6 +92,7 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
+                err = err instanceof Object ? err.toString() : err;
                 next(new Error.HTTP(err, 500));
             }
         });
@@ -116,6 +117,7 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
+            err = err instanceof Object ? err.toString() : err;
             next(new Error.HTTP(err, 404));
         }
     });
