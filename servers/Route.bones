@@ -127,7 +127,7 @@ server.prototype.saveModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.save(req.body, {
         success: function(model, resp) {
-            res.send(model, headers);
+            res.send({}, headers);
         },
         error: function(model, err) {
             err = err instanceof Object ? err.toString() : err;
