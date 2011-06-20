@@ -89,7 +89,7 @@ server.prototype.loadCollection = function(req, res, next) {
         req.collection = new this.models[name]([], req.query);
         req.collection.fetch({
             success: function(collection, resp) {
-                res.send(resp, headers);
+                res.send(collection, headers);
             },
             error: function(collection, err) {
                 err = err instanceof Object ? err.toString() : err;
@@ -114,7 +114,7 @@ server.prototype.getModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.fetch({
         success: function(model, resp) {
-            res.send(resp, headers);
+            res.send(model, headers);
         },
         error: function(model, err) {
             err = err instanceof Object ? err.toString() : err;
@@ -127,7 +127,7 @@ server.prototype.saveModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.save(req.body, {
         success: function(model, resp) {
-            res.send(resp, headers);
+            res.send(model, headers);
         },
         error: function(model, err) {
             err = err instanceof Object ? err.toString() : err;
