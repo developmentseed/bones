@@ -216,16 +216,21 @@ Plugin.prototype.help = function(callback) {
     if (command !== false && command in this.commands) {
         // Display information about this command.
         var command = this.commands[command];
-        output.push(['Usage: %s', utils.colorize(this.argv['$0'] + ' ' +
-            command.title +
-            (command.usage ? ' ' + command.usage : '') +
-            ' [options...]', 'green')]);
 
-        output.push(['%s%s: %s',
-            utils.colorize(command.title, 'yellow', 'bold'),
-            utils.colorize(command.usage ? ' ' + command.usage : '', 'yellow'),
-            command.description]);
+        output.push(['Usage: %s', utils.colorize(this.argv['$0'] + ' <command> [options...]', 'green')]);
 
+        output.push(["Commands: " + command.description]);
+
+        var usage = command.usage || [''];
+        _(_.isArray(usage) ? usage : [usage]).each(function(item) {
+            output.push([
+                '  %s %s',
+                utils.colorize(command.title, 'yellow', 'bold'),
+                utils.colorize(item, 'yellow'),
+            ]);
+        });
+
+        output.push(['\nOptions : ']);
         var options = [];
         for (var key in command.options) {
             var option = command.options[key];
