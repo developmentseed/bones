@@ -262,7 +262,7 @@ Plugin.prototype.help = function(callback) {
         callback(output);
     } else {
         output.forEach(function(params) {
-            console.log.apply(console, params);
+            console.warn.apply(console, params);
         });
         process.exit(1);
     }
