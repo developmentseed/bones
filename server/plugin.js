@@ -219,14 +219,14 @@ Plugin.prototype.help = function(callback) {
 
         output.push(['Usage: %s', utils.colorize(this.argv['$0'] + ' <command> [options...]', 'green')]);
 
-        output.push(["Commands: " + command.description]);
+        output.push(['Commands: ' + command.description]);
 
         var usage = command.usage || [''];
         _(_.isArray(usage) ? usage : [usage]).each(function(item) {
             output.push([
                 '  %s %s',
                 utils.colorize(command.title, 'yellow', 'bold'),
-                utils.colorize(item, 'yellow'),
+                utils.colorize(item, 'yellow')
             ]);
         });
 
