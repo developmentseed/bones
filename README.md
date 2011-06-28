@@ -6,6 +6,10 @@ Bones provides conventions for [Backbone](http://documentcloud.github.com/backbo
 
 The [wiki](https://github.com/developmentseed/bones/wiki) contains more information on [**Getting Started**](https://github.com/developmentseed/bones/wiki/Getting-Started) and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Architecture) in Bones.
 
+## Testing
+
+To run the test suite, type `npm test`.
+
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).

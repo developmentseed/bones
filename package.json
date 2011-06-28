@@ -21,7 +21,7 @@
     },
 
     "scripts": {
-        "test": "expresso",
+        "test": "expresso -I ..",
         "coverage": "./test/coverage.sh"
     }
 }
