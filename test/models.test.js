@@ -29,7 +29,7 @@ exports['api endpoints'] = function() {
         },
         body: '{"bones.token":"1f4a1137268b8e384e50d0fb72c627c4","id":"foo","key":"value"}'
     }, {
-        body: '{"id":"foo","key":"value","method":"update"}',
+        body: '{}',
         status: 200
     });
 };
