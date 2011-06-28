@@ -36,8 +36,10 @@ exports['test start --help'] = function(beforeExit) {
     require('bones').start(function(output) {
         completed = true;
         assert.deepEqual(output, [
-            [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture start [options...]\u001b[0m' ],
-            [ '%s%s: %s', '\u001b[1;33mstart\u001b[0m', '\u001b[0;33m\u001b[0m', 'start application' ],
+            [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture <command> [options...]\u001b[0m' ],
+            [ 'Commands: start application' ],
+            [ '  %s %s', '\u001b[1;33mstart\u001b[0m', '\u001b[0;33m\u001b[0m' ],
+            [ '\nOptions:' ],
             [ '    --host           ' + hostnameDescription ],
             [ '    --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '    --config=[path]  Path to JSON configuration file.' ]
@@ -55,8 +57,10 @@ exports['test foo --help'] = function(beforeExit) {
     require('bones').start(function(output) {
         completed = true;
         assert.deepEqual(output, [
-            [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture foo [options...]\u001b[0m' ],
-            [ '%s%s: %s', '\u001b[1;33mfoo\u001b[0m', '\u001b[0;33m\u001b[0m', 'demo command' ],
+            [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture <command> [options...]\u001b[0m' ],
+            [ 'Commands: demo command' ],
+            [ '  %s %s', '\u001b[1;33mfoo\u001b[0m', '\u001b[0;33m\u001b[0m' ],
+            [ '\nOptions:' ],
             [ '      --lorem          Lorem ipsum dolor sit amet. (Default: "ipsum")' ],
             [ '  -d  --dolor          (Default: "' + __dirname + '/fixture/commands")' ],
             [ '      --host           ' + hostnameDescription ],

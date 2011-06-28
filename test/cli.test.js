@@ -7,40 +7,46 @@ var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed
 exports['test --help'] = function() {
     exec('node test/fixture --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
-        assert.equal(stdout,
+        assert.equal(stderr,
             'Usage: node ./test/fixture [command] --help for a list of options.\n' +
             'Available commands are:\n' +
             '  start:  start application\n' +
             '  foo:    demo command\n');
-        assert.equal(stderr, '');
+        assert.equal(stdout, '');
     });
 };
 
 exports['test start --help'] = function() {
     exec('node test/fixture start --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
-        assert.equal(stdout,
-            'Usage: node ./test/fixture start [options...]\n' +
-            'start: start application\n' +
+        assert.equal(stderr,
+            'Usage: node ./test/fixture <command> [options...]\n' +
+            'Commands: start application\n' +
+            '  start \n' +
+            '\n' +
+            'Options:\n' +
             '    --host           ' + hostnameDescription + '\n' +
             '    --adminParty     Celebrate with administrators! (Default: false)\n' +
             '    --config=[path]  Path to JSON configuration file.\n');
-        assert.equal(stderr, '');
+        assert.equal(stdout, '');
     });
 };
 
 exports['test foo --help'] = function() {
     exec('node test/fixture foo --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
-        assert.equal(stdout,
-            'Usage: node ./test/fixture foo [options...]\n' +
-            'foo: demo command\n' +
+        assert.equal(stderr,
+            'Usage: node ./test/fixture <command> [options...]\n' +
+            'Commands: demo command\n' +
+            '  foo \n' +
+            '\n' +
+            'Options:\n' +
             '      --lorem          Lorem ipsum dolor sit amet. (Default: "ipsum")\n' +
             '  -d  --dolor          (Default: "' + __dirname + '/fixture/commands")\n' +
             '      --host           ' + hostnameDescription + '\n' +
             '      --adminParty     Celebrate with administrators! (Default: false)\n' +
             '      --config=[path]  Path to JSON configuration file.\n');
-        assert.equal(stderr, '');
+        assert.equal(stdout, '');
     });
 };
 

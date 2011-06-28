@@ -230,7 +230,7 @@ Plugin.prototype.help = function(callback) {
             ]);
         });
 
-        output.push(['\nOptions : ']);
+        output.push(['\nOptions:']);
         var options = [];
         for (var key in command.options) {
             var option = command.options[key];
