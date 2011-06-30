@@ -5,6 +5,13 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
     module.exports = Bones.utils;
 }
 
+Bones.utils.callback = function(callback) {
+    return {
+        success: function(model, response) { callback(null, response); },
+        error: function(model, err) { callback(err); }
+    };
+};
+
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
 Bones.utils.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
     'cooperation', 'health', 'justice', 'jeans', 'labour', 'machinery',
