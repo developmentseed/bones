@@ -67,6 +67,12 @@ exports['showError'] = function showError() {
     return function showError(err, req, res, next) {
         if (!err.status) err.status = 500;
 
+        // Output unexpected errors to console but hide them from public eyes.
+        if (err.status >= 500) {
+            if (process.env.NODE_ENV != 'test') console.error(err.stack || err.toString());
+            if (process.env.NODE_ENV == 'production') err.message = 'Internal Server Error';
+        }
+
         if ((req.headers.accept + '' || '').indexOf('json') >= 0) {
             res.writeHead(err.status, { 'Content-Type': 'application/json' });
             if (env === 'development') {
