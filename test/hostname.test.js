@@ -8,7 +8,7 @@ exports['hostname'] = function() {
     assert.response(server, {
         url: '/hostname'
     }, {
-        status: 204
+        status: 200
     });
 
     assert.response(server, {
