@@ -6,6 +6,6 @@ server.prototype.initialize = function(app) {
     this.use(middleware.sanitizeHost(app));
     this.use(middleware.bodyParser());
     this.use(middleware.cookieParser());
-    this.use(middleware.csrf());
+    this.use(middleware.validateCSRFToken());
     this.use(middleware.fragmentRedirect());
 };

@@ -36,7 +36,7 @@ exports['sanitizeHost'] = function sanitizeHost(app) {
     };
 };
 
-exports['csrf'] = function csrf() {
+exports['validateCSRFToken'] = function validateCSRFToken() {
     return function(req, res, next) {
         if (req.method === 'GET') {
             next();
