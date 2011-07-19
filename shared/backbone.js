@@ -26,10 +26,6 @@ var extend = Backbone.Router.extend;
 Backbone.Model.extend = Backbone.Collection.extend =
 Backbone.Router.extend = Backbone.View.extend = function() {
     var child = extend.apply(this, arguments);
-    for (var key in this) {
-        if (key === '__super__' || key === 'prototype' || key === 'title') continue;
-        child[key] = this[key];
-    }
     delete child.title;
     return child;
 };
