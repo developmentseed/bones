@@ -5,7 +5,7 @@
     <script src="/assets/bones/vendor.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/core.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/views.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/bones/controllers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/assets/bones/routers.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/models.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/simple/app.js" type="text/javascript" charset="utf-8"></script>
   </head>

@@ -23,7 +23,7 @@ server.prototype.assets = {
     ], { type: '.js' }),
     models: new mirror([], options),
     views: new mirror([], options),
-    controllers: new mirror([], options),
+    routers: new mirror([], options),
     templates: new mirror([], options)
 };
 
@@ -31,7 +31,7 @@ server.prototype.assets = {
 server.prototype.assets.all = new mirror([
     server.prototype.assets.vendor,
     server.prototype.assets.core,
-    server.prototype.assets.controllers,
+    server.prototype.assets.routers,
     server.prototype.assets.models,
     server.prototype.assets.views,
     server.prototype.assets.templates
@@ -42,9 +42,9 @@ server.prototype.assets.all = new mirror([
 server.prototype.models = {};
 server.prototype.views = {};
 
-// Stores instances of controllers registered with this server.
+// Stores instances of routers registered with this server.
 // TODO for Bones 1.4: This should be moved to the initialize method!
-server.prototype.controllers = {};
+server.prototype.routers = {};
 
 server.prototype.initialize = function(app) {
     this.registerComponents(app);
@@ -53,7 +53,7 @@ server.prototype.initialize = function(app) {
 };
 
 server.prototype.registerComponents = function(app) {
-    var components = ['controllers', 'models', 'views', 'templates'];
+    var components = ['routers', 'models', 'views', 'templates'];
     components.forEach(function(kind) {
         for (var name in app[kind]) {
             app[kind][name].register(this);
@@ -64,7 +64,7 @@ server.prototype.registerComponents = function(app) {
 server.prototype.initializeAssets = function(app) {
     this.get('/assets/bones/vendor.js', this.assets.vendor);
     this.get('/assets/bones/core.js', this.assets.core);
-    this.get('/assets/bones/controllers.js', this.assets.controllers);
+    this.get('/assets/bones/routers.js', this.assets.routers);
     this.get('/assets/bones/models.js', this.assets.models);
     this.get('/assets/bones/views.js', this.assets.views);
     this.get('/assets/bones/templates.js', this.assets.templates);

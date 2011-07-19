@@ -1,4 +1,4 @@
 // ---- start __FILE__ ----
 
-Bones.initialize('controller', function(models, views, controllers) {
-var controller;
+Bones.initialize('router', function(models, views, routers) {
+var router;

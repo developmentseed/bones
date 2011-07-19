@@ -8,7 +8,7 @@ var mirror = Bones.mirror;
 
 var models = Bones.plugin.models;
 var views = Bones.plugin.views;
-var controllers = Bones.plugin.controllers;
+var routers = Bones.plugin.routers;
 var templates = Bones.plugin.templates;
 var servers = Bones.plugin.servers;
 

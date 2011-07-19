@@ -5,8 +5,8 @@ $(function() {
 });
 
 (function() {
-    // Closure for models/views/controllers.
-    var models = {}, views = {}, controllers = {}, templates = {};
+    // Closure for models/views/routers.
+    var models = {}, views = {}, routers = {}, templates = {};
 
     Bones.server = false;
 
@@ -17,20 +17,20 @@ $(function() {
         } else if (kind === 'view') {
             var view = callback(models, views, templates);
             if (view) views[view.title] = view;
-        } else if (kind === 'controller') {
-            var controller = callback(models, views, controllers);
-            if (controller) controllers[controller.title] = controller;
+        } else if (kind === 'router') {
+            var router = callback(models, views, routers);
+            if (router) routers[router.title] = router;
         } else if (kind === 'template') {
             var template = callback(templates);
             if (template) templates[template.title] = template;
         } else if (_.isFunction(kind)) {
-            kind(models, views, controllers, templates);
+            kind(models, views, routers, templates);
         }
     };
 
     Bones.start = function() {
-        for (var k in controllers) {
-            new controllers[k];
+        for (var k in routers) {
+            new routers[k];
         }
 
         Backbone.history.start();
@@ -39,7 +39,7 @@ $(function() {
     Bones.DEBUG = {
         models: models,
         views: views,
-        controllers: controllers,
+        routers: routers,
         templates: templates
     };
 })();

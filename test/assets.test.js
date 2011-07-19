@@ -45,22 +45,22 @@ exports['/assets/bones/core.js'] = function() {
     });
 };
 
-exports['/assets/bones/controllers.js'] = function() {
+exports['/assets/bones/routers.js'] = function() {
     assert.response(server, {
-        url: '/assets/bones/controllers.js',
+        url: '/assets/bones/routers.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/node_modules/submodule/controllers/Foo'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/controllers/Page'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/node_modules/submodule/routers/Foo'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/routers/Page'))) >= 0);
 
         // Correct order.
-        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/controllers/Foo.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/controllers/Foo.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/controllers/Page.bones ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones ----') <
+                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones ----'));
 
-        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/controllers/Foo.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/controllers/Foo.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/controllers/Page.bones ----'));
+        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones ----') <
+                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones ----'));
     });
 };
 

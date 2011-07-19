@@ -44,8 +44,8 @@ _.extend(Server.prototype, Backbone.Events, {
     }
 });
 
-Server.augment = Backbone.Controller.augment;
-Server.extend = Backbone.Controller.extend;
+Server.augment = Backbone.Router.augment;
+Server.extend = Backbone.Router.extend;
 Server.toString = function() {
     return '<Server ' + this.title + '>';
 };

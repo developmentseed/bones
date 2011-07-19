@@ -1,3 +1,3 @@
-controller = Backbone.Controller.extend({
+router = Backbone.Router.extend({
 
 });

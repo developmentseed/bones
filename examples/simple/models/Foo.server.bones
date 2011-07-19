@@ -1,6 +1,6 @@
 model = models['Foo'].augment({
-    sync: function(method, model, success, error) {
+    sync: function(method, model, options) {
         model.set({ method: method });
-        success(model);
+        options.success(model);
     }
 });

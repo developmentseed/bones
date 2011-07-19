@@ -12,9 +12,9 @@ Backbone.Router.register = function(server) {
         }
     });
 
-    // TODO push the order of the controllers to the client
+    // TODO push the order of the routers to the client
 
-    return server.controllers[this.title] = new this({ server: server });
+    return server.routers[this.title] = new this({ server: server });
 };
 
 Backbone.Router.toString = function() {
@@ -23,23 +23,23 @@ Backbone.Router.toString = function() {
 
 Backbone.Router.prototype.initialize = function(options) {
     if (!options.server) {
-        throw new Error("Can't initialize controller without server.");
+        throw new Error("Can't initialize router without server.");
     }
     this.server = options.server;
 
     // Bind routes.
     if (this.routes) {
-        var controller = this, routes = this.routes;
+        var router = this, routes = this.routes;
         // Add the last routes first.
         _(this.routes).keys().reverse().forEach(function(route) {
             var name = routes[route];
-            controller.route(route, name, controller[name]);
+            router.route(route, name, router[name]);
         });
     }
 };
 
 Backbone.Router.prototype.toString = function() {
-    return '[Controller ' + this.constructor.title + ']';
+    return '[Router ' + this.constructor.title + ']';
 };
 
 Backbone.Router.prototype._bindRoutes = function() {

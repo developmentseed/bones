@@ -6,6 +6,6 @@ var Backbone = Bones.Backbone;
 
 var models = Bones.plugin.models;
 var views = Bones.plugin.views;
-var controllers = Bones.plugin.routers;
+var routers = Bones.plugin.routers;
 
-var controller;
+var router;

@@ -19,8 +19,8 @@ Command.prototype.toString = function() {
     return '[Command ' + this.constructor.title + ']';
 };
 
-Command.augment = Backbone.Controller.augment;
-Command.extend = Backbone.Controller.extend;
+Command.augment = Backbone.Router.augment;
+Command.extend = Backbone.Router.extend;
 
 Command.extend = _.wrap(Command.extend, function(parent, props, staticProps) {
     var result = parent.call(this, props, staticProps);

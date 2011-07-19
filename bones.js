@@ -13,7 +13,7 @@ exports.middleware = require('bones/server/middleware');
 exports.server = true;
 
 exports.Backbone = require('bones/server/backbone');
-exports.Controller = require('bones/server/controller');
+exports.Router = require('bones/server/router');
 exports.Model = require('bones/server/model');
 exports.Collection = require('bones/server/collection');
 exports.View = require('bones/server/view');

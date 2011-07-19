@@ -1,4 +1,4 @@
-controller = Backbone.Controller.extend({
+router = Backbone.Router.extend({
     routes: {
         '/page/:id': 'page',
         '/page/special': 'pageSpecial'

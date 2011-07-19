@@ -5,7 +5,7 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
 }
 
 Backbone.Model.augment = Backbone.Collection.augment =
-Backbone.Controller.augment = Backbone.View.augment = function(props) {
+Backbone.Router.augment = Backbone.View.augment = function(props) {
     var obj = this.prototype;
     for (var key in props) {
         if (typeof props[key] === 'function') {
@@ -22,9 +22,9 @@ Backbone.Controller.augment = Backbone.View.augment = function(props) {
     return this;
 };
 
-var extend = Backbone.Controller.extend;
+var extend = Backbone.Router.extend;
 Backbone.Model.extend = Backbone.Collection.extend =
-Backbone.Controller.extend = Backbone.View.extend = function() {
+Backbone.Router.extend = Backbone.View.extend = function() {
     var child = extend.apply(this, arguments);
     for (var key in this) {
         if (key === '__super__' || key === 'prototype' || key === 'title') continue;

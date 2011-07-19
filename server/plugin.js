@@ -68,7 +68,7 @@ function Plugin() {
     this.directories = [];
     this.order = [];
     this.config = {};
-    this.controllers = {};
+    this.routers = {};
     this.models = {};
     this.templates = {};
     this.views = {};
@@ -83,7 +83,7 @@ function alphabetical(a, b) {
 Plugin.prototype.load = function(dir) {
     if (this.directories.indexOf(dir) < 0) {
         this.directories.push(dir);
-        this.require(dir, 'controllers');
+        this.require(dir, 'routers');
         this.require(dir, 'models');
         this.require(dir, 'templates');
         this.require(dir, 'views');
