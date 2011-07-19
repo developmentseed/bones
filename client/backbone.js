@@ -99,7 +99,7 @@ Backbone.csrf = function(path, timeout) {
 // must be used server-side to invalidate requests without this CSRF
 // protection. The original `Backbone.sync` cannot be reused because it does
 // not send a request body for DELETE requests.
-Backbone.sync = function(method, model, success, error) {
+Backbone.sync = function(method, model, options) {
     function getUrl(object) {
         if (!(object && object.url)) throw new Error("A 'url' property or function must be specified");
         return _.isFunction(object.url) ? object.url() : object.url;
@@ -126,8 +126,8 @@ Backbone.sync = function(method, model, success, error) {
         data:         (modelJSON || null),
         dataType:     'json',
         processData:  false,
-        success:      success,
-        error:        error
+        success:      options.success,
+        error:        options.error
     };
 
     // Make the request.

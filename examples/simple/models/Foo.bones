@@ -1,5 +1,5 @@
 model = Backbone.Model.extend({
-    sync: function(method, model, success, error) {
+    sync: function(method, model, options) {
         // client side sync method
     }
 });
