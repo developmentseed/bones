@@ -8,7 +8,7 @@ var options = {
     sort: Bones.utils.sortByLoadOrder
 };
 
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
         require.resolve('bones/assets/jquery'),
@@ -27,7 +27,7 @@ server.prototype.assets = {
     templates: new mirror([], options)
 };
 
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.assets.all = new mirror([
     server.prototype.assets.vendor,
     server.prototype.assets.core,
@@ -38,12 +38,12 @@ server.prototype.assets.all = new mirror([
 ], { type: '.js' });
 
 // Stores models, views served by this server.
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.models = {};
 server.prototype.views = {};
 
 // Stores instances of routers registered with this server.
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.routers = {};
 
 server.prototype.initialize = function(app) {
