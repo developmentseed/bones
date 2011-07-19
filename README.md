@@ -8,7 +8,7 @@ The [wiki](https://github.com/developmentseed/bones/wiki) contains more informat
 
 ## Testing
 
-To run the test suite, type `npm test`.
+To run the test suite, type `npm test`. **Note**: bones has to be in a folder named `node_modules` for tests to work correctly.
 
 ## License
 
