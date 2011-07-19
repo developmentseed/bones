@@ -1,14 +1,14 @@
 var Backbone = require('./backbone');
 var _ = require('underscore');
 
-module.exports = Backbone.Controller;
+module.exports = Backbone.Router;
 
-Backbone.Controller.register = function(server) {
-    // Add the controller if it's not a server-only controller.
+Backbone.Router.register = function(server) {
+    // Add the router if it's not a server-only router.
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones$/).test(filename) && server.assets &&
-            server.assets.controllers.indexOf(filename) < 0) {
-            server.assets.controllers.push(filename);
+            server.assets.routers.indexOf(filename) < 0) {
+            server.assets.routers.push(filename);
         }
     });
 
@@ -17,11 +17,11 @@ Backbone.Controller.register = function(server) {
     return server.controllers[this.title] = new this({ server: server });
 };
 
-Backbone.Controller.toString = function() {
-    return '<Controller ' + this.title + '>';
+Backbone.Router.toString = function() {
+    return '<Router ' + this.title + '>';
 };
 
-Backbone.Controller.prototype.initialize = function(options) {
+Backbone.Router.prototype.initialize = function(options) {
     if (!options.server) {
         throw new Error("Can't initialize controller without server.");
     }
@@ -38,25 +38,25 @@ Backbone.Controller.prototype.initialize = function(options) {
     }
 };
 
-Backbone.Controller.prototype.toString = function() {
+Backbone.Router.prototype.toString = function() {
     return '[Controller ' + this.constructor.title + ']';
 };
 
-Backbone.Controller.prototype._bindRoutes = function() {
+Backbone.Router.prototype._bindRoutes = function() {
     // Noop. Routes are bound in initialize();
 };
 
-Backbone.Controller.prototype.route = function(route, name, callback) {
+Backbone.Router.prototype.route = function(route, name, callback) {
     if (!_.isRegExp(route)) route = this._routeToRegExp(route);
     if (!_.isFunction(callback)) throw new Error("'" + name + "' is not a function in " + this);
 
     // Add route to express server.
-    var controller = this;
+    var router = this;
     this.server.get(route, function(req, res, next) {
         var fragment = (req.query && req.query['_escaped_fragment_']) || req.url;
-        var args = controller._extractParameters(route, fragment);
-        var context = Object.create(controller, { req: { value: req }, res: { value: res } });
+        var args = router._extractParameters(route, fragment);
+        var context = Object.create(router, { req: { value: req }, res: { value: res } });
         callback.apply(context, args);
-        controller.trigger.apply(controller, ['route:' + name].concat(args));
+        router.trigger.apply(router, ['route:' + name].concat(args));
     });
 };
