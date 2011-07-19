@@ -39,40 +39,6 @@ Backbone.History.prototype.start = function() {
     return this.loadUrl();
 };
 
-Backbone.History.prototype._saveLocation = Backbone.History.prototype.saveLocation;
-Backbone.History.prototype.saveLocation = function(fragment) {
-    // Override: Ensure ! so browser behaves correctly when using back button.
-    Backbone.History.prototype._saveLocation.call(this, '!' + fragment.replace(/^!*/, ''));
-};
-
-Backbone.History.prototype.checkUrl = function() {
-    var current = this.getFragment();
-    if (current == this.fragment && this.iframe) {
-        current = this.getFragment(this.iframe.location);
-    }
-    if (current == this.fragment ||
-        current == decodeURIComponent(this.fragment)) return false;
-    if (this.iframe) {
-      // Override: Keep IE happy.
-      this.iframe.location.hash = current;
-      window.location.hash = '!' + current;
-    }
-    this.loadUrl();
-};
-
-Backbone.History.prototype.loadUrl = function() {
-  this.fragment = this.getFragment();
-  // Override: Remove ! to look up route.
-  var fragment = this.fragment.replace(/^!*/, '');
-  var matched = _.any(this.handlers, function(handler) {
-    if (handler.route.test(fragment)) {
-      handler.callback(fragment);
-      return true;
-    }
-  });
-  return matched;
-};
-
 // Generate CSRF protection token that is valid for the specified amount of
 // msec. The default is 1 second. Callers should provide the request path to
 // ensure the cookie is not pervasive across requests.
