@@ -30,6 +30,7 @@ Backbone.Router.extend = Backbone.View.extend = function() {
         if (key === '__super__' || key === 'prototype' || key === 'title') continue;
         child[key] = this[key];
     }
+    delete child.title;
     return child;
 };
 
