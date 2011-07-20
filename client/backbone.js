@@ -8,24 +8,6 @@ Backbone.Router.prototype.route = function(route, name, callback) {
     }, this));
 };
 
-// Fix for Backbone.History.start with 0.3.3 and IE7.
-// See https://github.com/documentcloud/backbone/issues/228
-Backbone.History.prototype.start = function() {
-    var docMode = document.documentMode;
-    var oldIE = ($.browser.msie && (!docMode || docMode <= 7));
-    if (oldIE) {
-        this.iframe = $('<iframe src="javascript:0" tabindex="-1" />').hide().appendTo('body')[0].contentWindow;
-        this.iframe.document.open().close();
-        this.iframe.location.hash = window.location.hash;
-    }
-    if ('onhashchange' in window && !oldIE) {
-        $(window).bind('hashchange', this.checkUrl);
-    } else {
-        setInterval(this.checkUrl, this.interval);
-    }
-    return this.loadUrl();
-};
-
 // Generate CSRF protection token that is valid for the specified amount of
 // msec. The default is 1 second. Callers should provide the request path to
 // ensure the cookie is not pervasive across requests.
