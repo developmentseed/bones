@@ -28,12 +28,12 @@ $(function() {
         }
     };
 
-    Bones.start = function() {
+    Bones.start = function(options) {
         for (var k in routers) {
             new routers[k];
         }
 
-        Backbone.history.start();
+        Backbone.history.start(options);
     };
 
     Bones.DEBUG = {
