@@ -22,8 +22,11 @@ exports['sanitizeHost'] = function sanitizeHost(app) {
         if (!req.headers.host) {
             return next();
         } else if (!hosts.length) {
-            req.headers.host = host;
-            return next();
+            // Check that the supplied hostname is harmless. If not, we'll
+            // substitute it with the hostname reported by the machine.
+            if (/^\w([\w-]*\w)?(\.\w([\w-]*\w)?)*(:\d+)?$/.test(req.headers.host)) {
+                return next();
+            }
         } else {
             for (var i = 0; i < hosts.length; i++) {
                 if (hosts[i].test(req.headers.host)) {
