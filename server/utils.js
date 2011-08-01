@@ -24,7 +24,7 @@ var styles = {
     underline: 4
 };
 
-if (tty.isatty(process.stdout.fd)) {
+if (tty.isatty(process.stdout.fd) && tty.isatty(process.stderr.fd)) {
     utils.colorize = function(text, color, style) {
         color = color || 'red';
         style = style || 'regular';
