@@ -1,3 +1,4 @@
+var env = process.env.NODE_ENV || 'development';
 var headers = { 'Content-Type': 'application/json' };
 
 server = Bones.Server.extend({});
@@ -26,6 +27,10 @@ server.prototype.assets = {
     routers: new mirror([], options),
     templates: new mirror([], options)
 };
+
+if (env === 'development') {
+    server.prototype.assets.core.unshift(require.resolve('bones/assets/debug'));
+}
 
 // TODO: This should be moved to the initialize method!
 server.prototype.assets.all = new mirror([
