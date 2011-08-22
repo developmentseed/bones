@@ -22,7 +22,7 @@ Backbone.csrf = function(path, timeout) {
     path = path || '/';
     path = path.split('#')[0].split('?')[0];
 
-    var expires = new Date(+new Date + (timeout || 1000)).toGMTString();
+    var expires = new Date(+new Date + (timeout || 2000)).toGMTString();
     document.cookie = 'bones.token=' + token
         + ';expires=' + expires
         + ';path=' + path + ';';
