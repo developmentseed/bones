@@ -67,23 +67,23 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-    this.get('/assets/bones/vendor.js', this.assets.vendor);
-    this.get('/assets/bones/core.js', this.assets.core);
-    this.get('/assets/bones/controllers.js', this.assets.controllers);
-    this.get('/assets/bones/models.js', this.assets.models);
-    this.get('/assets/bones/views.js', this.assets.views);
-    this.get('/assets/bones/templates.js', this.assets.templates);
+    this.get('/assets/bones/vendor.js', this.assets.vendor.handler);
+    this.get('/assets/bones/core.js', this.assets.core.handler);
+    this.get('/assets/bones/controllers.js', this.assets.controllers.handler);
+    this.get('/assets/bones/models.js', this.assets.models.handler);
+    this.get('/assets/bones/views.js', this.assets.views.handler);
+    this.get('/assets/bones/templates.js', this.assets.templates.handler);
 
-    this.get('/assets/bones/all.js', this.assets.all);
+    this.get('/assets/bones/all.js', this.assets.all.handler);
 };
 
 server.prototype.initializeModels = function(app) {
     this.models = app.models;
     _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel', 'loadCollection');
-    this.get('/api/:model/:id', this.loadModel, this.getModel);
-    this.post('/api/:model', this.loadModel, this.saveModel);
-    this.put('/api/:model/:id', this.loadModel, this.saveModel);
-    this.del('/api/:model/:id', this.loadModel, this.delModel);
+    this.get('/api/:model/:id', [this.loadModel, this.getModel]);
+    this.post('/api/:model', [this.loadModel, this.saveModel]);
+    this.put('/api/:model/:id', [this.loadModel, this.saveModel]);
+    this.del('/api/:model/:id', [this.loadModel, this.delModel]);
     this.get('/api/:collection', this.loadCollection.bind(this));
 };
 
