@@ -1,7 +1,7 @@
 {
     "name": "bones",
     "description": "Framework for using backbone.js on the client and server.",
-    "version": "2.0.0alpha3",
+    "version": "2.0.0",
 
     "author": {
       "name": "Development Seed",
