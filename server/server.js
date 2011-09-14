@@ -4,10 +4,10 @@ var HTTPServer = require('express').HTTPServer;
 var middleware = require('..').middleware;
 
 module.exports = Server;
-function Server(plugin) {
+function Server(plugin, args) {
     HTTPServer.call(this, []);
     this.plugin = plugin;
-    this.initialize(plugin);
+    this.initialize(plugin, args);
     this.conclude(plugin);
 };
 
