@@ -43,9 +43,6 @@ view = Backbone.View.extend({
     },
     initialize: function() {
         if (!Bones.server) {
-            feedbackSetup();
-            searchSetup();
-            adminSetup();
             keyTracking();
         }
     }

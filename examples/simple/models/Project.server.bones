@@ -38,11 +38,8 @@ models.Project.prototype.sync = function(method, model, options) {
                 if (match) {
                     fs.readFile(projectDir +'/'+ match.input, 'utf8', function(err, data) {
                         if (err) return callback('Could not retrieve project information.');
-                        // It's safe to assume old school REAMEs are manually
-                        // wrapped at ~80 chars, but these kids...
-                        if (match[1] && match[1] !== '.txt') {
-                            data = wrap(data);
-                        }
+                        // 80 chars folks...
+                        data = wrap(data);
                         resp.readme = data;
                         callback();
                     });
