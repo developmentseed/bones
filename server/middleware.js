@@ -46,6 +46,9 @@ exports['validateCSRFToken'] = function validateCSRFToken() {
         } else if (req.body && req.cookies['bones.token'] && req.body['bones.token'] === req.cookies['bones.token']) {
             delete req.body['bones.token'];
             next();
+        } else if (req.headers['x-bones-token'] && req.cookies['bones.token'] && req.headers['x-bones-token'] === req.cookies['bones.token']) {
+            delete req.headers['x-bones-token'];
+            next();
         } else {
             next(new Error.HTTP(403));
         }
