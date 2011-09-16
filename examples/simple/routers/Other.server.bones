@@ -1,3 +1,0 @@
-router = Backbone.Router.extend({
-
-});
