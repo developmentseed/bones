@@ -53,7 +53,7 @@ Backbone.Router.prototype.route = function(route, name, callback) {
     // Add route to express server.
     var router = this;
     this.server.get(route, function(req, res, next) {
-        var fragment = (req.query && req.query['_escaped_fragment_']) || req.url;
+        var fragment = (req.query && req.query['_escaped_fragment_']) || req.url.replace(/[#?].*$/, '');
         var args = router._extractParameters(route, fragment);
         var context = Object.create(router, { req: { value: req }, res: { value: res } });
         callback.apply(context, args);
