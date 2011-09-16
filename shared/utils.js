@@ -19,12 +19,12 @@ Bones.utils.fetch = function(models, callback) {
     _(models).each(function(model) {
         model.fetch({
             success: function() {
-                if (--remaining === 0) callback(err, models);
+                if (--remaining === 0) callback(error, models);
             },
             error: function(m, err) {
                 if (!error) error = err;
                 model.error = err;
-                if (--remaining === 0) callback(err, models);
+                if (--remaining === 0) callback(error, models);
             }
         });
     });
