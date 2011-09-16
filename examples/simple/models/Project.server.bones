@@ -36,9 +36,13 @@ models.Project.prototype.sync = function(method, model, options) {
             for (var i = 0; i < files.length; i++) {
                 var match = re.exec(files[i]);
                 if (match) {
-                    // Found a README! Send it out!
                     fs.readFile(projectDir +'/'+ match.input, 'utf8', function(err, data) {
                         if (err) return callback('Could not retrieve project information.');
+                        // It's safe to assume old school REAMEs are manually
+                        // wrapped at ~80 chars, but these kids...
+                        if (match[1] && match[1] !== '.txt') {
+                            data = wrap(data);
+                        }
                         resp.readme = data;
                         callback();
                     });
@@ -55,4 +59,18 @@ models.Project.prototype.sync = function(method, model, options) {
             options.success(resp);
         });
     });
+};
+
+var wrap = function(str) {
+    var lines = [];
+    _(str.split(/\n/)).each(function(v) {
+        if (v.length > 80) {
+            var parts = v.match(/.{80}|.+$/g);
+            lines.push(parts.join('\n'));
+        } else {
+            lines.push(v);
+        }
+    });
+
+    return lines.join('\n');
 };

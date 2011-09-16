@@ -4,7 +4,7 @@
   }
 
 #header ul {
-  width: 640px;
+  width: 800px;
   margin: 0px auto;
   }
   #header ul li {
@@ -19,6 +19,14 @@
       }
 
 #page {
-  width: 640px;
+  width: 800px;
   margin: 0px auto;
   }
+
+pre {
+  border: 1px solid #666;
+  background: #ffb;
+  color: #666;
+  padding: 5px;
+  overflow: auto;
+}
