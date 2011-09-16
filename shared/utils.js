@@ -12,6 +12,24 @@ Bones.utils.callback = function(callback) {
     };
 };
 
+// Multifetch. Pass a hash of models and fetch each in parallel.
+Bones.utils.fetch = function(models, callback) {
+    var remaining = _(models).size();
+    var error = null;
+    _(models).each(function(model) {
+        model.fetch({
+            success: function() {
+                if (--remaining === 0) callback(error, models);
+            },
+            error: function(m, err) {
+                if (!error) error = err;
+                model.error = err;
+                if (--remaining === 0) callback(error, models);
+            }
+        });
+    });
+};
+
 // From https://github.com/visionmedia/lingo/blob/master/lib/languages/en.js
 Bones.utils.uncountable = [ 'advice', 'enegery', 'excretion', 'digestion',
     'cooperation', 'health', 'justice', 'jeans', 'labour', 'machinery',
