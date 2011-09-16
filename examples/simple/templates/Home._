@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <script src="/assets/bones/vendor.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/bones/core.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/bones/views.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/bones/routers.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/bones/models.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/simple/app.js" type="text/javascript" charset="utf-8"></script>
-  </head>
-  <body>
-    <div id="view">
-      home
-      <a href="/">go to home</a>
-      <a href="/foo">go to foo</a>
-    </div>
-  </body>
-</html>
+<h1>What is Bones?</h1>
+<p>Bones is a helper library that allows you to run the excellent Backbone.js library on your server. This example application is designed to demonstrate how bones works, and introduce you to the other excellent libraries that it uses.</p>
+
+<h2>Excellent Libraries</h2>
+<ul>
+  <% _.each(projects, function(v) { %>
+  <li><a href='/project/<%= v %>'><%= v %></a></li>
+  <% }); %>
+</ul>

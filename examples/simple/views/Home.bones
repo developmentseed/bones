@@ -1,11 +1,10 @@
-view = Backbone.View.extend({
-    initialize: function(options) {
-        _.bindAll(this, 'render');
-        this.render();
-        this.trigger('attach');
-    },
+view = views.Main.extend({
     render: function() {
-        console.log('home view');
+        var projects = [];
+        this.collection.each(function(item) {
+            projects.push(item.escape('id'));
+        });
+        $(this.el).empty().append(templates.Home({projects:projects}));
         return this;
     }
 });
