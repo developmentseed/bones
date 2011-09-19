@@ -109,3 +109,21 @@ exports['/assets/bones/views.js'] = function() {
                   res.body.indexOf('// ---- start test/fixture/views/App.bones ----'));
     });
 };
+
+exports['/assets/bones/templates.js'] = function() {
+    assert.response(server, {
+        url: '/assets/bones/templates.js',
+        method: 'GET'
+    }, { status: 200 }, function(res) {
+        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/Error._').toString()) >= 0);
+        assert.ok(res.body.indexOf(require('bones/test/fixture/node_modules/othermodule/templates/Other._').toString()) >= 0);
+
+        // Doesn't include server files.
+        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/ServerSide.server._').toString()) < 0);
+
+        // Correct order.
+        assert.ok(res.body.indexOf('// ---- start test/fixture/templates/Error._ ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- start test/fixture/templates/Error._ ----') >
+                  res.body.indexOf('// ---- start test/fixture/node_modules/othermodule/templates/Other._ ----'));
+    });
+};

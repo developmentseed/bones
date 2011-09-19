@@ -53,7 +53,7 @@ require.extensions['._'] = function(module, filename) {
     }
 
     module.exports.register = function(app) {
-        if (app.assets) {
+        if (app.assets && !(/\.server\._$/.test(filename))) {
             app.assets.templates.push({
                 filename: filename,
                 content: 'template = ' + module.exports + ';'
