@@ -1,7 +1,7 @@
 if (typeof process !== 'undefined' && process.versions && process.versions.node) {
     module.exports = Backbone = require('backbone');
     _ = require('underscore');
-    $ = require('jquery');
+    $ = require('jq');
 }
 
 Backbone.Model.augment = Backbone.Collection.augment =
