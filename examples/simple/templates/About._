@@ -1,0 +1,5 @@
+<h1>About this application</h1>
+
+<p>Bones itself tries to make very few assumptions about just how you'll use the API that backbone provides. It's missions is to simply make that API work on the server. This sample application is an example of how you'd use the Backbone API running on both the client and server together. It makes a bunch of assumptions for about how you want things to work, Bones itself doesn't make many assumptions at all.<p>
+
+<p>In this application we're assuming a pretty traditional application model, but also that pages can render either on the client or the server, and that all client-side routing will be done via pushstate. If your browser doesn't have pushstate, you'll be fetching full pages from the server more often.</p>
