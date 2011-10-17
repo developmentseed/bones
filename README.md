@@ -4,7 +4,14 @@ Bones provides conventions for [Backbone](http://documentcloud.github.com/backbo
 
 ## Getting started
 
-The [wiki](https://github.com/developmentseed/bones/wiki) contains more information on [**Getting Started**](https://github.com/developmentseed/bones/wiki/Getting-Started) and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Architecture) in Bones.
+The [wiki](https://github.com/developmentseed/bones/wiki) contains more information
+on [**Getting Started**](https://github.com/developmentseed/bones/wiki/Getting-Started)
+and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Architecture) in Bones.
+
+## Example Application
+
+* The [simple app example](https://github.com/developmentseed/bones/tree/master/examples/simple) is
+  a good quickstart to making a bones application.
 
 ## Testing
 
@@ -13,4 +20,3 @@ To run the test suite, type `npm test`. **Note**: bones has to be in a folder na
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).
-
