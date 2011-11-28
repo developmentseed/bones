@@ -97,8 +97,8 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                err = err instanceof Object ? err.toString() : err;
-                next(new Error.HTTP(err, 500));
+                error = err instanceof Object ? err.toString() : err;
+                next(new Error.HTTP(error, err && err.status || 500));
             }
         });
     } else {
@@ -122,8 +122,8 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 404));
+            error = err instanceof Object ? err.toString() : err;
+            next(new Error.HTTP(error, err && err.status || 404));
         }
     });
 };
@@ -135,8 +135,8 @@ server.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            error = err instanceof Object ? err.toString() : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };
@@ -148,8 +148,8 @@ server.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            error = err instanceof Object ? err.toString() : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };
