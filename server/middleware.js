@@ -41,7 +41,7 @@ exports['sanitizeHost'] = function sanitizeHost(app) {
 
 exports['validateCSRFToken'] = function validateCSRFToken() {
     return function(req, res, next) {
-        if (req.method === 'GET') {
+        if (req.method === 'GET' || req.method === 'HEAD') {
             next();
         } else if (req.body && req.cookies['bones.token'] && req.body['bones.token'] === req.cookies['bones.token']) {
             delete req.body['bones.token'];
