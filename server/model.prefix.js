@@ -1,4 +1,4 @@
-var Bones = require('bones');
+var Bones = require(global.__BonesPath__ || 'bones');
 
 var $ = Bones.$, jQuery = $;
 var _ = Bones._;
