@@ -9,6 +9,13 @@ var options = {
     sort: Bones.utils.sortByLoadOrder
 };
 
+var secureOptions = {
+    type: '.js',
+    wrapper: Bones.utils.wrapClientFile,
+    sort: Bones.utils.sortByLoadOrder,
+    secure: true
+};
+
 // TODO: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
@@ -25,7 +32,11 @@ server.prototype.assets = {
     models: new mirror([], options),
     views: new mirror([], options),
     routers: new mirror([], options),
-    templates: new mirror([], options)
+    templates: new mirror([], options),
+    secureModels: new mirror([], secureOptions),
+    secureViews: new mirror([], secureOptions),
+    secureRouters: new mirror([], secureOptions),
+    secureTemplates: new mirror([], secureOptions)
 };
 
 if (env === 'development') {
@@ -41,6 +52,13 @@ server.prototype.assets.all = new mirror([
     server.prototype.assets.views,
     server.prototype.assets.templates
 ], { type: '.js' });
+
+server.prototype.assets.secure = new mirror([
+		server.prototype.assets.secureRouters,
+		server.prototype.assets.secureModels,
+		server.prototype.assets.secureViews,
+		server.prototype.assets.secureTemplates
+], { type: '.js', secure: true});
 
 // Stores models, views served by this server.
 // TODO: This should be moved to the initialize method!
@@ -75,6 +93,7 @@ server.prototype.initializeAssets = function(app) {
     this.get('/assets/bones/templates.js', this.assets.templates);
 
     this.get('/assets/bones/all.js', this.assets.all);
+    this.get('/assets/bones/secure.js', this.assets.secure);
 };
 
 server.prototype.initializeModels = function(app) {

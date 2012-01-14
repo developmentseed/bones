@@ -12,7 +12,12 @@ Backbone.Model.register = function(server) {
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones$/).test(filename) && server.assets &&
             server.assets.models.indexOf(filename) < 0) {
-            server.assets.models.push(filename);
+            if ((/\.secure\.bones$/).test(filename)) 
+            {
+           		server.assets.secureModels.push(filename);
+            } else {
+            	server.assets.models.push(filename);
+            }
         }
     });
 
