@@ -51,20 +51,31 @@ Backbone.sync = function(method, model, options) {
         var modelJSON = model.toJSON ? model.toJSON() : model;
         modelJSON['bones.token'] = Backbone.csrf(getUrl(model));
         modelJSON = JSON.stringify(modelJSON);
-    }
+    
 
-    // Default JSON-request options.
-    var params = {
-        url:          getUrl(model),
-        type:         type,
-        contentType:  'application/json',
-        data:         (modelJSON || null),
-        dataType:     'json',
-        processData:  false,
-        success:      options.success,
-        error:        options.error
-    };
-
+   		// Default JSON-request options.
+	    var params = {
+	        url:          getUrl(model),
+	        type:         type,
+	        contentType:  'application/json',
+	        data:         (modelJSON ||null),
+	        dataType:     'json',
+	        processData:  false,
+	        success:      options.success,
+	        error:        options.error
+	    };
+		} else {
+				// Default JSON-request options.
+			  var params = {
+			      url:          getUrl(model),
+			      type:         type,
+			      data:         options.data,
+			      dataType:     'json',
+			      success:      options.success,
+			      error:        options.error		
+				};
+		
+		}
     // Make the request.
     $.ajax(params);
 };
