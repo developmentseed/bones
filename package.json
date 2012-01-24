@@ -15,7 +15,7 @@
         "underscore": "1.1.x",
         "express": "2.4.4",
         "backbone": "0.5.1",
-        "jquery": "1.5.x",
+        "jquery": "1.6.x",
         "optimist": "0.1.x",
         "mirror": "0.3.x"
     },
