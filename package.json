@@ -1,7 +1,7 @@
 {
     "name": "bones",
     "description": "Framework for using backbone.js on the client and server.",
-    "version": "2.0.1",
+    "version": "2.1.0alpha0",
 
     "author": {
       "name": "Development Seed",
@@ -13,10 +13,10 @@
 
     "dependencies": {
         "underscore": "1.1.x",
-        "express": "2.4.4",
+        "express": "2.5.4",
         "backbone": "0.5.1",
         "jquery": "1.6.x",
-        "optimist": "0.1.x",
+        "optimist": "0.3.x",
         "mirror": "0.3.x"
     },
 
