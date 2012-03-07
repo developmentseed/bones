@@ -13,15 +13,18 @@
 
     "dependencies": {
         "underscore": "1.1.x",
-        "express": "2.4.7",
+        "express": "~2.5.4",
         "backbone": "0.3.3",
-        "jquery": "1.5.x",
-        "optimist": "0.1.x",
+        "jquery": "~1.6.3",
+        "optimist": "0.3.x",
         "mirror": "0.3.x"
     },
 
     "scripts": {
         "test": "expresso -I ..",
         "coverage": "./test/coverage.sh"
+    },
+    "engines": {
+      "node": "0.4 || 0.6"
     }
 }
