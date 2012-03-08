@@ -12,15 +12,15 @@ var options = {
 // TODO for Bones 1.4: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
-        require.resolve('bones/assets/jquery'),
+        require.resolve('../assets/jquery'),
         require.resolve('underscore'),
         require.resolve('backbone')
     ], { type: '.js' }),
     core: new mirror([
-        require.resolve('bones/shared/utils'),
-        require.resolve('bones/client/utils'),
-        require.resolve('bones/shared/backbone'),
-        require.resolve('bones/client/backbone')
+        require.resolve('../shared/utils'),
+        require.resolve('../client/utils'),
+        require.resolve('../shared/backbone'),
+        require.resolve('../client/backbone')
     ], { type: '.js' }),
     models: new mirror([], options),
     views: new mirror([], options),
@@ -29,7 +29,7 @@ server.prototype.assets = {
 };
 
 if (env === 'development') {
-    server.prototype.assets.core.unshift(require.resolve('bones/assets/debug'));
+    server.prototype.assets.core.unshift(require.resolve('../assets/debug'));
 }
 
 // TODO for Bones 1.4: This should be moved to the initialize method!

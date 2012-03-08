@@ -21,7 +21,7 @@
     },
 
     "scripts": {
-        "test": "expresso -I ..",
+        "test": "NODE_PATH=.:$NODE_PATH expresso -I ..",
         "coverage": "./test/coverage.sh"
     },
     "engines": {
