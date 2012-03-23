@@ -79,16 +79,16 @@ exports['showError'] = function showError() {
         if ((req.headers.accept + '' || '').indexOf('json') >= 0) {
             res.writeHead(err.status, { 'Content-Type': 'application/json' });
             if (env === 'development') {
-                res.end(JSON.stringify(err));
+                res.end('HEAD' == req.method ? null : JSON.stringify(err));
             } else {
-                res.end(JSON.stringify({ message: err.message }));
+                res.end('HEAD' == req.method ? null : JSON.stringify({ message: err.message }));
             }
         } else {
             res.writeHead(err.status, { 'Content-Type': 'text/plain' });
             if (env === 'development') {
-                res.end(err.stack);
+                res.end('HEAD' == req.method ? null : err.stack);
             } else {
-                res.end(err.message);
+                res.end('HEAD' == req.method ? null : err.message);
             }
         }
     };
