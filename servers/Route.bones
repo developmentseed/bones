@@ -97,7 +97,7 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                error = err instanceof Object ? err.message : err;
+                var error = err instanceof Object ? err.message : err;
                 next(new Error.HTTP(error, err && err.status || 500));
             }
         });
@@ -122,7 +122,7 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 404));
         }
     });
@@ -135,7 +135,7 @@ server.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 409));
         }
     });
@@ -148,7 +148,7 @@ server.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 409));
         }
     });
