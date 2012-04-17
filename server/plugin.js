@@ -125,7 +125,7 @@ Plugin.prototype.add = function(component, filename) {
 };
 
 Plugin.prototype.start = function(callback) {
-    this.argv = require('optimist').argv;
+    this.argv = _(require('optimist').argv).clone();
 
     var command = this.argv._.length ? this.argv._[0] : 'start';
     if (this.argv.help || !(command in this.commands)) {
