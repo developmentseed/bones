@@ -115,11 +115,11 @@ exports['/assets/bones/templates.js'] = function() {
         url: '/assets/bones/templates.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/Error._').toString()) >= 0);
-        assert.ok(res.body.indexOf(require('bones/test/fixture/node_modules/othermodule/templates/Other._').toString()) >= 0);
+        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/Error._').source) >= 0);
+        assert.ok(res.body.indexOf(require('bones/test/fixture/node_modules/othermodule/templates/Other._').source) >= 0);
 
         // Doesn't include server files.
-        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/ServerSide.server._').toString()) < 0);
+        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/ServerSide.server._').source) < 0);
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/templates/Error._ ----') >= 0);
