@@ -4,5 +4,4 @@ Bones.Command.options['adminParty'] = {
     'default': false
 };
 
-Bones.Command.options.host['default'].push('other');
-Bones.Command.options.host['default'].push('*.third');
+Bones.Command.options.host['default'] = ['127.0.0.1', 'localhost', require('os').hostname(), 'other', '*.third'];
