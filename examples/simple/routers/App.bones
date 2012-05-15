@@ -1,8 +1,8 @@
 router = Backbone.Router.extend({
     routes: {
-        '/': 'home',
-        '/about': 'about',
-        '/project/:project': 'project'
+        '': 'home',
+        'about': 'about',
+        'project/:project': 'project'
     },
 
     // The `home` route...
