@@ -7,14 +7,14 @@ module.exports = Server;
 function Server(plugin) {
     HTTPServer.call(this, []);
     this.plugin = plugin;
-    this.initialize(plugin);
-    this.conclude(plugin);
+    this.initialize.apply(this, arguments);
+    this.conclude.apply(this, arguments);
 };
 
 Server.prototype.__proto__ = HTTPServer.prototype;
 
 _.extend(Server.prototype, Backbone.Events, {
-    initialize : function(plugin) {},
+    initialize: function(plugin) {},
 
     conclude: function(plugin) {
         // Add catchall 404 middleware and error handler for root servers.

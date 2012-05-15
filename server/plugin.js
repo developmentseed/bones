@@ -56,7 +56,7 @@ require.extensions['._'] = function(module, filename) {
         if (app.assets && !(/\.server\._$/.test(filename))) {
             app.assets.templates.push({
                 filename: filename,
-                content: 'template = ' + module.exports + ';'
+                content: 'template = ' + module.exports.source + ';'
             });
         }
     };
