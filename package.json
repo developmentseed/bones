@@ -20,8 +20,12 @@
         "mirror": "0.3.x"
     },
 
-    "scripts": {
-        "test": "expresso -I ..",
+    "devDependencies" : {
+        "expresso" : "0.8.x"
+    },
+
+    "scripts" : {
+        "test" : "NODE_PATH=../:$NODE_PATH expresso",
         "coverage": "./test/coverage.sh"
     }
 }
