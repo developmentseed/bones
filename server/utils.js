@@ -94,7 +94,7 @@ Error.HTTP = function(message, status) {
     }
 
     Error.call(this, message);
-    (status !== 404) && Error.captureStackTrace(this, arguments.callee);
+    Error.captureStackTrace(this, arguments.callee);
     this.message = message;
     this.status = status;
 };
