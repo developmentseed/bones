@@ -13,7 +13,7 @@ function Server(plugin) {
 
 Server.prototype.__proto__ = HTTPServer.prototype;
 
-_.extend(Server.prototype, Backbone.Events, {
+_.extend(Server.prototype, {
     initialize: function(plugin) {},
 
     conclude: function(plugin) {
