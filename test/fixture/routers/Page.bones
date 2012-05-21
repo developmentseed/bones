@@ -1,8 +1,8 @@
 router = Backbone.Router.extend({
     routes: {
-        '/': 'home',
-        '/page/:id': 'page',
-        '/page/special': 'pageSpecial'
+        '': 'home',
+        'page/:id': 'page',
+        'page/special': 'pageSpecial'
     },
 
     page: function(id) {

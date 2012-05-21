@@ -96,7 +96,6 @@ exports['showError'] = function showError() {
 
 exports['notFound'] = function notFound() {
     return function notFound(req, res, next) {
-        var error = new Error.HTTP('Not found: '+req.originalUrl,404);
-        next(error);
+        next(new Error.HTTP(404));
     };
 };
