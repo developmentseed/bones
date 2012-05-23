@@ -27,5 +27,8 @@
     "scripts" : {
         "test" : "NODE_PATH=../:$NODE_PATH expresso",
         "coverage": "./test/coverage.sh"
+    },
+    "engines": {
+      "node": "0.4 || 0.6"
     }
 }

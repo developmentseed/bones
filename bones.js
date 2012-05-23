@@ -31,5 +31,6 @@ exports.start = function(callback) {
 };
 
 var Plugin = require('./server/plugin');
+global.__BonesPath__ = require.resolve('bones');
 exports.plugin = global.__BonesPlugin__ = new Plugin();
 exports.plugin.load(__dirname);
