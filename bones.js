@@ -13,6 +13,8 @@ exports.middleware = require('bones/server/middleware');
 exports.server = true;
 
 exports.Backbone = require('bones/server/backbone');
+exports.Backbone.setDomLibrary(exports.$);
+
 exports.Router = require('bones/server/router');
 exports.Model = require('bones/server/model');
 exports.Collection = require('bones/server/collection');
@@ -29,5 +31,6 @@ exports.start = function(callback) {
 };
 
 var Plugin = require('./server/plugin');
+global.__BonesPath__ = require.resolve('bones');
 exports.plugin = global.__BonesPlugin__ = new Plugin();
 exports.plugin.load(__dirname);

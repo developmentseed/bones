@@ -1,18 +1,10 @@
 // Starts routing on client
 // ------------------------
 var start = _.once(function() {
-    var bypass = true,
-        _loadUrl = Backbone.History.prototype.loadUrl;
-
-    Backbone.History.prototype.loadUrl = function(e) {
-        if (bypass) {
-            bypass = false;
-            return;
-        }
-        _loadUrl.call(this, e);
-    }
-
-    Bones.start({pushState: true, root: ""});
+    // Passing {silent: true} to Backbone.start in Backbone > 0.5.3
+    // will signal that the page has already been rendered, and avoid
+    // reloading the page when initializing backbone.
+    Bones.start({pushState: true, root: "", silent: true});
 });
 
 // Sets up key tracking on client
@@ -39,7 +31,7 @@ var keyTracking = _.once(function() {
 // ------------
 view = Backbone.View.extend({
     _ensureElement: function() {
-        this.el = $('body');
+        this.setElement('body');
     },
     initialize: function() {
         if (!Bones.server) {
@@ -57,7 +49,7 @@ view.prototype.events = {
 // Routes a click event
 // --------------------
 view.prototype.routeClick = function(ev) {
-    if (_.size(window.currentKeys)) {
+    if (window.currentKeys && _.size(window.currentKeys)) {
         return true;
     }
     // We only route client side if the browser supports push state.

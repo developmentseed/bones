@@ -15,8 +15,9 @@ and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Archi
 
 ## Testing
 
-To run the test suite, type `npm test`. **Note**: bones has to be in a folder named `node_modules` for tests to work correctly.
+To run the test suite, type `npm install` and after that `npm test`.
 
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).
+

@@ -67,23 +67,23 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-    this.get('/assets/bones/vendor.js', this.assets.vendor);
-    this.get('/assets/bones/core.js', this.assets.core);
-    this.get('/assets/bones/routers.js', this.assets.routers);
-    this.get('/assets/bones/models.js', this.assets.models);
-    this.get('/assets/bones/views.js', this.assets.views);
-    this.get('/assets/bones/templates.js', this.assets.templates);
+    this.get('/assets/bones/vendor.js', this.assets.vendor.handler);
+    this.get('/assets/bones/core.js', this.assets.core.handler);
+    this.get('/assets/bones/routers.js', this.assets.routers.handler);
+    this.get('/assets/bones/models.js', this.assets.models.handler);
+    this.get('/assets/bones/views.js', this.assets.views.handler);
+    this.get('/assets/bones/templates.js', this.assets.templates.handler);
 
-    this.get('/assets/bones/all.js', this.assets.all);
+    this.get('/assets/bones/all.js', this.assets.all.handler);
 };
 
 server.prototype.initializeModels = function(app) {
     this.models = app.models;
     _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel', 'loadCollection');
-    this.get('/api/:model/:id', this.loadModel, this.getModel);
-    this.post('/api/:model', this.loadModel, this.saveModel);
-    this.put('/api/:model/:id', this.loadModel, this.saveModel);
-    this.del('/api/:model/:id', this.loadModel, this.delModel);
+    this.get('/api/:model/:id', [this.loadModel, this.getModel]);
+    this.post('/api/:model', [this.loadModel, this.saveModel]);
+    this.put('/api/:model/:id', [this.loadModel, this.saveModel]);
+    this.del('/api/:model/:id', [this.loadModel, this.delModel]);
     this.get('/api/:collection', this.loadCollection.bind(this));
 };
 
@@ -97,8 +97,8 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                err = err instanceof Object ? err.toString() : err;
-                next(new Error.HTTP(err, 500));
+                var error = err instanceof Object ? err.message : err;
+                next(new Error.HTTP(error, err && err.status || 500));
             }
         });
     } else {
@@ -122,8 +122,8 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 404));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 404));
         }
     });
 };
@@ -135,8 +135,8 @@ server.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };
@@ -148,8 +148,8 @@ server.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };
