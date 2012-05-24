@@ -20,3 +20,4 @@ To run the test suite, type `npm install` and after that `npm test`.
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).
+
