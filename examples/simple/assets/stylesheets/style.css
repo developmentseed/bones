@@ -1,0 +1,32 @@
+#header {
+  height: 30px;
+  background: #666;
+  }
+
+#header ul {
+  width: 800px;
+  margin: 0px auto;
+  }
+  #header ul li {
+    list-style: none;
+    float: left;
+    padding-right: 20px;
+    }
+    #header ul li a {
+      color: #eee;
+      font-size: 16px;
+      line-height: 30px;
+      }
+
+#page {
+  width: 800px;
+  margin: 0px auto;
+  }
+
+pre {
+  border: 1px solid #666;
+  background: #ffb;
+  color: #666;
+  padding: 5px;
+  overflow: auto;
+}

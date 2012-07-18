@@ -13,7 +13,7 @@ exports.middleware = require('./server/middleware');
 exports.server = true;
 
 exports.Backbone = require('./server/backbone');
-exports.Controller = require('./server/controller');
+exports.Router = require('./server/router');
 exports.Model = require('./server/model');
 exports.Collection = require('./server/collection');
 exports.View = require('./server/view');

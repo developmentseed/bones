@@ -9,7 +9,7 @@ var options = {
     sort: Bones.utils.sortByLoadOrder
 };
 
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
         require.resolve('../assets/jquery'),
@@ -24,7 +24,7 @@ server.prototype.assets = {
     ], { type: '.js' }),
     models: new mirror([], options),
     views: new mirror([], options),
-    controllers: new mirror([], options),
+    routers: new mirror([], options),
     templates: new mirror([], options)
 };
 
@@ -32,24 +32,24 @@ if (env === 'development') {
     server.prototype.assets.core.unshift(require.resolve('../assets/debug'));
 }
 
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.assets.all = new mirror([
     server.prototype.assets.vendor,
     server.prototype.assets.core,
-    server.prototype.assets.controllers,
+    server.prototype.assets.routers,
     server.prototype.assets.models,
     server.prototype.assets.views,
     server.prototype.assets.templates
 ], { type: '.js' });
 
 // Stores models, views served by this server.
-// TODO for Bones 1.4: This should be moved to the initialize method!
+// TODO: This should be moved to the initialize method!
 server.prototype.models = {};
 server.prototype.views = {};
 
-// Stores instances of controllers registered with this server.
-// TODO for Bones 1.4: This should be moved to the initialize method!
-server.prototype.controllers = {};
+// Stores instances of routers registered with this server.
+// TODO: This should be moved to the initialize method!
+server.prototype.routers = {};
 
 server.prototype.initialize = function(app) {
     this.registerComponents(app);
@@ -58,7 +58,7 @@ server.prototype.initialize = function(app) {
 };
 
 server.prototype.registerComponents = function(app) {
-    var components = ['controllers', 'models', 'views', 'templates'];
+    var components = ['routers', 'models', 'views', 'templates'];
     components.forEach(function(kind) {
         for (var name in app[kind]) {
             app[kind][name].register(this);
@@ -69,7 +69,7 @@ server.prototype.registerComponents = function(app) {
 server.prototype.initializeAssets = function(app) {
     this.get('/assets/bones/vendor.js', this.assets.vendor.handler);
     this.get('/assets/bones/core.js', this.assets.core.handler);
-    this.get('/assets/bones/controllers.js', this.assets.controllers.handler);
+    this.get('/assets/bones/routers.js', this.assets.routers.handler);
     this.get('/assets/bones/models.js', this.assets.models.handler);
     this.get('/assets/bones/views.js', this.assets.views.handler);
     this.get('/assets/bones/templates.js', this.assets.templates.handler);
@@ -97,7 +97,7 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                error = err instanceof Object ? err.message : err;
+                var error = err instanceof Object ? err.message : err;
                 next(new Error.HTTP(error, err && err.status || 500));
             }
         });
@@ -122,7 +122,7 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 404));
         }
     });
@@ -135,7 +135,7 @@ server.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 409));
         }
     });
@@ -148,7 +148,7 @@ server.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            error = err instanceof Object ? err.message : err;
+            var error = err instanceof Object ? err.message : err;
             next(new Error.HTTP(error, err && err.status || 409));
         }
     });

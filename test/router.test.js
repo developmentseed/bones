@@ -4,8 +4,8 @@ var fs = require('fs');
 
 var fixture = require('bones').plugin;
 
-exports['controller behavior'] = function() {
+exports['router behavior'] = function() {
     assert['throws'](function() {
-        new fixture.controllers.Page;
-    }, "Can't initialize controller without server.");
+        new fixture.routers.Page;
+    }, "Can't initialize router without server.");
 };

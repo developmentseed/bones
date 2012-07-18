@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title><%= title %></title>
+    <script src="/assets/bones/all.js?<%= version %>" type="text/javascript" charset="utf-8"></script>
+    <link rel='stylesheet' href='/assets/simple/stylesheets/style.css?<%= version %>' media='screen' />
+  </head>
+  <body>
+    <div id='header'>
+      <ul>
+        <li><a href='/'>Home</a></li>
+        <li><a href='/about'>About</a></li>
+        <li><a href='https://github.com/developmentseed/bones'>Bones@Github</a></li>
+      </ul>
+    </div>
+    <div id='page' class='limiter clearfix'>
+      <div id='main'><%= main %></div>
+    </div>
+    <script type="text/javascript"><%= startup %></script>
+  </body>
+</html>

@@ -8,7 +8,7 @@ Backbone.Collection.toString = function() {
 };
 
 Backbone.Collection.register = function(app) {
-    // Add the controller if it's not a server-only controller.
+    // Add the collection if it's not a server-only collection.
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones$/).test(filename) && app.assets) {
             app.assets.models.push(filename);

@@ -8,7 +8,7 @@ Backbone.Model.toString = function() {
 };
 
 Backbone.Model.register = function(server) {
-    // Add the controller if it's not a server-only controller.
+    // Add the model if it's not a server-only model.
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones$/).test(filename) && server.assets &&
             server.assets.models.indexOf(filename) < 0) {

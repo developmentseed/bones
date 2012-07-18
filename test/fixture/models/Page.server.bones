@@ -1,10 +1,10 @@
 models['Page'].augment({
-    sync: function(parent, method, model, success, error) {
+    sync: function(parent, method, model, options) {
         if (model.get('id') === 'asdf') {
-            error();
+            options.error();
         } else {
             model.set({ method: method });
-            success(model);
+            options.success(model);
         }
     }
 });

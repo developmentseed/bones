@@ -1,0 +1,5 @@
+<div class='error-page limiter'>
+    <h2><%= status %></h2>
+    <div class='message'><%= message %></div>
+    <a href='/' class='button'>Return to homepage</a>
+</div>
