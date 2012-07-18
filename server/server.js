@@ -7,8 +7,8 @@ module.exports = Server;
 function Server(plugin) {
     HTTPServer.call(this, []);
     this.plugin = plugin;
-    this.initialize(plugin);
-    this.conclude(plugin);
+    this.initialize.apply(this, arguments);
+    this.conclude.apply(this, arguments);
 };
 
 Server.prototype.__proto__ = HTTPServer.prototype;
