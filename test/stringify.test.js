@@ -1,14 +1,16 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert');
 var fs = require('fs');
+var path = require('path');
 
 require('./fixture')
-var fixture = require('bones').plugin;
+var fixture = require(path.join(__dirname, '../')).plugin;
 
-exports['stringify'] = function() {
+describe('stringify', function() {
+it('should stringify', function() {
     assert.equal(fixture.routers.Foo + '', '<Router Foo>');
     assert.equal(fixture.routers.Page + '', '<Router Page>');
-    var srv = new (require('bones').Server.extend({}, { title: 'Demo' }));
+    var srv = new (require(path.join(__dirname, '../')).Server.extend({}, { title: 'Demo' }));
     assert.equal(new fixture.routers.Page({ server: srv }) + '', '[Router Page]');
 
     assert.equal(fixture.models.Failure + '', '<Model Failure>');
@@ -30,4 +32,5 @@ exports['stringify'] = function() {
     assert.equal(fixture.views.App + '', '<View App>');
     assert.equal(fixture.views.Error + '', '<View Error>');
     assert.equal(new fixture.views.Error({ error: 'test' }) + '', '[View Error]');
-};
+});
+});

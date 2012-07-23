@@ -21,7 +21,7 @@
     },
 
     "scripts": {
-        "test": "expresso -I ..",
+        "test": "mocha -R spec",
         "coverage": "./test/coverage.sh"
     },
     "engines": {

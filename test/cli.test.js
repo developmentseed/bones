@@ -4,7 +4,9 @@ var exec = require('child_process').exec;
 
 var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["127.0.0.1","localhost","' + os.hostname() + '","other","*.third"])';
 
-exports['test --help'] = function() {
+describe('cli tests', function() {
+
+it('test --help', function(done) {
     exec('node test/fixture --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
         assert.equal(stderr,
@@ -13,10 +15,11 @@ exports['test --help'] = function() {
             '  start:  start application\n' +
             '  foo:    demo command\n');
         assert.equal(stdout, '');
+        done();
     });
-};
+});
 
-exports['test start --help'] = function() {
+it('test start --help', function(done) {
     exec('node test/fixture start --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
         assert.equal(stderr,
@@ -29,10 +32,11 @@ exports['test start --help'] = function() {
             '    --adminParty     Celebrate with administrators! (Default: false)\n' +
             '    --config=[path]  Path to JSON configuration file.\n');
         assert.equal(stdout, '');
+        done();
     });
-};
+});
 
-exports['test foo --help'] = function() {
+it('test foo --help', function(done) {
     exec('node test/fixture foo --help', function(err, stdout, stderr) {
         assert.equal(err.code, 1);
         assert.equal(stderr,
@@ -47,10 +51,11 @@ exports['test foo --help'] = function() {
             '      --adminParty     Celebrate with administrators! (Default: false)\n' +
             '      --config=[path]  Path to JSON configuration file.\n');
         assert.equal(stdout, '');
+        done();
     });
-};
+});
 
-exports['test foo --config=test/fixture/config.json'] = function() {
+it('test foo --config=test/fixture/config.json', function(done) {
     exec('node test/fixture foo --config=test/fixture/config.json', function(err, stdout, stderr) {
         assert.ok(!err);
         assert.deepEqual(JSON.parse(stdout), {
@@ -61,10 +66,11 @@ exports['test foo --config=test/fixture/config.json'] = function() {
             host: [ '127.0.0.1', 'localhost', os.hostname(), 'other', '*.third' ]
         });
         assert.equal(stderr, 'Note: Unknown option "unknownOption" in config file.\n');
+        done();
     });
-};
+});
 
-exports['test foo --dolor=pain'] = function() {
+it('test foo --dolor=pain', function(done) {
     exec('node test/fixture foo --dolor=pain', function(err, stdout, stderr) {
         assert.ok(!err);
         assert.deepEqual(JSON.parse(stdout), {
@@ -74,11 +80,12 @@ exports['test foo --dolor=pain'] = function() {
             host: [ '127.0.0.1', 'localhost', os.hostname(), 'other', '*.third' ]
         });
         assert.equal(stderr, '');
+        done();
     });
-};
+});
 
 
-exports['test foo --config=test/fixture/config.json --show-config'] = function() {
+it('test foo --config=test/fixture/config.json --show-config', function(done) {
     exec('node test/fixture foo --config=test/fixture/config.json --show-config', function(err, stdout, stderr) {
         assert.ok(!err);
         assert.equal(stdout, '');
@@ -98,5 +105,7 @@ exports['test foo --config=test/fixture/config.json --show-config'] = function()
             '        "*.third"\n' +
             '    ]\n' +
             '}\n');
+        done();
     });
-};
+});
+});

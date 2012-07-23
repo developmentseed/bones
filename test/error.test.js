@@ -3,15 +3,19 @@ var assert = require('assert');
 
 var server = require('./fixture/start').servers.Core;
 
-exports['error 404'] = function(beforeExit) {
+describe('errors', function() {
+
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/does-not-exist',
         method: 'GET'
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should return JSON 404 message', function(done) {
     assert.response(server, {
         url: '/does-not-exist',
         method: 'GET',
@@ -19,8 +23,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Not Found"}',
         status: 404
-    });
+    }, done);
+});
 
+it('should return 403', function(done) {
     assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
@@ -28,8 +34,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Forbidden"}',
         status: 403
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
@@ -41,8 +49,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should return JSON 404 message', function(done) {
     assert.response(server, {
         url: '/does-not-exist',
         method: 'POST',
@@ -55,16 +65,20 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Not Found"}',
         status: 404
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/api/DoesNotExit/asdf',
         method: 'GET'
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should return JSON 404 message', function(done) {
     assert.response(server, {
         url: '/api/DoesNotExit/asdf',
         method: 'GET',
@@ -72,16 +86,20 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Not Found"}',
         status: 404
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'GET'
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should return JSON 404 message', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'GET',
@@ -89,8 +107,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Not Found"}',
         status: 404
-    });
+    }, done);
+});
 
+it('should return 409', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'PUT',
@@ -102,8 +122,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: 'Conflict',
         status: 409
-    });
+    }, done);
+});
 
+it('should return JSON 409 message', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'PUT',
@@ -116,8 +138,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Conflict"}',
         status: 409
-    });
+    }, done);
+});
 
+it('should return 409', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'DELETE',
@@ -129,8 +153,10 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: 'Conflict',
         status: 409
-    });
+    }, done);
+});
 
+it('should return JSON 409 message', function(done) {
     assert.response(server, {
         url: '/api/Page/asdf',
         method: 'DELETE',
@@ -143,5 +169,7 @@ exports['error 404'] = function(beforeExit) {
     }, {
         body: '{"message":"Conflict"}',
         status: 409
-    });
-};
+    }, done);
+});
+
+});

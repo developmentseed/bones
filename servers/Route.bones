@@ -1,3 +1,4 @@
+var path = require('path');
 var env = process.env.NODE_ENV || 'development';
 var headers = { 'Content-Type': 'application/json' };
 
@@ -12,15 +13,15 @@ var options = {
 // TODO: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
-        require.resolve('bones/assets/jquery'),
+        require.resolve(path.join(__dirname, '../assets/jquery')),
         require.resolve('underscore'),
         require.resolve('backbone')
     ], { type: '.js' }),
     core: new mirror([
-        require.resolve('bones/shared/utils'),
-        require.resolve('bones/client/utils'),
-        require.resolve('bones/shared/backbone'),
-        require.resolve('bones/client/backbone')
+        require.resolve(path.join(__dirname, '../shared/utils')),
+        require.resolve(path.join(__dirname, '../client/utils')),
+        require.resolve(path.join(__dirname, '../shared/backbone')),
+        require.resolve(path.join(__dirname, '../client/backbone'))
     ], { type: '.js' }),
     models: new mirror([], options),
     views: new mirror([], options),
@@ -29,7 +30,7 @@ server.prototype.assets = {
 };
 
 if (env === 'development') {
-    server.prototype.assets.core.unshift(require.resolve('bones/assets/debug'));
+    server.prototype.assets.core.unshift(require.resolve(path.join(__dirname, '../assets/debug')));
 }
 
 // TODO: This should be moved to the initialize method!

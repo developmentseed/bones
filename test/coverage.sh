@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
 cd ..
-rm -rf coverage/node_modules
-mkdir -p coverage/node_modules
+rm -rf bones-cov
+mkdir bones-cov
 jscoverage --no-instrument=test \
            --no-instrument=node_modules \
            --no-instrument=assets \
@@ -19,6 +19,12 @@ jscoverage --no-instrument=test \
            --no-instrument=server/view.suffix.js \
            --exclude=examples \
            bones \
-           coverage/node_modules/bones
-cd coverage/node_modules/bones
-expresso
+           bones-cov
+cd bones-cov
+
+mocha -R html-cov > coverage.html
+
+VIEWER=$(which open);
+if [ -x $VIEWER ]; then
+    $VIEWER coverage.html
+fi
