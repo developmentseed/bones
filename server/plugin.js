@@ -4,7 +4,7 @@ var util = require('util');
 var assert = require('assert');
 var Module = require('module');
 var _ = require('underscore');
-var Bones = require('bones');
+var Bones = require(path.join(__dirname, '../'));
 
 var utils = Bones.utils;
 

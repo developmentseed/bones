@@ -3,23 +3,29 @@ var assert = require('assert');
 
 var server = require('./fixture/start').servers.Core;
 
-exports['api endpoints'] = function() {
+describe('api endpoints', function() {
+
+it('should load collection', function(done) {
     assert.response(server, {
         url: '/api/House',
         method: 'GET'
     }, {
         body: '[{"foo":"bar"},{"foo":"baz"},{"foo":"blah"}]',
         status: 200
-    });
+    }, done);
+});
 
+it('should return 500', function(done) {
     assert.response(server, {
         url: '/api/Failure',
         method: 'GET'
     }, {
         body: 'Internal Server Error',
         status: 500
-    });
+    }, done);
+});
 
+it('should return 500', function(done) {
     assert.response(server, {
         url: '/api/Failure',
         method: 'GET',
@@ -27,16 +33,20 @@ exports['api endpoints'] = function() {
     }, {
         body: '{"message":"Internal Server Error"}',
         status: 500
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/api/DoesNotExist',
         method: 'GET'
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/api/DoesNotExist',
         method: 'GET',
@@ -44,5 +54,7 @@ exports['api endpoints'] = function() {
     }, {
         body: '{"message":"Not Found"}',
         status: 404
-    });
-};
+    }, done);
+});
+
+});

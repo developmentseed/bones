@@ -17,6 +17,8 @@ and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Archi
 
 To run the test suite, type `npm test`. **Note**: bones has to be in a folder named `node_modules` for tests to work correctly.
 
+Code coverages tests require [jscoverage](https://github.com/visionmedia/node-jscoverage). To generate a report run `npm run-script coverage`.
+
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).

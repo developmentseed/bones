@@ -1,11 +1,14 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert');
 var fs = require('fs');
+var path = require('path');
 
-var fixture = require('bones').plugin;
+var fixture = require(path.join(__dirname, '../')).plugin;
 
-exports['router behavior'] = function() {
+describe('router', function() {
+it('router behavior', function() {
     assert['throws'](function() {
         new fixture.routers.Page;
     }, "Can't initialize router without server.");
-};
+});
+});

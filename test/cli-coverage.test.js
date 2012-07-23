@@ -1,6 +1,7 @@
 var assert = require('assert');
 var os = require('os');
 var exec = require('child_process').exec;
+var path = require('path');
 
 var hostnameDescription = 'Hostnames allowed for requests. Wildcards are allowed. (Default: ["127.0.0.1","localhost","' + os.hostname() + '","other","*.third"])';
 
@@ -9,32 +10,28 @@ function makePlain(json) {
     return JSON.parse(JSON.stringify(json));
 }
 
+var bones = require(path.join(__dirname, '../'));
+
 require('./fixture');
 
-exports['test --help'] = function(beforeExit) {
-    var completed = false;
+describe('cli code coverage', function() {
 
+it('test --help', function(done) {
     require('optimist').argv = { _: [], '$0': 'node ./test/fixture', help: true };
-    require('bones').start(function(output) {
-        completed = true;
-
+    bones.start(function(output) {
         assert.deepEqual(output, [
             [ 'Usage: %s for a list of options.', '\u001b[0;32mnode ./test/fixture [command] --help\u001b[0m' ],
             [ 'Available commands are:' ],
             [ '  start:  start application' ],
             [ '  foo:    demo command' ]
         ]);
+        done();
     });
+});
 
-    beforeExit(function() { assert.ok(completed); });
-};
-
-exports['test start --help'] = function(beforeExit) {
-    var completed = false;
-
+it('test start --help', function(done) {
     require('optimist').argv = { _: ['start'], '$0': 'node ./test/fixture', help: true };
-    require('bones').start(function(output) {
-        completed = true;
+    bones.start(function(output) {
         assert.deepEqual(output, [
             [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture <command> [options...]\u001b[0m' ],
             [ 'Commands: start application' ],
@@ -44,18 +41,14 @@ exports['test start --help'] = function(beforeExit) {
             [ '    --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '    --config=[path]  Path to JSON configuration file.' ]
         ]);
+        done();
     });
-
-    beforeExit(function() { assert.ok(completed); });
-};
+});
 
 
-exports['test foo --help'] = function(beforeExit) {
-    var completed = false;
-
+it('test foo --help', function(done) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', help: true };
-    require('bones').start(function(output) {
-        completed = true;
+    bones.start(function(output) {
         assert.deepEqual(output, [
             [ 'Usage: %s', '\u001b[0;32mnode ./test/fixture <command> [options...]\u001b[0m' ],
             [ 'Commands: demo command' ],
@@ -67,32 +60,24 @@ exports['test foo --help'] = function(beforeExit) {
             [ '      --adminParty     Celebrate with administrators! (Default: false)' ],
             [ '      --config=[path]  Path to JSON configuration file.' ]
         ]);
+        done();
     });
-
-    beforeExit(function() { assert.ok(completed); });
-};
+});
 
 
-exports['test foo'] = function(beforeExit) {
-    var completed = false;
-
+it('test foo', function(done) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture' };
-    require('bones').start(function(output) {
-        completed = true;
+    bones.start(function(output) {
         assert.equal(output, 'successfully started!');
+        done();
     });
-
-    beforeExit(function() { assert.ok(completed); });
-};
+});
 
 
-exports['test foo --config=test/fixture/config.json'] = function(beforeExit) {
-    var completed = false;
-
+it('test foo --config=test/fixture/config.json', function(done) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', config: 'test/fixture/config.json' };
-    require('bones').start(function(output) {
-        completed = true;
-        assert.deepEqual(makePlain(require('bones').plugin.config), {
+    bones.start(function(output) {
+        assert.deepEqual(makePlain(bones.plugin.config), {
             lorem: 'ipsum',
             dolor: __dirname + '/fixture/commands',
             host: [ '127.0.0.1', 'localhost', os.hostname(), 'other', '*.third' ],
@@ -100,46 +85,39 @@ exports['test foo --config=test/fixture/config.json'] = function(beforeExit) {
             unknownOption: 42
         });
         assert.equal(output, 'successfully started!');
+        done();
     });
-
-    beforeExit(function() { assert.ok(completed); });
-};
+});
 
 
-exports['test foo --dolor=pain'] = function(beforeExit) {
-    var completed = false;
-
+it('test foo --dolor=pain', function(done) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', dolor: 'pain' };
-    require('bones').plugin.config = {};
-    require('bones').start(function(output) {
-        completed = true;
-        assert.deepEqual(makePlain(require('bones').plugin.config), {
+    bones.plugin.config = {};
+    bones.start(function(output) {
+        assert.deepEqual(makePlain(bones.plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
             host: [ '127.0.0.1', 'localhost', os.hostname(), 'other', '*.third' ],
             adminParty: false
         });
         assert.equal(output, 'successfully started!');
+        done();
     });
+});
 
-    beforeExit(function() { assert.ok(completed); });
-};
-
-exports['test foo --config=test/fixture/config.json --show-config'] = function(beforeExit) {
-    var completed = false;
-
+it('test foo --config=test/fixture/config.json --show-config', function(done) {
     require('optimist').argv = { _: ['foo'], '$0': 'node ./test/fixture', config: 'test/fixture/config.json', 'show-config': true };
-    require('bones').start(function(output) {
-        completed = true;
+    bones.start(function(output) {
         assert.equal(output, undefined);
-        assert.deepEqual(makePlain(require('bones').plugin.config), {
+        assert.deepEqual(makePlain(bones.plugin.config), {
             lorem: 'ipsum',
             dolor: 'pain',
             host: [ '127.0.0.1', 'localhost', os.hostname(), 'other', '*.third' ],
             adminParty: true,
             unknownOption: 42
         });
+        done();
     });
+});
 
-    beforeExit(function() { assert.ok(completed); });
-};
+});

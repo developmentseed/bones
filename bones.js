@@ -3,22 +3,24 @@ if (global.__BonesPlugin__) {
     process.exit(4);
 }
 
+var path = require('path');
+
 exports.$ = require('jquery');
 exports._ = require('underscore');
 exports.mirror = require('mirror');
 
-exports.utils = require('bones/server/utils');
-exports.middleware = require('bones/server/middleware');
+exports.utils = require(path.join(__dirname, 'server/utils'));
+exports.middleware = require(path.join(__dirname, 'server/middleware'));
 
 exports.server = true;
 
-exports.Backbone = require('bones/server/backbone');
-exports.Router = require('bones/server/router');
-exports.Model = require('bones/server/model');
-exports.Collection = require('bones/server/collection');
-exports.View = require('bones/server/view');
-exports.Server = require('bones/server/server');
-exports.Command = require('bones/server/command');
+exports.Backbone = require(path.join(__dirname, 'server/backbone'));
+exports.Router = require(path.join(__dirname, 'server/router'));
+exports.Model = require(path.join(__dirname, 'server/model'));
+exports.Collection = require(path.join(__dirname, 'server/collection'));
+exports.View = require(path.join(__dirname, 'server/view'));
+exports.Server = require(path.join(__dirname, 'server/server'));
+exports.Command = require(path.join(__dirname, 'server/command'));
 
 exports.load = function(dir) {
     return exports.plugin.load(dir);
@@ -29,6 +31,6 @@ exports.start = function(callback) {
 };
 
 var Plugin = require('./server/plugin');
-global.__BonesPath__ = require.resolve('bones');
+global.__BonesPath__ = require.resolve(__dirname);
 exports.plugin = global.__BonesPlugin__ = new Plugin();
 exports.plugin.load(__dirname);
