@@ -27,10 +27,10 @@ exports['/assets/bones/core.js'] = function() {
         url: '/assets/bones/core.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/client/backbone.js'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/client/utils.js'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/shared/backbone.js'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/shared/utils.js'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../client/backbone.js'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../client/utils.js'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../shared/backbone.js'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../shared/utils.js'))) >= 0);
     });
 };
 
@@ -39,7 +39,7 @@ exports['/assets/bones/core.js'] = function() {
         url: '/assets/bones/vendor.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/assets/jquery.js'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../assets/jquery.js'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('backbone'))) >= 0);
         assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('underscore'))) >= 0);
     });
@@ -50,8 +50,8 @@ exports['/assets/bones/routers.js'] = function() {
         url: '/assets/bones/routers.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/node_modules/submodule/routers/Foo'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/routers/Page'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/node_modules/submodule/routers/Foo'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/routers/Page'))) >= 0);
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones ----') >= 0);
@@ -69,14 +69,14 @@ exports['/assets/bones/models.js'] = function() {
         url: '/assets/bones/models.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Failure'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Failures'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/House'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Houses'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Page'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/Failure'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/Failures'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/House'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/Houses'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/Page'))) >= 0);
 
         // Doesn't include server files.
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/models/Page.server'))) < 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/models/Page.server'))) < 0);
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones ----') >= 0);
@@ -97,11 +97,11 @@ exports['/assets/bones/views.js'] = function() {
         url: '/assets/bones/views.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/views/Error'))) >= 0);
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/views/App'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/views/Error'))) >= 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/views/App'))) >= 0);
 
         // Doesn't include server files.
-        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('bones/test/fixture/views/App.server'))) < 0);
+        assert.ok(res.body.indexOf(fs.readFileSync(require.resolve('../test/fixture/views/App.server'))) < 0);
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones ----') >= 0);
@@ -115,11 +115,11 @@ exports['/assets/bones/templates.js'] = function() {
         url: '/assets/bones/templates.js',
         method: 'GET'
     }, { status: 200 }, function(res) {
-        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/Error._').toString()) >= 0);
-        assert.ok(res.body.indexOf(require('bones/test/fixture/node_modules/othermodule/templates/Other._').toString()) >= 0);
+        assert.ok(res.body.indexOf(require('../test/fixture/templates/Error._').toString()) >= 0);
+        assert.ok(res.body.indexOf(require('../test/fixture/node_modules/othermodule/templates/Other._').toString()) >= 0);
 
         // Doesn't include server files.
-        assert.ok(res.body.indexOf(require('bones/test/fixture/templates/ServerSide.server._').toString()) < 0);
+        assert.ok(res.body.indexOf(require('../test/fixture/templates/ServerSide.server._').toString()) < 0);
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/templates/Error._ ----') >= 0);

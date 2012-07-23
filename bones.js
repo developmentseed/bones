@@ -7,18 +7,18 @@ exports.$ = require('jquery');
 exports._ = require('underscore');
 exports.mirror = require('mirror');
 
-exports.utils = require('bones/server/utils');
-exports.middleware = require('bones/server/middleware');
+exports.utils = require('./server/utils');
+exports.middleware = require('./server/middleware');
 
 exports.server = true;
 
-exports.Backbone = require('bones/server/backbone');
-exports.Router = require('bones/server/router');
-exports.Model = require('bones/server/model');
-exports.Collection = require('bones/server/collection');
-exports.View = require('bones/server/view');
-exports.Server = require('bones/server/server');
-exports.Command = require('bones/server/command');
+exports.Backbone = require('./server/backbone');
+exports.Router = require('./server/router');
+exports.Model = require('./server/model');
+exports.Collection = require('./server/collection');
+exports.View = require('./server/view');
+exports.Server = require('./server/server');
+exports.Command = require('./server/command');
 
 exports.load = function(dir) {
     return exports.plugin.load(dir);
