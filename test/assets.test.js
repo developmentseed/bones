@@ -84,6 +84,10 @@ it('/assets/bones/routers.js', function(done) {
         checkAsset(res, 'test/fixture/node_modules/submodule/routers/Foo');
         checkAsset(res, 'test/fixture/routers/Page');
 
+        // Doesn't include server files.
+        excludesAsset(res, 'test/fixture/routers/Secret.server');
+        excludesAsset(res, 'test/fixture/routers/Deprecated.server');
+
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones.js ----') >= 0);
         assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones.js ----') <
@@ -110,6 +114,7 @@ it('/assets/bones/models.js', function(done) {
         // Doesn't include server files.
         excludesAsset(res, 'test/fixture/models/Page.server');
         excludesAsset(res, 'test/fixture/models/Secret.server');
+        excludesAsset(res, 'test/fixture/models/Deprecated.server');
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones.js ----') >= 0);
@@ -136,6 +141,8 @@ it('/assets/bones/views.js', function(done) {
 
         // Doesn't include server files.
         excludesAsset(res, 'test/fixture/views/App.server');
+        excludesAsset(res, 'test/fixture/views/Secret.server');
+        excludesAsset(res, 'test/fixture/views/Deprecated.server');
 
         // Correct order.
         assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones.js ----') >= 0);
