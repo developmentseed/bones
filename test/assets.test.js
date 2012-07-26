@@ -14,7 +14,6 @@ function checkAsset(res, fixture) {
 function excludesAsset(res, fixture) {
     var contents = fs.readFileSync(require.resolve(path.join(
         __dirname, '..', fixture)), 'utf8');
-    console.log(res.body.indexOf(contents));
     assert.ok(res.body.indexOf(contents) === -1, 'Includes '+fixture);
 }
 
