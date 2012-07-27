@@ -1,3 +1,8 @@
+## 2.3.0
+
+- Declare node 0.8 support.
+- Switch to mocha testing framework.
+
 ## 2.2.0
 
 - Upgraded dependencies: express, optimist
