@@ -46,6 +46,8 @@ router = Backbone.Router.extend({
     // The send method is...
     send: function(view) {
         var options = (arguments.length > 1 ? arguments[1] : {});
+        this.appView = this.appView || new views.App();
+        options.appView = this.appView;
         var v = new view(options);
 
         // Populate the #page div with the main view.
