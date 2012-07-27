@@ -7,13 +7,13 @@ var server = require('./fixture/start').servers.Core;
 
 function checkAsset(res, fixture) {
     var contents = fs.readFileSync(require.resolve(path.join(
-        __dirname, '..', fixture)));
+        __dirname, '..', fixture)),'utf8');
     assert.ok(res.body.indexOf(contents) >= 0, 'Missing '+fixture);
 }
 
 function excludesAsset(res, fixture) {
     var contents = fs.readFileSync(require.resolve(path.join(
-        __dirname, '..', fixture)));
+        __dirname, '..', fixture)), 'utf8');
     assert.ok(res.body.indexOf(contents) === -1, 'Includes '+fixture);
 }
 
@@ -83,14 +83,18 @@ it('/assets/bones/routers.js', function(done) {
         checkAsset(res, 'test/fixture/node_modules/submodule/routers/Foo');
         checkAsset(res, 'test/fixture/routers/Page');
 
-        // Correct order.
-        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones ----'));
+        // Doesn't include server files.
+        excludesAsset(res, 'test/fixture/routers/Secret.server');
+        excludesAsset(res, 'test/fixture/routers/Deprecated.server');
 
-        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones ----'));
+        // Correct order.
+        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones.js ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- start test/fixture/node_modules/submodule/routers/Foo.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones.js ----'));
+
+        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones.js ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- end test/fixture/node_modules/submodule/routers/Foo.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/routers/Page.bones.js ----'));
         done();
     });
 });
@@ -108,17 +112,19 @@ it('/assets/bones/models.js', function(done) {
 
         // Doesn't include server files.
         excludesAsset(res, 'test/fixture/models/Page.server');
+        excludesAsset(res, 'test/fixture/models/Secret.server');
+        excludesAsset(res, 'test/fixture/models/Deprecated.server');
 
         // Correct order.
-        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/models/Failures.bones ----'));
-        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failures.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/models/House.bones ----'));
-        assert.ok(res.body.indexOf('// ---- start test/fixture/models/House.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/models/Houses.bones ----'));
-        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Houses.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/models/Page.bones ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones.js ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failure.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/models/Failures.bones.js ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Failures.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/models/House.bones.js ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/models/House.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/models/Houses.bones.js ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/models/Houses.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/models/Page.bones.js ----'));
         done();
     });
 });
@@ -134,11 +140,13 @@ it('/assets/bones/views.js', function(done) {
 
         // Doesn't include server files.
         excludesAsset(res, 'test/fixture/views/App.server');
+        excludesAsset(res, 'test/fixture/views/Secret.server');
+        excludesAsset(res, 'test/fixture/views/Deprecated.server');
 
         // Correct order.
-        assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones ----') >= 0);
-        assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones ----') <
-                  res.body.indexOf('// ---- start test/fixture/views/App.bones ----'));
+        assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones.js ----') >= 0);
+        assert.ok(res.body.indexOf('// ---- start test/fixture/views/Error.bones.js ----') <
+                  res.body.indexOf('// ---- start test/fixture/views/App.bones.js ----'));
         done();
     });
 });
