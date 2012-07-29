@@ -1,3 +1,20 @@
+## 2.3.0
+
+- Declare node 0.8 support.
+- Switch to mocha testing framework.
+
+## 2.2.0
+
+- Upgraded dependencies: express, optimist
+- Declared compatibility with node 0.4 and 0.6
+- Fixed: `showError` middleware no longer writes a body for error responses to
+  HEAD requests.
+- Changed: `Server.initialize()` and `Server.conclude()` are now passed all
+  arguments for the `Server()` constructor instead of just the plugin.
+- Changed: Default model routes now allow `Error()` objects passed back from
+  `Backbone.sync()` to be sent to the client.
+- Changed: Default value for `host` command option is `false`, which disables
+  host checking by default.
 
 ## Bones 2.x.x
 

@@ -1,3 +1,4 @@
+var path = require('path');
 var env = process.env.NODE_ENV || 'development';
 var headers = { 'Content-Type': 'application/json' };
 
@@ -19,15 +20,15 @@ var secureOptions = {
 // TODO: This should be moved to the initialize method!
 server.prototype.assets = {
     vendor: new mirror([
-        require.resolve('bones/assets/jquery'),
+        require.resolve(path.join(__dirname, '../assets/jquery')),
         require.resolve('underscore'),
         require.resolve('backbone')
     ], { type: '.js' }),
     core: new mirror([
-        require.resolve('bones/shared/utils'),
-        require.resolve('bones/client/utils'),
-        require.resolve('bones/shared/backbone'),
-        require.resolve('bones/client/backbone')
+        require.resolve(path.join(__dirname, '../shared/utils')),
+        require.resolve(path.join(__dirname, '../client/utils')),
+        require.resolve(path.join(__dirname, '../shared/backbone')),
+        require.resolve(path.join(__dirname, '../client/backbone'))
     ], { type: '.js' }),
     models: new mirror([], options),
     views: new mirror([], options),
@@ -40,7 +41,7 @@ server.prototype.assets = {
 };
 
 if (env === 'development') {
-    server.prototype.assets.core.unshift(require.resolve('bones/assets/debug'));
+    server.prototype.assets.core.unshift(require.resolve(path.join(__dirname, '../assets/debug')));
 }
 
 // TODO: This should be moved to the initialize method!
@@ -85,6 +86,7 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
+<<<<<<< HEAD:servers/Route.bones
     this.get('/assets/bones/vendor.js', this.assets.vendor);
     this.get('/assets/bones/core.js', this.assets.core);
     this.get('/assets/bones/routers.js', this.assets.routers);
@@ -94,15 +96,25 @@ server.prototype.initializeAssets = function(app) {
 
     this.get('/assets/bones/all.js', this.assets.all);
     this.get('/assets/bones/secure.js', this.assets.secure);
+=======
+    this.get('/assets/bones/vendor.js', this.assets.vendor.handler);
+    this.get('/assets/bones/core.js', this.assets.core.handler);
+    this.get('/assets/bones/routers.js', this.assets.routers.handler);
+    this.get('/assets/bones/models.js', this.assets.models.handler);
+    this.get('/assets/bones/views.js', this.assets.views.handler);
+    this.get('/assets/bones/templates.js', this.assets.templates.handler);
+
+    this.get('/assets/bones/all.js', this.assets.all.handler);
+>>>>>>> devseed/master:servers/Route.bones.js
 };
 
 server.prototype.initializeModels = function(app) {
     this.models = app.models;
     _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel', 'loadCollection');
-    this.get('/api/:model/:id', this.loadModel, this.getModel);
-    this.post('/api/:model', this.loadModel, this.saveModel);
-    this.put('/api/:model/:id', this.loadModel, this.saveModel);
-    this.del('/api/:model/:id', this.loadModel, this.delModel);
+    this.get('/api/:model/:id', [this.loadModel, this.getModel]);
+    this.post('/api/:model', [this.loadModel, this.saveModel]);
+    this.put('/api/:model/:id', [this.loadModel, this.saveModel]);
+    this.del('/api/:model/:id', [this.loadModel, this.delModel]);
     this.get('/api/:collection', this.loadCollection.bind(this));
 };
 
@@ -116,8 +128,8 @@ server.prototype.loadCollection = function(req, res, next) {
                 res.send(resp, headers);
             },
             error: function(collection, err) {
-                err = err instanceof Object ? err.toString() : err;
-                next(new Error.HTTP(err, 500));
+                var error = err instanceof Object ? err.message : err;
+                next(new Error.HTTP(error, err && err.status || 500));
             }
         });
     } else {
@@ -141,8 +153,8 @@ server.prototype.getModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 404));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 404));
         }
     });
 };
@@ -154,8 +166,8 @@ server.prototype.saveModel = function(req, res, next) {
             res.send(resp, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };
@@ -167,8 +179,8 @@ server.prototype.delModel = function(req, res, next) {
             res.send({}, headers);
         },
         error: function(model, err) {
-            err = err instanceof Object ? err.toString() : err;
-            next(new Error.HTTP(err, 409));
+            var error = err instanceof Object ? err.message : err;
+            next(new Error.HTTP(error, err && err.status || 409));
         }
     });
 };

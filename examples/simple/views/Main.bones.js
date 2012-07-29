@@ -1,7 +1,7 @@
 view = Backbone.View.extend({
     id: 'main',
-    initialize: function() {
-        this.app = new views.App();
+    initialize: function(options) {
+        this.app = options.appView;
     },
     attach: function() {
         return this;

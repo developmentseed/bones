@@ -4,7 +4,7 @@ var util = require('util');
 var assert = require('assert');
 var Module = require('module');
 var _ = require('underscore');
-var Bones = require('bones');
+var Bones = require(path.join(__dirname, '../'));
 
 var utils = Bones.utils;
 
@@ -20,7 +20,7 @@ fs.readdirSync(__dirname).forEach(function(name) {
     }
 });
 
-require.extensions['.bones'] = function(module, filename) {
+require.extensions['.bones.js'] = function(module, filename) {
     var content = fs.readFileSync(filename, 'utf8');
     var kind = utils.singularize(path.basename(path.dirname(filename)));
 
@@ -35,7 +35,16 @@ require.extensions['.bones'] = function(module, filename) {
         Bones.plugin.add(module.exports, filename);
     }
 };
-
+// Cannot only add .bones.js to known extensions because path.ext() only looks
+// at what is after last '.' so we override '.js' handling.
+var _requirejs = require.extensions['.js'];
+require.extensions['.js'] = function(module, filename) {
+    if (/^.+\.bones\.js$/.test(filename))
+        return require.extensions['.bones.js'](module,filename);
+    return _requirejs(module, filename);
+}
+// Backwards compatiblity for deprecated `.bones` extension.
+require.extensions['.bones'] = require.extensions['.bones.js'];
 
 // Default template engine.
 require.extensions['._'] = function(module, filename) {

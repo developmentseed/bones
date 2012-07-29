@@ -1,7 +1,7 @@
 {
     "name": "bones",
     "description": "Framework for using backbone.js on the client and server.",
-    "version": "2.0.0alpha3",
+    "version": "2.3.0",
 
     "author": {
       "name": "Development Seed",
@@ -13,15 +13,18 @@
 
     "dependencies": {
         "underscore": "1.1.x",
-        "express": "2.4.4",
-        "backbone": "0.5.1",
-        "jquery": "1.5.x",
-        "optimist": "0.1.x",
+        "express": "~2.5.4",
+        "backbone": "0.5.3",
+        "jquery": "~1.6.3",
+        "optimist": "0.3.x",
         "mirror": "0.3.x"
     },
 
     "scripts": {
-        "test": "expresso -I ..",
+        "test": "mocha -R spec",
         "coverage": "./test/coverage.sh"
+    },
+    "engines": {
+      "node": "0.4 || 0.6 || 0.8"
     }
 }

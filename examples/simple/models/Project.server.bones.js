@@ -33,9 +33,11 @@ models.Project.prototype.sync = function(method, model, options) {
         fs.readdir(projectDir, function(err, files) {
             if (err) return callback('Project not found.');
 
+            var found = false;
             for (var i = 0; i < files.length; i++) {
                 var match = re.exec(files[i]);
                 if (match) {
+                    found = true;
                     fs.readFile(projectDir +'/'+ match.input, 'utf8', function(err, data) {
                         if (err) return callback('Could not retrieve project information.');
                         // 80 chars folks...
@@ -46,6 +48,7 @@ models.Project.prototype.sync = function(method, model, options) {
                     break;
                 }
             }
+            if (!found) return callback('Project is missing a readme file.');
         });
     }
 

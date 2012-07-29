@@ -3,23 +3,28 @@ var assert = require('assert');
 
 var server = require('./fixture/start').servers.Core;
 
-exports['api endpoints'] = function() {
+describe('models', function() {
+it('should load model', function(done) {
     assert.response(server, {
         url: '/api/Page/foo',
         method: 'GET'
     }, {
         body: '{"id":"foo","method":"read"}',
         status: 200
-    });
+    }, done);
+});
 
+it('should return 404', function(done) {
     assert.response(server, {
         url: '/api/page/foo',
         method: 'GET'
     }, {
         body: 'Not Found',
         status: 404
-    });
+    }, done);
+});
 
+it('should update model', function(done) {
     assert.response(server, {
         url: '/api/Page/foo',
         method: 'PUT',
@@ -31,5 +36,6 @@ exports['api endpoints'] = function() {
     }, {
         body: '{"id":"foo","key":"value","method":"update"}',
         status: 200
-    });
-};
+    }, done);
+});
+});

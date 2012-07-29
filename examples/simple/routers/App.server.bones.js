@@ -12,6 +12,7 @@ var time = Date.now();
  */
 routers.App.prototype.send = function(view, options) {
     var options = arguments.length > 1 ? arguments[1] : {};
+    options.appView = new views.App();
 
     // Execute the main view.
     var main = new view(options);
@@ -21,6 +22,8 @@ routers.App.prototype.send = function(view, options) {
     // on the browser.
     var o = '{el: $("#main"),';
     _.each(options, function(v, k) {
+        // appView options works differently on client and server so we omit it.
+        if (k == 'appView') return;
         // Any options that is a model or collection will have it's title
         // declared. Use this to re-hydrate it.
         if (v.constructor.title != undefined) {
