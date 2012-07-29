@@ -6,20 +6,15 @@ module.exports = Backbone.Router;
 Backbone.Router.register = function(server) {
     // Add the router if it's not a server-only router.
     this.files.forEach(function(filename) {
-<<<<<<< HEAD
-        if (!(/\.server\.bones$/).test(filename) && server.assets &&
+
+        if (!(/\.server\.bones(\.js|)$/).test(filename) && server.assets &&
             server.assets.routers.indexOf(filename) < 0 ) {
-						 if ((/\.secure\.bones$/).test(filename)) 
+						 if ((/\.secure\.bones(\.js|)$/).test(filename)) 
 						 {
 						 		server.assets.secureRouters.push(filename);
 						 } else {
 						 	server.assets.routers.push(filename);
 						 }
-=======
-        if (!(/\.server\.bones(\.js|)$/).test(filename) && server.assets &&
-            server.assets.routers.indexOf(filename) < 0) {
-            server.assets.routers.push(filename);
->>>>>>> devseed/master
         }
     });
 

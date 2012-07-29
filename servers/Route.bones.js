@@ -86,17 +86,7 @@ server.prototype.registerComponents = function(app) {
 };
 
 server.prototype.initializeAssets = function(app) {
-<<<<<<< HEAD:servers/Route.bones
-    this.get('/assets/bones/vendor.js', this.assets.vendor);
-    this.get('/assets/bones/core.js', this.assets.core);
-    this.get('/assets/bones/routers.js', this.assets.routers);
-    this.get('/assets/bones/models.js', this.assets.models);
-    this.get('/assets/bones/views.js', this.assets.views);
-    this.get('/assets/bones/templates.js', this.assets.templates);
 
-    this.get('/assets/bones/all.js', this.assets.all);
-    this.get('/assets/bones/secure.js', this.assets.secure);
-=======
     this.get('/assets/bones/vendor.js', this.assets.vendor.handler);
     this.get('/assets/bones/core.js', this.assets.core.handler);
     this.get('/assets/bones/routers.js', this.assets.routers.handler);
@@ -105,7 +95,7 @@ server.prototype.initializeAssets = function(app) {
     this.get('/assets/bones/templates.js', this.assets.templates.handler);
 
     this.get('/assets/bones/all.js', this.assets.all.handler);
->>>>>>> devseed/master:servers/Route.bones.js
+		this.get('/assets/bones/secure.js', this.assets.secure.handler);
 };
 
 server.prototype.initializeModels = function(app) {
