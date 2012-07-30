@@ -15,7 +15,7 @@ and on the [concepts](https://github.com/developmentseed/bones/wiki/Plugin-Archi
 
 ## Testing
 
-To run the test suite, type `npm test`. **Note**: bones has to be in a folder named `node_modules` for tests to work correctly.
+To run the test suite, install [mocha](http://visionmedia.github.com/mocha/) and type `npm test`.
 
 Code coverages tests require [jscoverage](https://github.com/visionmedia/node-jscoverage). To generate a report run `npm run-script coverage`.
 
