@@ -17,7 +17,12 @@ Backbone.View.register = function(server) {
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones(\.js|)$/).test(filename) && server.assets &&
             server.assets.views.indexOf(filename) < 0) {
-            server.assets.views.push(filename);
+            if ((/\.secure\.bones$/).test(filename)) 
+            {
+            		server.assets.secureViews.push(filename);
+            } else {
+            	server.assets.views.push(filename);
+            }
         }
     });
 

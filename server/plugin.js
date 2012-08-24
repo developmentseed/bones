@@ -62,11 +62,20 @@ require.extensions['._'] = function(module, filename) {
     }
 
     module.exports.register = function(app) {
-        if (app.assets && !(/\.server\._$/.test(filename))) {
-            app.assets.templates.push({
-                filename: filename,
-                content: 'template = ' + module.exports + ';'
-            });
+        if (app.assets) {
+        	if ((/\.secure\.bones$/).test(filename)) 
+        	{
+        			app.assets.secureTemplates.push({
+        			    filename: filename,
+        			    content: 'template = ' + module.exports + ';'
+        			});
+        	} else {
+        		app.assets.templates.push({
+        		    filename: filename,
+        		    content: 'template = ' + module.exports + ';'
+        		});
+        	}
+
         }
     };
 };

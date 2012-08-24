@@ -11,7 +11,13 @@ Backbone.Collection.register = function(app) {
     // Add the collection if it's not a server-only collection.
     this.files.forEach(function(filename) {
         if (!(/\.server\.bones$/).test(filename) && app.assets) {
-            app.assets.models.push(filename);
+	        if ((/\.secure\.bones$/).test(filename)) 
+	        {
+	        		app.assets.secureModels.push(filename);
+	        } else {
+	        	app.assets.models.push(filename);
+	        }
+           
         }
     });
 
