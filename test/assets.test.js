@@ -18,12 +18,12 @@ function excludesAsset(res, fixture) {
 }
 
 function checkTemplate(res, fixture) {
-    var contents = require(path.join( __dirname, '..', fixture)).toString();
+    var contents = require(path.join( __dirname, '..', fixture)).source;
     assert.ok(res.body.indexOf(contents) >= 0, 'Missing '+fixture);
 }
 
 function excludesTemplate(res, fixture) {
-    var contents = require(path.join( __dirname, '..', fixture)).toString();
+    var contents = require(path.join( __dirname, '..', fixture)).source;
     assert.ok(res.body.indexOf(contents) === -1, 'Includes '+fixture);
 }
 
