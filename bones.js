@@ -15,6 +15,8 @@ exports.middleware = require(path.join(__dirname, 'server/middleware'));
 exports.server = true;
 
 exports.Backbone = require(path.join(__dirname, 'server/backbone'));
+exports.Backbone.setDomLibrary(exports.$);
+
 exports.Router = require(path.join(__dirname, 'server/router'));
 exports.Model = require(path.join(__dirname, 'server/model'));
 exports.Collection = require(path.join(__dirname, 'server/collection'));
