@@ -13,8 +13,8 @@ function Server(plugin) {
 
 Server.prototype.__proto__ = HTTPServer.prototype;
 
-_.extend(Server.prototype, Backbone.Events, {
-    initialize : function(plugin) {},
+_.extend(Server.prototype, {
+    initialize: function(plugin) {},
 
     conclude: function(plugin) {
         // Add catchall 404 middleware and error handler for root servers.
