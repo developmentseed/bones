@@ -7,7 +7,7 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
 
 Bones.utils.callback = function(callback) {
     return {
-        success: function(model, response) { callback(null, response); },
+        success: function(model, response) { callback(null, model); },
         error: function(model, err) { callback(err); }
     };
 };
