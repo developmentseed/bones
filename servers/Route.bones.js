@@ -128,7 +128,8 @@ server.prototype.getModel = function(req, res, next) {
         }
     };
     if (!_.isEmpty(req.query)) {
-        options = _.extend(options, {data: req.query});
+        // Send query string to server-side sync
+        options = _.extend(options, {query: req.query});
     }
     req.model.fetch(options);
 };
