@@ -82,7 +82,7 @@ server.prototype.initializeModels = function(app) {
     this.models = app.models;
     _.bindAll(this, 'loadModel', 'getModel', 'saveModel', 'delModel', 'loadCollection');
     this.get('/api/:model/:id', [this.loadModel, this.getModel]);
-    this.post('/api/:model/:id?', [this.loadModel, this.saveModel]);
+    this.post('/api/:model', [this.loadModel, this.saveModel]);
     this.put('/api/:model/:id', [this.loadModel, this.saveModel]);
     this.del('/api/:model/:id', [this.loadModel, this.delModel]);
     this.get('/api/:collection', this.loadCollection.bind(this));
