@@ -144,6 +144,9 @@ server.prototype.saveModel = function(req, res, next) {
 
 server.prototype.delModel = function(req, res, next) {
     if (!req.model) return next();
+    if (req.body && !req.model.set(req.body, {
+        error: function(model, err) { next(err); }
+    })) return;
     req.model.destroy({
         success: function(model, resp) {
             res.send(resp, headers);
