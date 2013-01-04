@@ -110,6 +110,9 @@ server.prototype.loadCollection = function(req, res, next) {
 server.prototype.loadModel = function(req, res, next) {
     var name = req.params.model;
     if (name in this.models) {
+        // `id` in param wins over `id` in request body.
+        if (req.body && 'id' in req.body && req.params.id)
+            req.body.id = req.params.id;
         // Pass any querystring paramaters to the model.
         req.model = new this.models[name]({ id: req.params.id }, req.query);
     }
