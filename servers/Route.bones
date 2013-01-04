@@ -146,7 +146,7 @@ server.prototype.delModel = function(req, res, next) {
     if (!req.model) return next();
     req.model.destroy({
         success: function(model, resp) {
-            res.send({}, headers);
+            res.send(resp, headers);
         },
         error: function(model, err) {
             var error = err instanceof Object ? err.message : err;
