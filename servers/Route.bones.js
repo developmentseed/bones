@@ -110,6 +110,9 @@ server.prototype.loadCollection = function(req, res, next) {
 server.prototype.loadModel = function(req, res, next) {
     var name = req.params.model;
     if (name in this.models) {
+        // `id` in param wins over `id` in request body.
+        if (req.body && 'id' in req.body && req.params.id)
+            req.body.id = req.params.id;
         // Pass any querystring paramaters to the model.
         req.model = new this.models[name]({ id: req.params.id }, req.query);
     }
@@ -144,9 +147,12 @@ server.prototype.saveModel = function(req, res, next) {
 
 server.prototype.delModel = function(req, res, next) {
     if (!req.model) return next();
+    if (req.body && !req.model.set(req.body, {
+        error: function(model, err) { next(err); }
+    })) return;
     req.model.destroy({
         success: function(model, resp) {
-            res.send({}, headers);
+            res.send(resp, headers);
         },
         error: function(model, err) {
             var error = err instanceof Object ? err.message : err;
