@@ -10,6 +10,10 @@ The [wiki](https://github.com/developmentseed/bones/wiki) contains more informat
 
 To run the test suite, type `npm test`. **Note**: bones has to be in a folder named `node_modules` for tests to work correctly.
 
+This can be done like:
+
+    ln -s `pwd` `pwd`/node_modules/bones
+
 ## License
 
 Bones is [BSD licensed](https://github.com/developmentseed/bones/raw/master/LICENSE).
