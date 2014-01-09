@@ -16,7 +16,7 @@
         "express": "~2.5.11",
         "backbone": "0.3.3",
         "jquery": "~1.6.3",
-        "optimist": "~0.4.0",
+        "optimist": "~0.6.0",
         "mirror": "~0.3.3"
     },
 
