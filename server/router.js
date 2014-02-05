@@ -47,7 +47,7 @@ Backbone.Router.prototype._bindRoutes = function() {
 };
 
 Backbone.Router.prototype.route = function(route, name, callback) {
-    if (!_.isRegExp(route)) route = this._routeToRegExp(route);
+    if (!_.isRegExp(route)) route = this._routeToRegExp('/' + route);
     if (!_.isFunction(callback)) throw new Error("'" + name + "' is not a function in " + this);
 
     // Add route to express server.

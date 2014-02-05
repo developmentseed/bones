@@ -1,3 +1,5 @@
+Backbone.setDomLibrary($);
+
 Backbone.Router.prototype.route = function(route, name, callback) {
     Backbone.history || (Backbone.history = new Backbone.History);
     if (!_.isRegExp(route)) route = this._routeToRegExp(route);
