@@ -13,7 +13,11 @@ Bones.utils.callback = function(callback) {
 };
 
 // Multifetch. Pass a hash of models and fetch each in parallel.
-Bones.utils.fetch = function(models, callback) {
+Bones.utils.fetch = function(models, data, callback) {
+    if (typeof data === 'function') {
+        callback = data;
+        data = {};
+    }
     var remaining = _(models).size();
     var error = null;
     _(models).each(function(model) {
@@ -25,7 +29,8 @@ Bones.utils.fetch = function(models, callback) {
                 if (!error) error = err;
                 model.error = err;
                 if (--remaining === 0) callback(error, models);
-            }
+            },
+            data: data
         });
     });
 };

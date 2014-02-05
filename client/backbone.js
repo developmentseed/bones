@@ -49,21 +49,24 @@ Backbone.sync = function(method, model, options) {
 
     if (method !== 'read') {
         var modelJSON = model.toJSON ? model.toJSON() : model;
+        // Merge query string with model attributes
+        if (options.data) {
+            modelJSON = _.extend(modelJSON, options.data);
+            delete options.data;
+        }
         modelJSON['bones.token'] = Backbone.csrf(getUrl(model));
         modelJSON = JSON.stringify(modelJSON);
     }
 
     // Default JSON-request options.
-    var params = {
+    var params = _.extend({
         url:          getUrl(model),
         type:         type,
         contentType:  'application/json',
         data:         (modelJSON || null),
         dataType:     'json',
-        processData:  false,
-        success:      options.success,
-        error:        options.error
-    };
+        processData:  method === 'read'
+    }, options);
 
     // Make the request.
     return $.ajax(params);
