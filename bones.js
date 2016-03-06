@@ -3,7 +3,7 @@ if (global.__BonesPlugin__) {
     process.exit(4);
 }
 
-exports.$ = require('jquery')(require("jsdom").jsdom().parentWindow);
+exports.$ = require('jquery');
 exports._ = require('underscore');
 exports.mirror = require('mirror');
 
