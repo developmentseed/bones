@@ -16,7 +16,6 @@
         "express": "~2.5.11",
         "backbone": "0.3.3",
         "jquery": "~2.1.0",
-        "jsdom": "*",
         "optimist": "~0.6.0",
         "mirror": "~0.3.3"
     },
