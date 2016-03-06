@@ -181,6 +181,7 @@ Plugin.prototype.loadConfig = function(command) {
         }
         else {
             if (!(key in command.options)) {
+                /*
                 if (key in this.argv) {
                     // It was specified on the command line.
                      console.warn(utils.colorize('Note: Unknown option "' + key + '".', 'yellow'));
@@ -188,6 +189,7 @@ Plugin.prototype.loadConfig = function(command) {
                     // It's from the config file.
                     console.warn(utils.colorize('Note: Unknown option "' + key + '" in config file.', 'yellow'));
                 }
+                */
             } else if (command.options[key].required && typeof config[key] === 'undefined') {
                 console.warn(utils.colorize('Error: "' + key + '" is required.', 'red'));
                 process.exit(2);
