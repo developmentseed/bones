@@ -43,7 +43,7 @@ require.extensions['.js'] = function(module, filename) {
         return require.extensions['.bones.js'](module,filename);
     return _requirejs(module, filename);
 }
-// Backwards compatiblity for deprecated `.bones` extension.
+// Backwards compatibility for deprecated `.bones` extension.
 require.extensions['.bones'] = require.extensions['.bones.js'];
 
 // Default template engine.
